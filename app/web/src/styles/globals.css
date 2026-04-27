@@ -1,0 +1,213 @@
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--acp-midnight);
+  color: var(--acp-pearl);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+/* ── Eyebrow ── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--acp-gold);
+}
+.eyebrow .rule {
+  display: inline-block;
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--acp-gold), transparent);
+  flex-shrink: 0;
+}
+.eyebrow .num {
+  color: var(--acp-gold-light);
+  font-weight: 500;
+}
+
+/* ── Mono label ── */
+.monoLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acp-gold-dark);
+}
+
+/* ── Status chips ── */
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: rgba(201,168,76,0.08);
+  color: var(--acp-gold-light);
+  border: 1px solid var(--acp-gold-hair);
+}
+.chip.live {
+  background: rgba(34,197,94,0.12);
+  color: #22C55E;
+  border-color: rgba(34,197,94,0.25);
+}
+.chip.closed {
+  background: rgba(203,213,225,0.06);
+  color: var(--acp-silver);
+  border-color: rgba(203,213,225,0.1);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 2px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.btn:hover { opacity: 0.85; }
+.btnPrimary {
+  background: var(--gold-gradient-fill);
+  color: var(--acp-midnight);
+}
+.btnGhost {
+  background: transparent;
+  color: var(--acp-pearl);
+  border-color: rgba(203,213,225,0.2);
+}
+.btnGhost:hover {
+  border-color: rgba(203,213,225,0.4);
+  opacity: 1;
+}
+
+/* ── Section container ── */
+.section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 100px 56px;
+}
+.sectionFull {
+  padding: 100px 0;
+  background: var(--acp-navy);
+}
+.sectionInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* ── Section heading ── */
+.sectionHead {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 56px;
+  margin-bottom: 48px;
+  align-items: end;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--acp-gold-hair);
+}
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--acp-white);
+  margin: 16px 0 0;
+  letter-spacing: 0.005em;
+}
+.sectionTitle em {
+  font-style: italic;
+  font-weight: 500;
+  background: var(--gold-gradient-fill);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sectionDesc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--acp-silver);
+  max-width: 440px;
+  text-align: right;
+  margin: 0;
+}
+
+/* ── Fact card ── */
+.factCard {
+  background: var(--acp-navy);
+  border: 1px solid var(--acp-gold-hair);
+  padding: 28px;
+  position: relative;
+}
+.factCard::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--gold-gradient-fill);
+}
+.factLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acp-gold-dark);
+  margin-bottom: 20px;
+}
+.factRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid var(--acp-gold-hair);
+}
+.factRow .k {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--acp-silver);
+}
+.factRow .v {
+  font-size: 13px;
+  color: var(--acp-white);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .section { padding: 56px 20px; }
+  .sectionFull { padding: 56px 0; }
+  .sectionInner { padding: 0 20px; }
+  .sectionHead {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .sectionDesc { text-align: left; max-width: 100%; }
+  .sectionTitle { font-size: 36px; }
+}

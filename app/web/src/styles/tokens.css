@@ -1,0 +1,54 @@
+/* ACP Design Tokens — source of truth */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  /* Foundation darks */
+  --acp-midnight:   #0A0E1A;
+  --acp-navy:       #111827;
+  --acp-charcoal:   #1A2035;
+  --acp-slate:      #2D3548;
+
+  /* Neutrals / text */
+  --acp-steel:      #4A5568;
+  --acp-silver:     #94A3B8;
+  --acp-pearl:      #CBD5E1;
+  --acp-ivory:      #F1F5F9;
+  --acp-white:      #FAFBFC;
+
+  /* Gold palette */
+  --acp-gold:        #C9A84C;
+  --acp-gold-light:  #E2C97E;
+  --acp-gold-dark:   #9A7B2E;
+  --acp-gold-muted:  rgba(201,168,76,0.12);
+  --acp-gold-border: rgba(201,168,76,0.15);
+  --acp-gold-hair:   rgba(201,168,76,0.08);
+
+  /* Semantic */
+  --acp-success:   #22C55E;
+  --acp-warning:   #F59E0B;
+  --acp-error:     #EF4444;
+  --acp-teal:      #2DD4BF;
+
+  /* Semantic aliases */
+  --bg:            var(--acp-midnight);
+  --fg:            var(--acp-white);
+  --fg-1:          var(--acp-pearl);
+  --fg-2:          var(--acp-silver);
+  --fg-3:          var(--acp-steel);
+  --border:        var(--acp-gold-hair);
+  --border-strong: var(--acp-gold-border);
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', Consolas, monospace;
+
+  /* Gold gradients */
+  --gold-gradient-fill: linear-gradient(135deg, #9A7B2E 0%, #C9A84C 50%, #E2C97E 100%);
+  --gold-gradient-bar:  linear-gradient(90deg, transparent, #C9A84C, transparent);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.18s;
+  --dur-base: 0.3s;
+}

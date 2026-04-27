@@ -1,0 +1,284 @@
+.unreadBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--acp-gold);
+  color: var(--acp-midnight);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 0;
+  background: rgba(17,24,39,0.8);
+  border: 1px solid var(--acp-gold-hair);
+  min-height: 600px;
+}
+
+/* Sidebar */
+.sidebar {
+  border-right: 1px solid var(--acp-gold-hair);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarHead {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--acp-gold-hair);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebarTitle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acp-steel);
+}
+
+.composeBtn {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acp-gold);
+  background: none;
+  border: 1px solid var(--acp-gold-border);
+  padding: 5px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.composeBtn:hover { color: var(--acp-gold-light); border-color: var(--acp-gold); }
+
+.emptyList {
+  padding: 40px 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--acp-steel);
+  text-transform: uppercase;
+}
+
+.msgItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--acp-gold-hair);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.msgItem:hover { background: rgba(201,168,76,0.03); }
+.msgItemActive { background: rgba(201,168,76,0.06) !important; }
+.msgItemUnread .msgItemFrom { color: var(--acp-gold-light); }
+
+.msgItemFrom {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--acp-silver);
+  margin-bottom: 4px;
+}
+
+.msgItemSubject {
+  font-size: 13px;
+  color: var(--acp-pearl);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msgItemDate {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--acp-steel);
+  text-transform: uppercase;
+}
+
+/* Main pane */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sentBanner {
+  margin: 20px 28px 0;
+  padding: 12px 16px;
+  background: rgba(34,197,94,0.06);
+  border-left: 2px solid var(--acp-success);
+  font-size: 13px;
+  color: var(--acp-success);
+}
+
+/* Thread view */
+.thread {
+  padding: 32px;
+  flex: 1;
+}
+
+.threadHead {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--acp-gold-hair);
+}
+
+.threadSubject {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--acp-white);
+  margin-bottom: 10px;
+}
+
+.threadMeta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.threadFrom {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acp-silver);
+}
+
+.threadDate {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--acp-steel);
+  text-transform: uppercase;
+}
+
+.threadBody {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--acp-pearl);
+  white-space: pre-wrap;
+}
+
+/* Compose */
+.compose {
+  padding: 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.composeHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--acp-gold-hair);
+}
+
+.composeTitle {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--acp-white);
+}
+
+.cancelBtn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--acp-steel);
+  background: none;
+  border: 1px solid var(--acp-gold-hair);
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color var(--dur-fast);
+}
+.cancelBtn:hover { color: var(--acp-silver); }
+
+.composeField {
+  margin-bottom: 20px;
+}
+
+.composeLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--acp-gold-dark);
+  margin-bottom: 8px;
+}
+
+.composeInput {
+  width: 100%;
+  background: rgba(10,14,26,0.6);
+  border: 1px solid rgba(201,168,76,0.18);
+  color: var(--acp-pearl);
+  padding: 10px 14px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color var(--dur-fast);
+}
+.composeInput:focus { border-color: var(--acp-gold); }
+
+.composeTextarea {
+  width: 100%;
+  background: rgba(10,14,26,0.6);
+  border: 1px solid rgba(201,168,76,0.18);
+  color: var(--acp-pearl);
+  padding: 12px 14px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  resize: vertical;
+  line-height: 1.65;
+  transition: border-color var(--dur-fast);
+}
+.composeTextarea:focus { border-color: var(--acp-gold); }
+
+.sendBtn {
+  align-self: flex-start;
+  padding: 12px 28px;
+  background: var(--gold-gradient-fill);
+  color: var(--acp-midnight);
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--dur-fast);
+}
+.sendBtn:hover { opacity: 0.88; }
+.sendBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { border-right: none; border-bottom: 1px solid var(--acp-gold-hair); }
+}

@@ -1,0 +1,107 @@
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--acp-white);
+  margin: 0 0 16px;
+  max-width: 1100px;
+  letter-spacing: 0.005em;
+}
+.pageTitle em {
+  font-style: italic;
+  font-weight: 500;
+  background: var(--gold-gradient-fill);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 56px;
+  align-items: start;
+  padding-top: 48px;
+  border-top: 1px solid var(--acp-gold-hair);
+}
+
+.body {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--acp-pearl);
+  max-width: 680px;
+  margin: 0;
+}
+.bodyMuted {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--acp-silver);
+  max-width: 680px;
+  margin-top: 24px;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+.pillar {
+  padding-left: 20px;
+  border-left: 3px solid var(--acp-gold);
+}
+.pillarPhase {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acp-gold-dark);
+  margin-bottom: 10px;
+}
+.pillarTitle {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--acp-white);
+  margin-bottom: 14px;
+  letter-spacing: 0.005em;
+}
+.pillarDesc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--acp-silver);
+}
+
+.table {
+  width: 100%;
+  border: 1px solid var(--acp-gold-hair);
+  background: var(--acp-navy);
+  border-collapse: collapse;
+}
+.table thead { background: var(--acp-charcoal); }
+.table th, .table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 1px solid var(--acp-gold-hair);
+}
+.table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--acp-gold-dark);
+  font-weight: 500;
+}
+.table td { color: var(--acp-pearl); }
+.mono {
+  font-family: var(--font-mono) !important;
+  color: var(--acp-silver) !important;
+}
+
+@media (max-width: 768px) {
+  .pageTitle { font-size: 36px; }
+  .overview { grid-template-columns: 1fr; gap: 28px; }
+  .pillars { grid-template-columns: 1fr; gap: 28px; }
+  .table th, .table td { padding: 12px 10px; font-size: 11px; }
+}

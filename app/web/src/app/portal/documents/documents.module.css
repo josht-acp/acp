@@ -1,0 +1,71 @@
+.docRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 28px;
+  transition: background var(--dur-fast);
+}
+.docRow:hover { background: rgba(201,168,76,0.02); }
+
+.docIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid var(--acp-gold-hair);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--acp-gold-dark);
+  font-weight: 500;
+}
+
+.docMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.docTitle {
+  font-size: 14px;
+  color: var(--acp-pearl);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.docSub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--acp-steel);
+  text-transform: uppercase;
+}
+
+.downloadBtn {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--acp-gold);
+  background: none;
+  border: 1px solid var(--acp-gold-border);
+  padding: 7px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.downloadBtn:hover {
+  color: var(--acp-gold-light);
+  border-color: var(--acp-gold);
+  background: rgba(201,168,76,0.05);
+}
+.downloadBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

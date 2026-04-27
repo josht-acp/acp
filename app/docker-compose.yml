@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: acp
+      POSTGRES_USER: acp
+      POSTGRES_PASSWORD: acp_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../app/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file: ./server/.env
+    environment:
+      DATABASE_URL: postgres://acp:acp_dev@db:5432/acp
+      PORT: 4000
+    ports:
+      - "4000:4000"
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - server
+    env_file: ./web/.env.local
+    environment:
+      NEXT_PUBLIC_API_URL: http://server:4000
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

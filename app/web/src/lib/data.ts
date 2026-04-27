@@ -1,0 +1,134 @@
+/* Shared data — verticals, transactions, insights */
+
+export const VERTICALS = [
+  {
+    slug: 'energy-transition',
+    num: '01',
+    title: 'Energy Transition',
+    pageTitle: 'Energy Transition <em>· institutional capital,</em> institutionally papered.',
+    desc: 'Grid-connected clean energy, storage and decarbonisation. Senior secured, mezz and equity. USD 5–200m.',
+    body: 'Institutional capital deployed across grid-connected clean energy, storage and decarbonisation infrastructure with long-dated contracted cashflows. Senior secured, mezzanine and equity across solar, wind, BESS, geothermal, CHP and CCU.',
+    ticket: 'USD 5m – USD 200m',
+    instruments: 'Senior · Mezz · Equity',
+    sectors: 'Solar · Wind · BESS · Geothermal · CHP · CCU',
+    metrics: 'DSCR · LLCR · Offtake tenor',
+    criteria: [
+      ['Offtake tenor', 'Contracted revenue with investment-grade or multilateral counterparties, minimum 10-year weighted average tenor.'],
+      ['Interconnection', 'Executed interconnection agreement or clear path to energisation within 24 months of FID.'],
+      ['DSCR coverage', 'Base-case DSCR ≥ 1.35x under P90 generation assumptions with stressed merchant tail.'],
+    ],
+  },
+  {
+    slug: 'digital-infrastructure',
+    num: '02',
+    title: 'Digital Infrastructure',
+    pageTitle: 'Digital Infrastructure <em>· institutional capital,</em> institutionally papered.',
+    desc: 'AI-ready DCs. Power-first underwriting, interconnect certainty, tenant-agnostic optionality. USD 20m – 1bn+.',
+    body: 'Capital formation for AI-ready data centre and cloud infrastructure. Equity, senior debt and ABL facilities for greenfield, brownfield-conversion and modular DC platforms. Power-first underwriting, interconnect certainty, tenant-agnostic optionality, real-asset security.',
+    ticket: 'USD 20m – USD 1bn+',
+    instruments: 'Equity · Senior · ABL',
+    sectors: 'Hyperscale · Colo · Modular · Brownfield',
+    metrics: 'Power secured · Interconnect · PUE',
+    criteria: [
+      ['Power secured', 'Binding utility commitment or executed PPA for full build-out load; contingent allocations do not qualify.'],
+      ['Tenant flexibility', 'Site viable across multiple tenant classes (hyperscale, colocation, enterprise) — no single-tenant concentration risk.'],
+      ['Asset-backed security', 'Real-asset collateral package including land, improvements and power rights.'],
+    ],
+  },
+  {
+    slug: 'private-credit',
+    num: '03',
+    title: 'Private Credit',
+    pageTitle: 'Private Credit <em>· institutional capital,</em> institutionally papered.',
+    desc: 'First-lien across renewables, infra, real assets. LMA/LSTA standard. Target gross yield 11–16%. USD 2–250m.',
+    body: 'Institutional private credit with first-lien security across renewables, energy, digital infrastructure and real assets. LMA/LSTA-standard documentation. Bridge, unitranche and senior facility expertise. Target gross yield 11–16%.',
+    ticket: 'USD 2m (bridge) – USD 250m (senior co-lead anchor)',
+    instruments: 'Senior · Unitranche · Bridge',
+    sectors: 'Cross-vertical, real-asset backed',
+    metrics: 'Gross yield · LTV · DSCR · Covenants',
+    criteria: [
+      ['First-lien security', 'Enforceable first-ranking security over real assets or contracted cash flows; no unsecured or second-lien exposure.'],
+      ['Documentation grade', 'LMA / LSTA standard. Financial covenants, equity-cure mechanics, step-up pricing. No cov-lite.'],
+      ['Sponsor quality', 'Institutional or family-office sponsor with demonstrable alignment and fresh equity at close.'],
+    ],
+  },
+  {
+    slug: 'critical-minerals',
+    num: '04',
+    title: 'Critical Minerals & Commodities',
+    pageTitle: 'Critical Minerals & Commodities <em>· institutional capital,</em> institutionally papered.',
+    desc: 'Offtake-backed PF — Ni, Co, Cu, Li, rare earths and strategic commodities. ECA-eligible, DFI-alignable. USD 5–25m.',
+    body: 'Offtake-backed project finance for transition minerals — nickel, cobalt, copper, lithium, rare earths. ECA-eligible, DFI-alignable, IFC Performance Standards governance from day one. Contracted offtake, enhanced ESG overlay, multi-party governance.',
+    ticket: 'USD 5m – USD 25m',
+    instruments: 'PF senior · ECA-wrapped · DFI co-invest',
+    sectors: 'Ni · Co · Cu · Li · REEs',
+    metrics: 'Offtake · ESG score · IFC alignment',
+    criteria: [
+      ['Contracted offtake', 'Binding take-or-pay or equivalent with Tier-1 industrial counterparty for ≥ 60% of nameplate.'],
+      ['IFC Performance Standards', 'Full IFC PS compliance from FID. Independent lender\'s E&S advisor engaged.'],
+      ['Multi-party governance', 'ECA, DFI, or sovereign-adjacent participation materially enhances credit and governance posture.'],
+    ],
+  },
+  {
+    slug: 'impact-real-assets',
+    num: '05',
+    title: 'Impact Real Assets',
+    pageTitle: 'Impact Real Assets <em>· institutional capital,</em> institutionally papered.',
+    desc: 'Senior living, agri-sustainability, social infra, regenerative. Returns + measurable impact compound. USD 5–200m.',
+    body: 'Principal-aligned capital into real assets where financial returns and measurable impact compound. Senior living, agri-sustainability, social infrastructure, regenerative and circular economy. Senior debt, mezzanine, pref equity, green bonds, structured notes.',
+    ticket: 'USD 5m – USD 200m',
+    instruments: 'Senior · Mezz · Pref · Green Bonds · Notes',
+    sectors: 'Senior living · Agri · Social infra · Regenerative',
+    metrics: 'Impact KPI · SFDR · DSCR',
+    criteria: [
+      ['Measurable impact', 'SFDR Article 8 or 9 classification with quantified annual impact reporting against a public framework.'],
+      ['Returns discipline', 'Base-case IRR ≥ 11% (equity) or contracted yield ≥ 7% (debt); impact does not subsidise financial underwriting.'],
+      ['Institutional sponsor', 'Track record delivering at institutional scale. No first-fund, no retail syndication.'],
+    ],
+  },
+] as const;
+
+export const TRANSACTIONS = [
+  { size: 'US$1.8M',   region: 'APAC',               type: 'Debt Advisory',     status: 'LIVE',   role: 'Sole Debt Advisor',          asset: 'Offtake Ltd · Bitumen Fleet Revolver',      desc: 'Two-vessel revolving cargo facility secured against receivables. ECA-wrap option running alongside the base trade-bank syndication.',                                              date: 'Q1 2026' },
+  { size: 'US$295M',   region: 'EMEA',               type: 'Project Finance',   status: 'LIVE',   role: 'Sole Debt Advisor',          asset: 'Project HTS · 450 MW Solar + BESS',         desc: 'Non-recourse senior PF for Iberian solar with co-located storage. ECA-eligible, IFC PS-aligned. We lead structuring, lender outreach and CA certification.',                   date: 'Q1 2026' },
+  { size: 'US$75M',    region: 'APAC',               type: 'Project Finance',   status: 'LIVE',   role: 'Lead Arranger',              asset: 'Project Adventure · Run-of-River Hydro',    desc: 'Senior facility for civils and turbine supply under a 20-year PPA. ECA-eligibility workstream running in parallel with commercial lender engagement.',                          date: 'Q1 2026' },
+  { size: 'A$8.3BN',   region: 'APAC',               type: 'M&A Advisory',      status: 'CLOSED', role: 'Sell-Side Lead',             asset: 'Market Cycles Ltd · Platform Divestment',   desc: 'Sell-side on a renewables and storage platform owned by an ASX-listed sponsor. Cross-border bidder process; signed and announced in twelve weeks.',                            date: 'Q4 2025' },
+  { size: 'US$5.1BN',  region: 'EMEA',               type: 'M&A Advisory',      status: 'CLOSED', role: 'Buy-Side Lead',              asset: 'Provo Group · Project Kilkenny',             desc: 'Buy-side on a programmatic bolt-on of regional digital infra assets. Core-plus thesis, single-bidder close, minimal exclusivity leakage.',                                     date: 'Q4 2025' },
+  { size: 'US$750M',   region: 'AMERICAS',           type: 'ECM / Placement',   status: 'CLOSED', role: 'Joint Book-Runner',          asset: 'GS Calvert · The Forge',                    desc: 'Equity placement for a greenfield hyperscale campus. Book covered 4.2×; joint book-runner on pricing and allocation.',                                                         date: 'Q3 2025' },
+  { size: 'US$4.7BN',  region: 'AMERICAS',           type: 'Project Finance',   status: 'CLOSED', role: 'Co-Lead · Senior Debt',      asset: 'Project Horizon · Cross-Border Rail PPP',   desc: 'Senior debt syndication for a multi-jurisdiction rail concession. DFIs alongside commercial banks; structured to investment-grade.',                                           date: 'Q3 2025' },
+  { size: 'US$4.6BN',  region: 'EMEA',               type: 'Debt Advisory',     status: 'CLOSED', role: 'Sole Debt Advisor',          asset: 'Project Autobahn · Pisa AX WBS',            desc: 'Whole-business securitisation refinancing of a toll concession. Rating-agency led, 30-year amortisation, covenant-light in the senior.',                                       date: 'Q3 2025' },
+  { size: 'US$10.6BN', region: 'GLOBAL / MULTI-REGION', type: 'M&A Advisory',  status: 'CLOSED', role: 'Financial Adviser to Bidder', asset: 'Project Tatra · Take-Private',             desc: 'Take-private of an LSE-listed infrastructure investment trust. APAC assets, EU holdco, UK offer mechanics. Signed in sixteen weeks.',                                          date: 'Q2 2025' },
+  { size: 'US$620M',   region: 'APAC',               type: 'Technical Advisory',status: 'CLOSED', role: 'Owner\'s Engineer',          asset: 'Project Meridian · 500 kV Interconnect',    desc: 'Owner\'s engineer and financial-close support. Lender-engineer coordination and drawdown certification through COD.',                                                          date: 'Q2 2025' },
+  { size: 'US$185M',   region: 'EMEA',               type: 'ECM / Placement',   status: 'CLOSED', role: 'Cornerstone Lead',           asset: 'Helios Renewables Holdco',                  desc: 'Pre-IPO cornerstone round. Sovereign and long-only sleeve; we led book-building and set the allocation policy.',                                                              date: 'Q1 2025' },
+  { size: 'US$95M',    region: 'APAC',               type: 'Debt Advisory',     status: 'CLOSED', role: 'Sole Placement Agent',       asset: 'Project Atlas · PF Mezz',                   desc: 'Mezzanine tranche behind a senior refinancing. 13.5% gross, six-year bullet, placed with a single specialist credit fund.',                                                  date: 'Q1 2025' },
+];
+
+export const TXN_REGIONS = ['ALL', 'APAC', 'EMEA', 'AMERICAS', 'GLOBAL / MULTI-REGION'];
+export const TXN_TYPES   = ['ALL', 'DEBT ADVISORY', 'PROJECT FINANCE', 'M&A ADVISORY', 'ECM / PLACEMENT', 'TECHNICAL ADVISORY'];
+
+export const INSIGHTS = [
+  {
+    id: 'q1-2026-market-letter',
+    category: 'Market Letter',
+    date: '14 Apr 2026',
+    title: 'Q1 2026 Market Letter',
+    sub: 'Capital formation through a fragmenting cycle. DM private credit spreads, EM infra velocity, energy transition in bifurcation.',
+    img: 'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?w=900&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 'power-first-dc',
+    category: 'Sector Perspective',
+    date: '02 Apr 2026',
+    title: 'Power-first underwriting for AI-ready DCs',
+    sub: 'Why interconnect certainty — not tenant covenant — is the binding constraint for hyperscale infrastructure capital.',
+    img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 'eca-green-hydrogen',
+    category: 'Deal Anatomy',
+    date: '21 Mar 2026',
+    title: 'Structuring an ECA-wrapped green hydrogen facility',
+    sub: 'Senior, DSRA, offtake tenor and ECA wrap mechanics across a cross-border transition mandate.',
+    img: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=900&q=80&auto=format&fit=crop',
+  },
+];
