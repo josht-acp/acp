@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — ACP Fee Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold:#C5A55A; --gold-dark:#A68B3C; --black:#000; --charcoal:#333; --warm-grey:#9B9B9B; --cream:#FAF7F0; --light-grey:#F5F5F5; }
+    body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--charcoal); min-height:100vh; display:flex; flex-direction:column; }
+    body::before { content:''; position:fixed; left:0; top:0; width:5px; height:100vh; background:var(--gold); z-index:100; }
+
+    header { background:var(--black); padding:16px 48px 16px 64px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--gold); }
+    header h1 { font-family:'EB Garamond',serif; font-size:18px; color:var(--gold); }
+    header p { font-size:11px; color:var(--warm-grey); margin-top:2px; }
+    .header-right { display:flex; align-items:center; gap:16px; }
+    .badge { font-size:9px; font-weight:700; padding:3px 10px; border-radius:3px; letter-spacing:0.08em; }
+    .badge-admin { background:#7c3aed; color:#fff; }
+    .badge-test  { background:#b45309; color:#fef3c7; }
+
+    /* Auth gate */
+    #auth-gate { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+    .auth-card { background:#fff; border:1px solid #e5e5e5; border-radius:4px; padding:40px 44px; max-width:400px; width:100%; position:relative; }
+    .auth-card::before { content:''; position:absolute; left:0; top:0; width:3px; height:100%; background:var(--gold); border-radius:4px 0 0 4px; }
+    .auth-card h2 { font-family:'EB Garamond',serif; font-size:20px; color:var(--black); margin-bottom:20px; }
+
+    /* Layout */
+    #admin-content { display:none; flex:1; padding:36px 48px 36px 64px; }
+    .page-title { font-family:'EB Garamond',serif; font-size:26px; color:var(--black); border-bottom:1px solid var(--gold); padding-bottom:10px; margin-bottom:28px; }
+
+    /* Metric cards */
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+    .metric { background:#fff; border:1px solid #e5e5e5; border-radius:4px; padding:20px 24px; position:relative; }
+    .metric::before { content:''; position:absolute; left:0; top:0; width:3px; height:100%; background:var(--gold); border-radius:4px 0 0 4px; }
+    .metric-label { font-size:10px; font-weight:600; color:var(--warm-grey); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px; }
+    .metric-value { font-size:24px; font-weight:700; color:var(--black); font-family:'EB Garamond',serif; }
+    .metric-sub { font-size:11px; color:var(--warm-grey); margin-top:4px; }
+
+    /* Tabs */
+    .tabs { display:flex; gap:0; border-bottom:1px solid #e5e5e5; margin-bottom:24px; }
+    .tab { padding:10px 20px; font-size:13px; font-weight:500; cursor:pointer; border-bottom:2px solid transparent; color:var(--warm-grey); transition:all 0.15s; }
+    .tab.active { color:var(--black); border-bottom-color:var(--gold); font-weight:600; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* Table */
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th { background:var(--black); color:var(--gold); font-weight:600; padding:10px 14px; text-align:left; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; }
+    td { padding:10px 14px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+    tr:hover td { background:#fafafa; }
+    .status-badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+    .status-paid    { background:#f0fdf4; color:#166534; }
+    .status-pending { background:#fffbeb; color:#92400e; }
+    .status-expired { background:#f5f5f5; color:#666; }
+    .status-failed  { background:#fef2f2; color:#991b1b; }
+
+    /* Forms */
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+    .form-group { display:flex; flex-direction:column; gap:5px; }
+    .form-group.full { grid-column:1/-1; }
+    label { font-size:10px; font-weight:600; color:var(--charcoal); text-transform:uppercase; letter-spacing:0.06em; }
+    input, select { font-family:'Inter',sans-serif; font-size:13px; padding:9px 12px; border:1px solid #d0d0d0; border-radius:3px; outline:none; }
+    input:focus, select:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,165,90,0.12); }
+    .btn { display:inline-flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:10px 22px; border:none; border-radius:3px; cursor:pointer; transition:all 0.15s; }
+    .btn-gold { background:var(--gold); color:var(--black); }
+    .btn-gold:hover { background:var(--gold-dark); }
+    .btn-sm { padding:5px 12px; font-size:11px; }
+
+    /* Result box */
+    .result-box { margin-top:16px; padding:14px 18px; border-radius:3px; font-size:13px; display:none; }
+    .result-ok { background:#f0fdf4; border:1px solid #86efac; color:#166534; }
+    .result-err { background:#fef2f2; border:1px solid #fca5a5; color:#991b1b; }
+    .link-out { word-break:break-all; font-weight:600; color:#1d4ed8; text-decoration:none; }
+    .link-out:hover { text-decoration:underline; }
+
+    /* Fixed payment links table */
+    .link-table { width:100%; border-collapse:collapse; font-size:12px; margin-top:8px; }
+    .link-table th { background:var(--light-grey); color:var(--charcoal); font-weight:600; padding:8px 12px; text-align:left; font-size:10px; letter-spacing:0.05em; }
+    .link-table td { padding:8px 12px; border-bottom:1px solid #eee; }
+
+    /* Auth */
+    .form-auth { display:flex; flex-direction:column; gap:12px; }
+    .form-auth input { width:100%; }
+    .form-auth .btn { width:100%; justify-content:center; }
+
+    footer { border-top:1px solid #e5e5e5; padding:14px 64px; text-align:center; font-size:10px; color:var(--warm-grey); background:#fff; letter-spacing:0.04em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>ASCENSION CAPITAL PARTNERS — ADMIN</h1>
+    <p>Fee Billing Portal &nbsp;|&nbsp; t/a APEX Consulting Partners Pty Ltd &nbsp;|&nbsp; ACN 674 649 417</p>
+  </div>
+  <div class="header-right">
+    <span class="badge badge-test">SANDBOX</span>
+    <span class="badge badge-admin">ADMIN</span>
+  </div>
+</header>
+
+<!-- Auth Gate -->
+<div id="auth-gate">
+  <div class="auth-card">
+    <h2>Admin Access</h2>
+    <p style="font-size:13px;color:var(--warm-grey);margin-bottom:20px;">Enter your admin token to access the fee ledger and admin tools.</p>
+    <div class="form-auth">
+      <input type="password" id="token-input" placeholder="Admin token" autocomplete="current-password" />
+      <button class="btn btn-gold" onclick="authenticate()">Authenticate</button>
+      <div id="auth-error" style="font-size:12px;color:#991b1b;display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Content -->
+<div id="admin-content">
+  <div class="page-title">Fee Ledger &amp; Admin</div>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Total Collected</div><div class="metric-value" id="m-total">—</div><div class="metric-sub">USD · paid sessions</div></div>
+    <div class="metric"><div class="metric-label">Total Sessions</div><div class="metric-value" id="m-sessions">—</div><div class="metric-sub">all statuses</div></div>
+    <div class="metric"><div class="metric-label">Paid</div><div class="metric-value" id="m-paid">—</div><div class="metric-sub">completed payments</div></div>
+    <div class="metric"><div class="metric-label">Pending</div><div class="metric-value" id="m-pending">—</div><div class="metric-sub">open sessions</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('ledger')">Fee Ledger</div>
+    <div class="tab" onclick="showTab('sessions')">All Sessions</div>
+    <div class="tab" onclick="showTab('links')">Payment Links</div>
+    <div class="tab" onclick="showTab('generate')">Generate Link</div>
+  </div>
+
+  <!-- Ledger Tab -->
+  <div class="tab-panel active" id="tab-ledger">
+    <div class="table-wrap">
+      <table id="ledger-table">
+        <thead><tr><th>#</th><th>Date</th><th>Mandate</th><th>Client</th><th>SKU</th><th>Fee Type</th><th>Amount USD</th><th>Currency</th><th>Status</th><th>Stripe Session</th></tr></thead>
+        <tbody id="ledger-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sessions Tab -->
+  <div class="tab-panel" id="tab-sessions">
+    <div style="margin-bottom:12px;display:flex;gap:10px;">
+      <input type="text" id="filter-mandate" placeholder="Filter by mandate ref…" style="width:240px;" oninput="loadSessions()" />
+      <select id="filter-status" onchange="loadSessions()">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="paid">Paid</option>
+        <option value="expired">Expired</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table id="sessions-table">
+        <thead><tr><th>Created</th><th>Mandate</th><th>Client</th><th>SKU</th><th>Amount</th><th>Status</th><th>Stripe Session</th></tr></thead>
+        <tbody id="sessions-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Fixed Payment Links Tab -->
+  <div class="tab-panel" id="tab-links">
+    <p style="font-size:13px;margin-bottom:16px;color:var(--warm-grey);">Fixed-price Stripe Payment Links (reusable — sandbox). Share directly with counterparty.</p>
+    <table class="link-table">
+      <thead><tr><th>SKU</th><th>Fee Type</th><th>Amount</th><th>Payment Link</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>ACP-FEE-MOB</strong></td>
+          <td>Mobilisation Fee</td>
+          <td>$2,500 USD</td>
+          <td><a class="link-out" href="https://buy.stripe.com/test_6oUdR1bD89Rk8SfdPm4ow00" target="_blank">buy.stripe.com/test_6oU…</a></td>
+        </tr>
+        <tr>
+          <td><strong>ACP-FEE-RET</strong></td>
+          <td>Retainer Fee</td>
+          <td>$5,000 USD/month</td>
+          <td><a class="link-out" href="https://buy.stripe.com/test_8x200b22y6F8c4rcLi4ow01" target="_blank">buy.stripe.com/test_8x2…</a></td>
+        </tr>
+        <tr>
+          <td><strong>ACP-FEE-SET</strong></td>
+          <td>Setup Fee</td>
+          <td>$2,500 USD</td>
+          <td><a class="link-out" href="https://buy.stripe.com/test_dRmcMX5eK6F8gkH9z64ow02" target="_blank">buy.stripe.com/test_dRm…</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Generate Link Tab -->
+  <div class="tab-panel" id="tab-generate">
+    <p style="font-size:13px;margin-bottom:20px;color:var(--warm-grey);">Generate a one-time Stripe Payment Link for any variable-fee SKU at a specific amount.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>SKU Code</label>
+        <select id="gen-sku">
+          <option value="ACP-FEE-ARR">ACP-FEE-ARR — Arrangement Fee</option>
+          <option value="ACP-FEE-SUC">ACP-FEE-SUC — Success Fee</option>
+          <option value="ACP-FEE-PLC">ACP-FEE-PLC — Placement Fee</option>
+          <option value="ACP-FEE-EQY">ACP-FEE-EQY — Equity Earnout</option>
+          <option value="ACP-FEE-CSH">ACP-FEE-CSH — Cash Strip</option>
+          <option value="ACP-FEE-TL">ACP-FEE-TL — Tail Fee</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Amount (USD)</label>
+        <input type="number" id="gen-amount" placeholder="e.g. 75000" min="1" step="0.01" />
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="generateLink()">Generate Payment Link</button>
+    <div class="result-box" id="gen-result"></div>
+  </div>
+
+</div>
+
+<footer>Ascension Capital Partners &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; ACN 674 649 417</footer>
+
+<script>
+let ADMIN_TOKEN = '';
+
+function authenticate() {
+  const token = document.getElementById('token-input').value.trim();
+  if (!token) return;
+  ADMIN_TOKEN = token;
+  // Test the token
+  fetch('/api/ledger', { headers: { 'x-admin-token': token } })
+    .then(r => {
+      if (r.status === 401) throw new Error('Invalid token');
+      return r.json();
+    })
+    .then(data => {
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      loadAll(data);
+    })
+    .catch(e => {
+      const el = document.getElementById('auth-error');
+      el.textContent = e.message;
+      el.style.display = 'block';
+    });
+}
+
+function loadAll(ledgerData) {
+  renderLedger(ledgerData);
+  loadSessions();
+}
+
+function renderLedger(data) {
+  // Metrics
+  const total = data.total_collected_usd || 0;
+  document.getElementById('m-total').textContent = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2 });
+  document.getElementById('m-paid').textContent = data.count || 0;
+
+  // Table
+  const tbody = document.getElementById('ledger-body');
+  tbody.innerHTML = '';
+  (data.ledger || []).forEach((r, i) => {
+    tbody.innerHTML += `<tr>
+      <td>${i + 1}</td>
+      <td>${r.invoice_date?.substring(0, 10) || '—'}</td>
+      <td><strong>${r.mandate_ref}</strong></td>
+      <td>${r.client_name}</td>
+      <td><code>${r.sku_code}</code></td>
+      <td>${r.fee_type}</td>
+      <td><strong>$${Number(r.amount_usd).toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></td>
+      <td>${r.currency?.toUpperCase()}</td>
+      <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+      <td><code style="font-size:10px;">${(r.stripe_session || '').substring(0, 24)}…</code></td>
+    </tr>`;
+  });
+  if (!data.ledger?.length) tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--warm-grey);padding:24px;">No paid transactions yet.</td></tr>';
+}
+
+function loadSessions() {
+  const mandate = document.getElementById('filter-mandate')?.value?.trim();
+  const status  = document.getElementById('filter-status')?.value;
+  let url = '/api/sessions?limit=100';
+  if (mandate) url += `&mandate=${encodeURIComponent(mandate)}`;
+  if (status)  url += `&status=${encodeURIComponent(status)}`;
+
+  fetch(url, { headers: { 'x-admin-token': ADMIN_TOKEN } })
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('m-sessions').textContent = data.count || 0;
+      const pending = (data.sessions || []).filter(s => s.status === 'pending').length;
+      document.getElementById('m-pending').textContent = pending;
+
+      const tbody = document.getElementById('sessions-body');
+      tbody.innerHTML = '';
+      (data.sessions || []).forEach(s => {
+        tbody.innerHTML += `<tr>
+          <td>${s.created_at?.substring(0, 16) || '—'}</td>
+          <td><strong>${s.mandate_ref}</strong></td>
+          <td>${s.client_name}<br/><span style="font-size:10px;color:var(--warm-grey);">${s.client_email}</span></td>
+          <td><code>${s.sku_code}</code></td>
+          <td>$${(s.amount_cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+          <td><span class="status-badge status-${s.status}">${s.status}</span></td>
+          <td><code style="font-size:10px;">${(s.session_id || '').substring(0, 24)}…</code></td>
+        </tr>`;
+      });
+      if (!data.sessions?.length) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--warm-grey);padding:24px;">No sessions found.</td></tr>';
+    });
+}
+
+function generateLink() {
+  const sku    = document.getElementById('gen-sku').value;
+  const amount = document.getElementById('gen-amount').value;
+  const result = document.getElementById('gen-result');
+  if (!amount || parseFloat(amount) <= 0) { showResult(result, 'error', 'Enter a valid amount > 0'); return; }
+
+  fetch('/api/payment-link', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
+    body: JSON.stringify({ sku_code: sku, amount_usd: parseFloat(amount) }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.error) { showResult(result, 'error', data.error); return; }
+    showResult(result, 'ok', `Payment link created for ${sku} — $${parseFloat(amount).toLocaleString()}:<br/><a class="link-out" href="${data.url}" target="_blank">${data.url}</a>`);
+  })
+  .catch(e => showResult(result, 'error', e.message));
+}
+
+function showResult(el, type, msg) {
+  el.className = 'result-box result-' + (type === 'ok' ? 'ok' : 'err');
+  el.innerHTML = msg;
+  el.style.display = 'block';
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const names = ['ledger','sessions','links','generate'];
+    t.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'sessions') loadSessions();
+}
+
+// Enter key on token input
+document.getElementById('token-input').addEventListener('keydown', e => { if (e.key === 'Enter') authenticate(); });
+</script>
+</body>
+</html>

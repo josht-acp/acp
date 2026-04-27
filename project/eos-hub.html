@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>EOS Hub · Ascension Capital Partners</title>
+<link rel="stylesheet" href="acp-tokens.css"/>
+<style>
+  html,body{margin:0;padding:0;background:var(--acp-midnight);color:var(--fg-1);font-family:var(--font-body);font-size:14px;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;cursor:pointer;background:none;border:none;color:inherit;padding:0;}
+  .pv-banner{background:linear-gradient(90deg,rgba(201,168,76,0.12),rgba(201,168,76,0.02));border-bottom:1px solid var(--acp-gold-border);padding:10px 28px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--acp-gold);display:flex;justify-content:space-between;align-items:center;}
+  .pv-banner b{color:var(--acp-gold-light);font-weight:500;}
+  .pv-banner span{color:var(--acp-steel);}
+
+  .hdr{padding:48px 56px 24px;max-width:1600px;margin:0 auto;}
+  .crumb{font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--acp-gold-dark);margin-bottom:14px;}
+  .crumb b{color:var(--acp-gold);font-weight:500;}
+  h1.hub-t{font-family:var(--font-display);font-weight:300;font-size:58px;line-height:1.1;color:var(--acp-white);margin:0 0 14px;letter-spacing:-0.01em;}
+  h1.hub-t em{font-style:italic;background:var(--gold-gradient-fill);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:400;}
+  .hub-s{font-size:15px;color:var(--acp-silver);max-width:820px;line-height:1.65;}
+
+  .tele{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin:36px 0 8px;}
+  .tele-cell{background:var(--acp-navy);padding:20px 22px;}
+  .tele-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:8px;}
+  .tele-v{font-family:var(--font-display);font-size:32px;font-weight:400;color:var(--acp-white);line-height:1;letter-spacing:-0.01em;}
+  .tele-v small{font-size:14px;color:var(--acp-silver);margin-left:3px;letter-spacing:0;}
+  .tele-s{font-family:var(--font-mono);font-size:10px;color:var(--acp-silver);margin-top:8px;letter-spacing:0.04em;}
+
+  .filters{display:flex;gap:8px;align-items:center;padding:18px 56px;border-top:1px solid var(--acp-gold-hair);border-bottom:1px solid var(--acp-gold-hair);margin:32px 0 0;background:rgba(17,24,39,0.5);position:sticky;top:0;z-index:10;backdrop-filter:blur(8px);}
+  .f-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;color:var(--acp-gold-dark);text-transform:uppercase;margin-right:8px;}
+  .chip{font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;padding:6px 12px;border:1px solid var(--acp-gold-hair);color:var(--acp-silver);text-transform:uppercase;transition:all .15s;border-radius:2px;}
+  .chip:hover{border-color:var(--acp-gold-border);color:var(--acp-pearl);}
+  .chip.on{background:rgba(201,168,76,0.1);border-color:var(--acp-gold);color:var(--acp-gold-light);}
+  .f-search{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .f-search input{background:var(--acp-charcoal);border:1px solid var(--acp-gold-hair);color:var(--acp-pearl);padding:7px 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.04em;width:240px;border-radius:2px;outline:none;}
+  .f-search input:focus{border-color:var(--acp-gold);}
+
+  .main{padding:40px 56px 96px;max-width:1600px;margin:0 auto;}
+
+  .block{margin-bottom:52px;}
+  .block-h{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--acp-gold-hair);position:relative;}
+  .block-h::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:2px;background:var(--gold-gradient-bar);}
+  .block-code{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:6px;}
+  .block-name{font-family:var(--font-display);font-size:30px;font-weight:400;color:var(--acp-white);letter-spacing:-0.005em;line-height:1;}
+  .block-tagline{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;color:var(--acp-silver);text-transform:uppercase;margin-top:8px;}
+  .block-count{font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;color:var(--acp-gold);text-transform:uppercase;}
+  .block-count b{color:var(--acp-gold-light);font-weight:500;}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .tile{background:var(--acp-navy);border:1px solid var(--acp-gold-hair);padding:18px 20px;cursor:pointer;position:relative;transition:all .18s var(--ease-out);}
+  .tile:hover{border-color:var(--acp-gold-border);transform:translateY(-2px);box-shadow:var(--sh-gold-hover);}
+  .tile-pin{position:absolute;top:0;left:0;width:3px;height:100%;background:var(--acp-gold-dark);}
+  .tile.phase-P1 .tile-pin{background:var(--acp-gold);}
+  .tile.phase-P2 .tile-pin{background:var(--acp-gold-dark);}
+  .tile.phase-CORE .tile-pin{background:linear-gradient(180deg,var(--acp-gold-light),var(--acp-gold));}
+  .tile-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+  .tile-code{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--acp-gold-dark);text-transform:uppercase;}
+  .tile-code b{color:var(--acp-gold);font-weight:400;}
+  .tile-status{font-family:var(--font-mono);font-size:8px;letter-spacing:0.14em;padding:2px 7px;border-radius:2px;text-transform:uppercase;}
+  .tile-status.LIVE{background:rgba(34,197,94,0.1);color:var(--acp-success);border:1px solid rgba(34,197,94,0.25);}
+  .tile-status.NEW{background:rgba(201,168,76,0.12);color:var(--acp-gold-light);border:1px solid var(--acp-gold-border);}
+  .tile-status.DRAFT{background:rgba(74,85,104,0.15);color:var(--acp-silver);border:1px solid var(--acp-slate);}
+  .tile-name{font-family:var(--font-display);font-size:17px;color:var(--acp-white);line-height:1.2;font-weight:500;margin-bottom:8px;letter-spacing:-0.005em;}
+  .tile-desc{font-size:11.5px;color:var(--acp-silver);line-height:1.5;margin-bottom:12px;min-height:52px;}
+  .tile-foot{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--acp-gold-hair);gap:10px;}
+  .tile-foot-l{display:flex;align-items:center;gap:14px;}
+  .tile-phase{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-dark);}
+  .tile-open{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-light);transition:transform .2s;flex-shrink:0;}
+  .tile:hover .tile-open{transform:translateX(4px);}
+
+  /* AI coverage meter — sits next to the phase label in the footer */
+  .tile-ai{display:flex;align-items:center;gap:6px;}
+  .tile-ai-bar{width:36px;height:3px;background:var(--acp-slate);border-radius:1px;overflow:hidden;}
+  .tile-ai-fill{height:100%;background:var(--acp-gold);}
+  .tile-ai-n{font-family:var(--font-mono);font-size:9px;color:var(--acp-gold-dark);letter-spacing:0.08em;}
+
+  /* ── DRAWER ── */
+  .dr-veil{position:fixed;inset:0;background:rgba(10,14,26,0.78);backdrop-filter:blur(4px);z-index:100;opacity:0;pointer-events:none;transition:opacity .22s;}
+  .dr-veil.on{opacity:1;pointer-events:auto;}
+  .dr{position:fixed;top:0;right:0;height:100vh;width:560px;max-width:90vw;background:var(--acp-navy);border-left:1px solid var(--acp-gold-border);box-shadow:-24px 0 80px rgba(0,0,0,0.6);z-index:101;transform:translateX(100%);transition:transform .28s var(--ease-out);display:flex;flex-direction:column;}
+  .dr.on{transform:translateX(0);}
+  .dr-h{padding:28px 32px 18px;border-bottom:1px solid var(--acp-gold-hair);}
+  .dr-close{position:absolute;top:24px;right:24px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--acp-silver);text-transform:uppercase;}
+  .dr-close:hover{color:var(--acp-gold);}
+  .dr-code{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:10px;}
+  .dr-name{font-family:var(--font-display);font-size:32px;color:var(--acp-white);font-weight:400;line-height:1.15;letter-spacing:-0.005em;margin-bottom:10px;}
+  .dr-desc{font-size:14px;color:var(--acp-silver);line-height:1.6;}
+  .dr-body{padding:28px 32px;overflow-y:auto;flex:1;}
+  .dr-block{margin-bottom:28px;}
+  .dr-bl{font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--acp-gold-dark);margin-bottom:10px;}
+  .dr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .dr-kv{padding:12px 14px;background:var(--acp-charcoal);border:1px solid var(--acp-gold-hair);}
+  .dr-kv-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:4px;}
+  .dr-kv-v{font-size:13px;color:var(--acp-pearl);font-weight:500;}
+  .dr-foot{padding:20px 32px;border-top:1px solid var(--acp-gold-hair);display:flex;gap:10px;}
+  .btn{padding:10px 18px;font-size:12px;font-weight:500;letter-spacing:0.04em;border-radius:2px;transition:all .15s ease;display:inline-flex;align-items:center;gap:8px;}
+  .btn-pri{background:var(--acp-gold);color:#0A0E1A;flex:1;justify-content:center;}
+  .btn-pri:hover{background:var(--acp-gold-light);}
+  .btn-sec{border:1px solid var(--acp-gold-border);color:var(--acp-pearl);}
+  .btn-sec:hover{border-color:var(--acp-gold);}
+
+  .ft{padding:32px 56px;border-top:1px solid var(--acp-gold-hair);font-family:var(--font-mono);font-size:10px;color:var(--acp-steel);letter-spacing:0.08em;display:flex;justify-content:space-between;max-width:1600px;margin:0 auto;}
+</style>
+</head>
+<body>
+
+<div class="pv-banner">
+  <div><b>Execution OS · v8.0</b> <span>· Ascension Capital Partners · Partner-only · Released 22 Apr 2026</span></div>
+  <div>42 surfaces · Phase 1 70% · <a href="backend-architecture.html" style="color:var(--acp-gold-light);text-decoration:none;border-bottom:1px dashed var(--acp-gold-border);">Backend arch →</a></div>
+</div>
+
+<div class="hdr">
+  <div class="crumb">The Firm as a System <b>·</b> Release v8.0</div>
+  <h1 class="hub-t">Executive Operating <em>System.</em></h1>
+  <p class="hub-s">The complete operating surface for Ascension Capital Partners. Every function of the firm — origination, capital markets, risk, compliance, finance, people, knowledge — lives here as a live, cited instrument. <b style="color:var(--acp-pearl);font-weight:500">42 surfaces across 13 function blocks.</b> This is the system JT walks through every morning and that every future hire inherits on day one.</p>
+
+  <div class="tele">
+    <div class="tele-cell"><div class="tele-l">Live surfaces</div><div class="tele-v">42</div><div class="tele-s">+5 since v7.0</div></div>
+    <div class="tele-cell"><div class="tele-l">Function blocks</div><div class="tele-v">13</div><div class="tele-s">+ People Office</div></div>
+    <div class="tele-cell"><div class="tele-l">Phase 1 complete</div><div class="tele-v">70<small>%</small></div><div class="tele-s">+8pp since v7.0</div></div>
+    <div class="tele-cell"><div class="tele-l">Annual TCO</div><div class="tele-v">A$96<small>k</small></div><div class="tele-s">5.2% of revenue</div></div>
+    <div class="tele-cell"><div class="tele-l">Runway · base</div><div class="tele-v">10.6<small>mo</small></div><div class="tele-s">Ending Sep 27</div></div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="f-l">Office</span>
+  <button class="chip on" data-f="office" data-v="all">All</button>
+  <button class="chip" data-f="office" data-v="FO">Front</button>
+  <button class="chip" data-f="office" data-v="MO">Middle</button>
+  <button class="chip" data-f="office" data-v="BO">Back</button>
+  <button class="chip" data-f="office" data-v="IC">IC</button>
+  <button class="chip" data-f="office" data-v="REL">Rel</button>
+  <button class="chip" data-f="office" data-v="Other">Other</button>
+  <span class="f-l" style="margin-left:18px;">Phase</span>
+  <button class="chip on" data-f="phase" data-v="all">All</button>
+  <button class="chip" data-f="phase" data-v="P1">P1</button>
+  <button class="chip" data-f="phase" data-v="P2">P2</button>
+  <button class="chip" data-f="phase" data-v="CORE">Core</button>
+  <div class="f-search">
+    <input id="search" type="text" placeholder="Search surfaces, code, keyword…"/>
+  </div>
+</div>
+
+<div class="main" id="app"></div>
+
+<div class="ft">
+  <div>EOS Hub · v8.0 · Ascension Capital Partners · 42 surfaces · Partner-only · Confidential · Updated 22 Apr 2026</div>
+  <div>APEX Consulting Partners Pty Ltd · ACN 674 649 417</div>
+</div>
+
+<div class="dr-veil" id="veil"></div>
+<aside class="dr" id="drawer">
+  <div class="dr-h">
+    <button class="dr-close" id="drClose">Close ×</button>
+    <div class="dr-code" id="drCode"></div>
+    <div class="dr-name" id="drName"></div>
+    <div class="dr-desc" id="drDesc"></div>
+  </div>
+  <div class="dr-body" id="drBody"></div>
+  <div class="dr-foot">
+    <button class="btn btn-sec" id="drRef">Open reference PDF</button>
+    <button class="btn btn-pri" id="drLive">Open live surface →</button>
+  </div>
+</aside>
+
+<script src="eos-hub-data.js?v=3"></script>
+<script src="eos-hub-app.js?v=3"></script>
+</body>
+</html>

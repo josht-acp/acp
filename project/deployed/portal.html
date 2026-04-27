@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP Template OS — Ascension Capital Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   ACP TEMPLATE OPERATING SYSTEM v1.0
+   Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd
+   ACN 674 649 417 · Executive Managing Partner: Joshua Ting
+   Institutional alternatives platform · All divisions · All workstreams
+═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --gold:        #C9A84C;
+  --gold-bright: #E2C97E;
+  --gold-dim:    #9A7B2E;
+  --gold-pale:   rgba(201,168,76,0.10);
+  --gold-border: rgba(201,168,76,0.22);
+  --black:       #000000;
+  --charcoal:    #1A2035;
+  --surface:     #111827;
+  --surface-2:   #1A2035;
+  --surface-3:   #2D3548;
+  --surface-4:   #2D3548;
+  --border:      rgba(255,255,255,0.07);
+  --border-gold: rgba(201,168,76,0.3);
+  --text-primary:#CBD5E1;
+  --text-muted:  rgba(203,213,225,0.55);
+  --text-dim:    rgba(203,213,225,0.30);
+  --success:     #4A9E72;
+  --warn:        #C4873A;
+  --danger:      #C4503A;
+  --info:        #3A7EC4;
+
+  --font-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --spine: 4px solid var(--gold);
+  --radius: 6px;
+  --radius-lg: 10px;
+  --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 13px; scroll-behavior: smooth; }
+
+body {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-2); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ── LAYOUT ── */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  padding: 22px 18px 16px;
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.sidebar-logo .firm {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.sidebar-logo .tagline {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  padding: 14px 0 6px;
+}
+
+.sidebar-section-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 0 18px;
+  margin-bottom: 4px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.sidebar-item:hover {
+  background: var(--gold-pale);
+  color: var(--text-primary);
+}
+
+.sidebar-item.active {
+  border-left-color: var(--gold);
+  background: var(--gold-pale);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.sidebar-item .icon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-item .badge {
+  margin-left: auto;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 99px;
+  background: var(--gold-pale);
+  color: var(--gold);
+  border: 1px solid var(--gold-border);
+  flex-shrink: 0;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-footer .version {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-primary);
+}
+
+.topbar-breadcrumb {
+  font-size: 11px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.api-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.api-status:hover { border-color: var(--gold-border); color: var(--text-muted); }
+
+.api-status .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 2s infinite;
+}
+
+.api-status .dot.warn { background: var(--warn); }
+
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.btn:hover { border-color: var(--gold-border); color: var(--text-primary); }
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+.btn-gold:hover {
+  background: var(--gold-bright);
+  border-color: var(--gold-bright);
+  color: var(--black);
+}
+
+.btn-ghost {
+  background: var(--surface-3);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-4);
+  border-color: var(--gold-border);
+  color: var(--text-primary);
+}
+
+/* ── PAGE CONTENT ── */
+.page { display: none; padding: 28px; animation: fadeIn 0.2s ease; }
+.page.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── STATS ROW ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  border-left: var(--spine);
+  transition: var(--transition);
+}
+
+.stat-card:hover { border-color: var(--gold-border); }
+
+.stat-card .label {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.stat-card .value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-card .sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.section-label {
+  font-size: 10px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* ── DIVISION GRID ── */
+.division-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.division-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.division-card:hover {
+  border-color: var(--gold-border);
+  background: var(--surface-3);
+  transform: translateY(-1px);
+}
+
+.division-card .div-header {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: var(--spine);
+}
+
+.division-card .div-icon {
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold-pale);
+  border-radius: var(--radius);
+  border: 1px solid var(--gold-border);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.division-card .div-meta { flex: 1; min-width: 0; }
+
+.division-card .div-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.division-card .div-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.division-card .div-body {
+  padding: 12px 16px;
+}
+
+.ws-list { list-style: none; }
+
+.ws-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.ws-item:last-child { border-bottom: none; }
+
+.ws-item .ws-id {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--gold-dim);
+  min-width: 60px;
+}
+
+.ws-item .ws-name { flex: 1; }
+
+.ws-item .ws-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--surface-4);
+  border-radius: 99px;
+  padding: 1px 6px;
+}
+
+.status-pip {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pip-live { background: var(--success); }
+.pip-draft { background: var(--warn); }
+.pip-build { background: var(--text-dim); }
+
+.div-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.div-footer .template-count {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.div-footer .div-btn {
+  font-size: 10px;
+  padding: 4px 10px;
+}
+
+/* ── GENERATOR PAGE ── */
+.generator-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  height: calc(100vh - 120px);
+}
+
+.gen-sidebar {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.gen-sidebar-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  z-index: 5;
+}
+
+.gen-sidebar-search {
+  width: 100%;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  outline: none;
+  margin-top: 8px;
+  transition: var(--transition);
+}
+
+.gen-sidebar-search:focus { border-color: var(--gold-border); }
+.gen-sidebar-search::placeholder { color: var(--text-dim); }
+
+.template-group { padding: 6px 0; }
+
+.template-group-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  padding: 6px 14px 4px;
+}
+
+.template-item {
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.template-item:hover {
+  background: var(--gold-pale);
+  color: var(--text-primary);
+}
+
+.template-item.active {
+  border-left-color: var(--gold);
+  background: var(--gold-pale);
+}
+
+.template-item .t-id {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--gold-dim);
+  min-width: 52px;
+}
+
+.template-item .t-name {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.template-item.active .t-name { color: var(--gold); }
+
+/* ── GENERATOR MAIN ── */
+.gen-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.gen-config {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.gen-config-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  border-left: var(--spine);
+  padding-left: 14px;
+}
+
+.gen-config-header .tmpl-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.gen-config-header .tmpl-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold-dim);
+  margin-top: 3px;
+}
+
+.gen-config-header .tmpl-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+  max-width: 500px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.field-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.field-grid.cols-1 { grid-template-columns: 1fr; }
+
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+
+.field-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.field-input {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  outline: none;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.field-input:focus { border-color: var(--gold-border); }
+.field-input::placeholder { color: var(--text-dim); }
+
+select.field-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B7E3E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+textarea.field-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* ── GENERATE CONTROLS ── */
+.gen-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.gen-controls .model-select {
+  font-size: 11px;
+  padding: 5px 10px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  outline: none;
+  cursor: pointer;
+}
+
+/* ── OUTPUT PANEL ── */
+.gen-output {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-3);
+  flex-shrink: 0;
+}
+
+.output-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.output-actions { display: flex; gap: 8px; }
+
+.output-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.output-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-dim);
+}
+
+.output-placeholder .ph-icon {
+  font-size: 32px;
+  opacity: 0.3;
+}
+
+.output-placeholder p {
+  font-size: 13px;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* ── RENDERED DOCUMENT ── */
+.doc-render {
+  font-family: var(--font-body);
+  line-height: 1.7;
+  color: var(--text-primary);
+  animation: fadeIn 0.3s ease;
+}
+
+.doc-render .doc-header {
+  border-left: 5px solid var(--gold);
+  padding-left: 18px;
+  margin-bottom: 28px;
+}
+
+.doc-render .doc-firm {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-dim);
+  margin-bottom: 4px;
+}
+
+.doc-render .doc-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.doc-render .doc-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.doc-render h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--gold);
+  margin: 24px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold-border);
+}
+
+.doc-render h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 16px 0 8px;
+}
+
+.doc-render p { margin-bottom: 10px; font-size: 12.5px; }
+
+.doc-render .clause {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.doc-render .clause .clause-num {
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.doc-render table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 11.5px;
+}
+
+.doc-render th {
+  background: var(--surface-4);
+  color: var(--text-muted);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  border-bottom: 1px solid var(--gold-border);
+}
+
+.doc-render td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.doc-render tr:last-child td { border-bottom: none; }
+
+.doc-render .highlight {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+
+.doc-render .sig-block {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.doc-render .sig-party .sig-line {
+  border-bottom: 1px solid var(--text-dim);
+  margin: 24px 0 6px;
+}
+
+.doc-render .sig-party .sig-label {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.doc-render .confidential-footer {
+  margin-top: 40px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── STREAMING INDICATOR ── */
+.streaming-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--gold);
+  font-family: var(--font-mono);
+}
+
+.streaming-dots span {
+  animation: blink 1.2s infinite;
+  opacity: 0;
+}
+.streaming-dots span:nth-child(2) { animation-delay: 0.2s; }
+.streaming-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink { 0%,80%,100% { opacity: 0; } 40% { opacity: 1; } }
+
+/* ── PIPELINE PAGE ── */
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.pipeline-stage {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-width: 180px;
+}
+
+.stage-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+}
+
+.stage-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stage-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.stage-cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+.deal-card {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid var(--gold-dim);
+}
+
+.deal-card:hover {
+  border-color: var(--gold-border);
+  background: var(--surface-4);
+}
+
+.deal-card .deal-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.deal-card .deal-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.deal-card .deal-fee {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+}
+
+/* ── SETTINGS PAGE ── */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+}
+
+.settings-nav {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.settings-nav-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-left: 3px solid transparent;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-nav-item:last-child { border-bottom: none; }
+.settings-nav-item:hover { background: var(--gold-pale); }
+.settings-nav-item.active { border-left-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
+
+.settings-panel {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+}
+
+.settings-section-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 24px;
+}
+
+.setting-row:last-child { border-bottom: none; }
+
+.setting-info .setting-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.setting-info .setting-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  max-width: 380px;
+}
+
+.toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--surface-4);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--text-dim);
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.toggle input:checked + .toggle-slider { background: var(--gold); border-color: var(--gold); }
+.toggle input:checked + .toggle-slider::before { transform: translate(16px,-50%); background: var(--black); }
+
+/* ── API KEY INPUT ── */
+.api-key-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.api-key-input {
+  flex: 1;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.api-key-input:focus { border-color: var(--gold-border); }
+.api-key-input::placeholder { color: var(--text-dim); }
+
+/* ── LOADER ── */
+.loader {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--gold-border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TOAST ── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+}
+
+.toast {
+  background: var(--surface-3);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-primary);
+  animation: slideIn 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 300px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+.toast.success { border-color: rgba(74,158,114,0.4); }
+.toast.error { border-color: rgba(196,80,58,0.4); }
+
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ── CHIPS ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chip-gold { background: var(--gold-pale); color: var(--gold); border: 1px solid var(--gold-border); }
+.chip-success { background: rgba(74,158,114,0.1); color: var(--success); border: 1px solid rgba(74,158,114,0.25); }
+.chip-warn { background: rgba(196,135,58,0.1); color: var(--warn); border: 1px solid rgba(196,135,58,0.25); }
+.chip-mute { background: var(--surface-4); color: var(--text-dim); border: 1px solid var(--border); }
+
+/* ── TICKER ── */
+.ticker {
+  background: var(--surface-3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 7px 0;
+  overflow: hidden;
+  margin-bottom: 22px;
+  flex-shrink: 0;
+}
+
+.ticker-inner {
+  display: flex;
+  gap: 32px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.ticker-item .t-label { color: var(--text-dim); }
+.ticker-item .t-val { color: var(--text-primary); }
+.ticker-item .t-up { color: var(--success); }
+.ticker-item .t-dn { color: var(--danger); }
+
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9000;
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface-2);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  max-width: 720px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease;
+  border-left: var(--spine);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px;
+}
+
+.modal-close:hover { color: var(--text-primary); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: repeat(3,1fr); }
+  .generator-layout { grid-template-columns: 240px 1fr; }
+}
+
+@media (max-width: 800px) {
+  .sidebar { width: 180px; min-width: 180px; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .generator-layout { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- TOAST CONTAINER                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toasts"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- MODAL — API KEY                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="apiKeyModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Configure API Key</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:4px">Required to enable AI-powered document generation</div>
+      </div>
+      <button class="modal-close" onclick="closeApiModal()">✕</button>
+    </div>
+    <div class="field-group" style="margin-bottom:14px">
+      <label class="field-label">Anthropic API Key</label>
+      <div class="api-key-row">
+        <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+        <button class="btn btn-gold" onclick="saveApiKey()">Save</button>
+      </div>
+      <div style="font-size:10.5px;color:var(--text-dim);margin-top:6px;line-height:1.6">
+        Key is stored locally in your browser (localStorage). Never transmitted except directly to Anthropic's API via your browser. Obtain from <a href="https://console.anthropic.com" target="_blank" style="color:var(--gold)">console.anthropic.com</a>.
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
+      <button class="btn" onclick="closeApiModal()">Cancel</button>
+      <button class="btn btn-gold" onclick="saveApiKey()">Save & Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- MAIN APP                                                            -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="firm">Ascension Capital Partners</div>
+      <div class="tagline">Template Operating System</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Platform</div>
+      <div class="sidebar-item active" onclick="showPage('overview')">
+        <span class="icon">◈</span> Overview
+      </div>
+      <div class="sidebar-item" onclick="showPage('generator')">
+        <span class="icon">⚡</span> Generator
+        <span class="badge">AI</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('pipeline')">
+        <span class="icon">⟴</span> Deal Pipeline
+        <span class="badge" id="dealBadge">9</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Divisions</div>
+      <div class="sidebar-item" onclick="showPage('div01')">
+        <span class="icon">01</span> Front Office
+        <span class="badge">8 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div02')">
+        <span class="icon">02</span> Structuring
+        <span class="badge">5 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div03')">
+        <span class="icon">03</span> Investor Rel.
+        <span class="badge">4 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div04')">
+        <span class="icon">04</span> Risk & PMO
+        <span class="badge">5 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div05')">
+        <span class="icon">05</span> Legal
+        <span class="badge">3 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div06')">
+        <span class="icon">06</span> Back Office
+        <span class="badge">4 WS</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('div07')">
+        <span class="icon">07</span> Sector
+        <span class="badge">5 WS</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">System</div>
+      <div class="sidebar-item" onclick="showPage('settings')">
+        <span class="icon">⚙</span> Settings
+      </div>
+      <div class="sidebar-item" onclick="showPage('logs')">
+        <span class="icon">≡</span> Activity Log
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="version">ACP-TMPL-OS v1.0.0</div>
+      <div class="version" style="margin-top:2px">ACN 674 649 417</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="pageTitle">Overview</div>
+        <div class="topbar-breadcrumb">
+          <span>ACP</span>
+          <span style="color:var(--gold-dim)">›</span>
+          <span id="pageBreadcrumb">Platform Overview</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="api-status" onclick="openApiModal()" id="apiStatusEl">
+          <div class="dot warn" id="apiDot"></div>
+          <span id="apiStatusText">API: Not configured</span>
+        </div>
+        <button class="btn btn-gold" onclick="showPage('generator')">⚡ Generate Document</button>
+      </div>
+    </div>
+
+    <!-- ── OVERVIEW PAGE ── -->
+    <div class="page active" id="page-overview">
+      <div class="ticker">
+        <div class="ticker-inner" id="tickerInner"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="label">Total Workstreams</div>
+          <div class="value">32</div>
+          <div class="sub">Across 7 divisions</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Templates Available</div>
+          <div class="value">140+</div>
+          <div class="sub">AI-generated on demand</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Active Mandates</div>
+          <div class="value">9</div>
+          <div class="sub">Live deal pipeline</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Pipeline Value</div>
+          <div class="value">$34B+</div>
+          <div class="sub">Indicative gross</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Fee Potential</div>
+          <div class="value">$410M</div>
+          <div class="sub">Across active mandates</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <div class="section-label">Platform Architecture</div>
+          <div class="section-title">Division Map — All Workstreams</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="chip chip-success">● Live</span>
+          <span class="chip chip-warn">● Draft</span>
+          <span class="chip chip-mute">● Build</span>
+        </div>
+      </div>
+
+      <div class="division-grid" id="divisionGrid"></div>
+    </div>
+
+    <!-- ── GENERATOR PAGE ── -->
+    <div class="page" id="page-generator">
+      <div class="generator-layout">
+
+        <!-- Template Sidebar -->
+        <div class="gen-sidebar">
+          <div class="gen-sidebar-header">
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">Template Library</div>
+            <input type="text" class="gen-sidebar-search" id="templateSearch" placeholder="Search templates..." oninput="filterTemplates(this.value)">
+          </div>
+          <div id="templateList"></div>
+        </div>
+
+        <!-- Generator Main -->
+        <div class="gen-main">
+          <!-- Config Panel -->
+          <div class="gen-config" id="genConfig">
+            <div class="gen-config-header">
+              <div>
+                <div class="tmpl-id" id="configTemplateId">Select a template →</div>
+                <div class="tmpl-title" id="configTemplateTitle">Document Generator</div>
+                <div class="tmpl-desc" id="configTemplateDesc">Select a template from the left panel to configure and generate institutional-grade documents powered by Claude AI.</div>
+              </div>
+              <div id="configChips" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:200px"></div>
+            </div>
+
+            <div id="configFields" class="field-grid"></div>
+
+            <div class="gen-controls">
+              <select class="model-select" id="modelSelect">
+                <option value="claude-sonnet-4-20250514">Claude Sonnet 4</option>
+              </select>
+              <span style="font-size:11px;color:var(--text-dim);flex:1" id="genStatusText">Ready</span>
+              <button class="btn" onclick="clearOutput()">Clear</button>
+              <button class="btn btn-gold" id="generateBtn" onclick="generateDocument()">
+                ⚡ Generate
+              </button>
+            </div>
+          </div>
+
+          <!-- Output Panel -->
+          <div class="gen-output">
+            <div class="output-header">
+              <div class="output-title">
+                <span id="outputStatusIcon">📄</span>
+                <span id="outputTitle">Document Output</span>
+              </div>
+              <div class="output-actions">
+                <button class="btn btn-ghost" onclick="copyOutput()" id="copyBtn" style="display:none">Copy</button>
+                <button class="btn btn-ghost" onclick="downloadOutput()" id="downloadBtn" style="display:none">↓ Download</button>
+                <button class="btn btn-gold" onclick="printDocument()" id="printBtn" style="display:none">Print / PDF</button>
+              </div>
+            </div>
+            <div class="output-body" id="outputBody">
+              <div class="output-placeholder">
+                <div class="ph-icon">⊡</div>
+                <p>Configure a template and click Generate to produce an institutional-grade document</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PIPELINE PAGE ── -->
+    <div class="page" id="page-pipeline">
+      <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
+        <div class="stat-card"><div class="label">Origination</div><div class="value">2</div><div class="sub">mandates</div></div>
+        <div class="stat-card"><div class="label">Structuring</div><div class="value">3</div><div class="sub">mandates</div></div>
+        <div class="stat-card"><div class="label">IC Review</div><div class="value">2</div><div class="sub">mandates</div></div>
+        <div class="stat-card"><div class="label">Execution</div><div class="value">1</div><div class="sub">mandates</div></div>
+        <div class="stat-card"><div class="label">Closed</div><div class="value">1</div><div class="sub">mandates</div></div>
+      </div>
+      <div class="pipeline-grid" id="pipelineGrid"></div>
+    </div>
+
+    <!-- ── DIVISION PAGES (01-07) ── -->
+    <div class="page" id="page-div01"></div>
+    <div class="page" id="page-div02"></div>
+    <div class="page" id="page-div03"></div>
+    <div class="page" id="page-div04"></div>
+    <div class="page" id="page-div05"></div>
+    <div class="page" id="page-div06"></div>
+    <div class="page" id="page-div07"></div>
+
+    <!-- ── SETTINGS PAGE ── -->
+    <div class="page" id="page-settings">
+      <div class="section-header" style="margin-bottom:20px">
+        <div>
+          <div class="section-label">System Configuration</div>
+          <div class="section-title">Settings</div>
+        </div>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-nav">
+          <div class="settings-nav-item active" onclick="showSettingsPanel('api')"><span>🔑</span> API & Integration</div>
+          <div class="settings-nav-item" onclick="showSettingsPanel('firm')"><span>🏛</span> Firm Identity</div>
+          <div class="settings-nav-item" onclick="showSettingsPanel('defaults')"><span>⚙</span> Document Defaults</div>
+          <div class="settings-nav-item" onclick="showSettingsPanel('brand')"><span>🎨</span> Brand Settings</div>
+        </div>
+        <div class="settings-panel">
+          <div id="settings-api" class="settings-content">
+            <div class="settings-section-title">API & Integration</div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Anthropic API Key</div>
+                <div class="setting-desc">Powers AI document generation via Claude Sonnet. Stored locally in your browser. Never logged server-side.</div>
+              </div>
+              <div style="min-width:200px">
+                <div class="api-key-row">
+                  <input type="password" class="api-key-input" id="apiKeyInputSettings" placeholder="sk-ant-api03-..." style="font-size:11px" />
+                  <button class="btn btn-gold" onclick="saveApiKey('settings')" style="white-space:nowrap">Save</button>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">AI Document Generation</div>
+                <div class="setting-desc">Enable Claude-powered generation for all document templates across all workstreams.</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked id="toggleAI">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Auto-populate Firm Details</div>
+                <div class="setting-desc">Automatically insert ACP entity details, principal name, and ACN into every generated document.</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked id="toggleAutoFill">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Activity Logging</div>
+                <div class="setting-desc">Log all document generation events with timestamp, template ID, and field values to localStorage.</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked id="toggleLogging">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div id="settings-firm" class="settings-content" style="display:none">
+            <div class="settings-section-title">Firm Identity</div>
+            <div class="field-grid" style="margin-bottom:14px">
+              <div class="field-group">
+                <label class="field-label">Firm Name</label>
+                <input class="field-input" id="sf-firmName" value="Ascension Capital Partners" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Legal Entity</label>
+                <input class="field-input" id="sf-legalEntity" value="APEX Consulting Partners Pty Ltd" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">ACN</label>
+                <input class="field-input" id="sf-acn" value="674 649 417" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Principal Name</label>
+                <input class="field-input" id="sf-principal" value="Joshua Ting" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Title</label>
+                <input class="field-input" id="sf-title" value="Executive Managing Partner" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Jurisdiction</label>
+                <input class="field-input" id="sf-jurisdiction" value="New South Wales, Australia" />
+              </div>
+            </div>
+            <button class="btn btn-gold" onclick="saveFirmSettings()">Save Firm Settings</button>
+          </div>
+          <div id="settings-defaults" class="settings-content" style="display:none">
+            <div class="settings-section-title">Document Defaults</div>
+            <div class="field-grid" style="margin-bottom:14px">
+              <div class="field-group">
+                <label class="field-label">Default Currency</label>
+                <select class="field-input" id="sd-currency">
+                  <option>USD</option><option>AUD</option><option>EUR</option><option>GBP</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Governing Law</label>
+                <select class="field-input" id="sd-law">
+                  <option>New South Wales, Australia</option>
+                  <option>England & Wales</option>
+                  <option>New York, USA</option>
+                  <option>Singapore</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Confidentiality Level</label>
+                <select class="field-input" id="sd-conf">
+                  <option>Strictly Confidential</option>
+                  <option>Confidential</option>
+                  <option>Internal Only</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Document Version</label>
+                <input class="field-input" id="sd-version" value="v1.0" />
+              </div>
+            </div>
+            <button class="btn btn-gold" onclick="saveDefaultSettings()">Save Defaults</button>
+          </div>
+          <div id="settings-brand" class="settings-content" style="display:none">
+            <div class="settings-section-title">Brand Settings</div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Gold Spine on All Documents</div>
+                <div class="setting-desc">Apply the 5px gold left border (ACP institutional signature element) to all generated documents.</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Confidentiality Footer</div>
+                <div class="setting-desc">Append "Ascension Capital Partners | Confidential" footer to every page of generated documents.</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">British English Spelling</div>
+                <div class="setting-desc">Instruct AI to use British English spelling conventions across all generated content.</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOGS PAGE ── -->
+    <div class="page" id="page-logs">
+      <div class="section-header" style="margin-bottom:20px">
+        <div>
+          <div class="section-label">System Activity</div>
+          <div class="section-title">Activity Log</div>
+        </div>
+        <button class="btn btn-ghost" onclick="clearLogs()">Clear Logs</button>
+      </div>
+      <div id="logList" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// ACP TEMPLATE OS — Core Engine
+// ═══════════════════════════════════════════════════════════════════════
+
+const STATE = {
+  apiKey: localStorage.getItem('acp_api_key') || '',
+  activeTemplate: null,
+  lastOutput: '',
+  logs: JSON.parse(localStorage.getItem('acp_logs') || '[]'),
+  firm: JSON.parse(localStorage.getItem('acp_firm') || JSON.stringify({
+    name: 'Ascension Capital Partners',
+    legal: 'APEX Consulting Partners Pty Ltd',
+    acn: '674 649 417',
+    principal: 'Joshua Ting',
+    title: 'Executive Managing Partner',
+    jurisdiction: 'New South Wales, Australia'
+  }))
+};
+
+// ── DATA: DIVISIONS & WORKSTREAMS ────────────────────────────────────
+
+const DIVISIONS = [
+  {
+    id:'01', icon:'01', name:'Front Office', sub:'Origination, Execution & Capital Markets',
+    workstreams: [
+      { id:'WS-01-01', name:'Deal Origination Engine', templates:8, status:'draft' },
+      { id:'WS-01-02', name:'IC Memo Engine', templates:7, status:'draft' },
+      { id:'WS-01-03', name:'LBO & Financial Modelling', templates:8, status:'draft' },
+      { id:'WS-01-04', name:'Term Sheet Engine', templates:10, status:'draft' },
+      { id:'WS-01-05', name:'CIM / Investor Memo', templates:7, status:'build' },
+      { id:'WS-01-06', name:'Pitchbook Engine', templates:6, status:'build' },
+      { id:'WS-01-07', name:'Capital Markets & Syndication', templates:7, status:'live' },
+      { id:'WS-01-08', name:'M&A Advisory Process', templates:9, status:'build' },
+    ]
+  },
+  {
+    id:'02', icon:'02', name:'Structuring & Credit', sub:'Deal Structuring, Credit & Structured Finance',
+    workstreams: [
+      { id:'WS-02-01', name:'Credit Underwriting Pack', templates:8, status:'live' },
+      { id:'WS-02-02', name:'Reserve-Based Lending', templates:8, status:'build' },
+      { id:'WS-02-03', name:'Project Finance Engine', templates:8, status:'build' },
+      { id:'WS-02-04', name:'Mezzanine & Structured Finance', templates:7, status:'build' },
+      { id:'WS-02-05', name:'Capital Structure Analysis', templates:7, status:'build' },
+    ]
+  },
+  {
+    id:'03', icon:'03', name:'LP & Investor Relations', sub:'Capital Formation & Investor Communications',
+    workstreams: [
+      { id:'WS-03-01', name:'LP Investor Relations', templates:7, status:'draft' },
+      { id:'WS-03-02', name:'Quarterly Investor Reporting', templates:7, status:'build' },
+      { id:'WS-03-03', name:'Outreach Sequence Engine', templates:7, status:'draft' },
+      { id:'WS-03-04', name:'Capital Formation Pack', templates:8, status:'build' },
+    ]
+  },
+  {
+    id:'04', icon:'04', name:'Risk, Compliance & PMO', sub:'Middle Office — Risk, Portfolio & Governance',
+    workstreams: [
+      { id:'WS-04-01', name:'Risk Assessment Engine', templates:8, status:'draft' },
+      { id:'WS-04-02', name:'KYC / AML Screening', templates:8, status:'draft' },
+      { id:'WS-04-03', name:'Portfolio Monitoring', templates:8, status:'draft' },
+      { id:'WS-04-04', name:'Board Pack Generator', templates:7, status:'draft' },
+      { id:'WS-04-05', name:'Distressed & Restructuring', templates:9, status:'build' },
+    ]
+  },
+  {
+    id:'05', icon:'05', name:'Legal & Compliance', sub:'Legal Documents, Regulatory & Contractor',
+    workstreams: [
+      { id:'WS-05-01', name:'Legal Document Engine', templates:16, status:'live' },
+      { id:'WS-05-02', name:'Regulatory Compliance', templates:8, status:'build' },
+      { id:'WS-05-03', name:'Contractor & HR Compliance', templates:7, status:'draft' },
+    ]
+  },
+  {
+    id:'06', icon:'06', name:'Back Office', sub:'Finance, Operations & Technology',
+    workstreams: [
+      { id:'WS-06-01', name:'Fee & AR Engine', templates:8, status:'draft' },
+      { id:'WS-06-02', name:'CFO Financial Reporting', templates:7, status:'draft' },
+      { id:'WS-06-03', name:'Operations & Workflow', templates:7, status:'draft' },
+      { id:'WS-06-04', name:'Technology & Systems', templates:7, status:'build' },
+    ]
+  },
+  {
+    id:'07', icon:'07', name:'Sector Workpacks', sub:'Energy, Infrastructure, Digital, Minerals, EM',
+    workstreams: [
+      { id:'WS-07-01', name:'Energy & Upstream O&G', templates:9, status:'draft' },
+      { id:'WS-07-02', name:'Infrastructure & Energy Transition', templates:7, status:'build' },
+      { id:'WS-07-03', name:'Digital Infrastructure', templates:6, status:'build' },
+      { id:'WS-07-04', name:'Critical Minerals', templates:7, status:'build' },
+      { id:'WS-07-05', name:'LatAm & Emerging Markets', templates:6, status:'build' },
+    ]
+  }
+];
+
+// ── DATA: FULL TEMPLATE LIBRARY ──────────────────────────────────────
+
+const TEMPLATES = [
+  // ─ FRONT OFFICE ─
+  { id:'ENG-001', name:'Letter of Engagement', div:'01', ws:'WS-01-01', desc:'Institutional LOE covering scope, fees, exclusivity, and governing law', fields:[
+    {id:'counterparty',label:'Counterparty Name',placeholder:'Gran Tierra Energy Inc.'},
+    {id:'project',label:'Project / Mandate Name',placeholder:'Project Lighthouse'},
+    {id:'structure',label:'Transaction Structure',placeholder:'Private Credit · 3-year Bridge · US$13.8M'},
+    {id:'fee_arrangement',label:'Arrangement Fee',placeholder:'US$345,000 (2.5% of facility)'},
+    {id:'fee_success',label:'Success Fee',placeholder:'1.5% of gross deal value at Closing Event'},
+    {id:'exclusivity',label:'Exclusivity Period',placeholder:'180 days from execution'},
+    {id:'governing_law',label:'Governing Law',placeholder:'New South Wales, Australia'},
+    {id:'special_terms',label:'Special Terms / Notes',placeholder:'Subject to IC approval. Retainer of A$15,000/month payable from Day 30.', type:'textarea'},
+  ]},
+  { id:'MND-001', name:'Programme Mandate', div:'01', ws:'WS-01-01', desc:'Full multi-tranche programme mandate with stage-gate CEs and equity earn-in', fields:[
+    {id:'counterparty',label:'Borrower / Client',placeholder:'INARU Holdings Ltd'},
+    {id:'total_facility',label:'Total Facility Size',placeholder:'US$295,000,000'},
+    {id:'tranche_structure',label:'Tranche Structure',placeholder:'CE-1: US$45M · CE-2: US$95M · CE-3: US$155M'},
+    {id:'sector',label:'Sector',placeholder:'Upstream O&G · LatAm'},
+    {id:'acp_role',label:'ACP Role',placeholder:'Sole Mandated Arranger, Financial Adviser, and Placement Agent'},
+    {id:'total_fees',label:'Total Fee Package',placeholder:'US$14.75M across all Closing Events'},
+    {id:'equity_earnin',label:'Equity Earn-In',placeholder:'Progressive: 0.5% → 3.0% across CEs'},
+    {id:'tail_period',label:'Tail Period',placeholder:'24 months from LOE expiry'},
+    {id:'scope',label:'Mandate Scope',placeholder:'Capital structuring, lender syndication, IC preparation, legal coordination, closing management', type:'textarea'},
+  ]},
+  { id:'TSR-001', name:'Term Sheet — Private Credit', div:'01', ws:'WS-01-04', desc:'Institutional senior secured credit term sheet with full economic and governance terms', fields:[
+    {id:'borrower',label:'Borrower',placeholder:'Gran Tierra Energy Inc.'},
+    {id:'arranger',label:'Arranger / Agent',placeholder:'Ascension Capital Partners'},
+    {id:'facility_size',label:'Facility Size',placeholder:'US$13,800,000'},
+    {id:'facility_type',label:'Facility Type',placeholder:'Senior Secured Bridge Facility — Bifurcated Tranche A/B'},
+    {id:'tenor',label:'Tenor',placeholder:'36 months'},
+    {id:'margin',label:'Margin / Rate',placeholder:'SOFR + 6.50% per annum (PIK toggle available)'},
+    {id:'oid',label:'OID / Upfront Fee',placeholder:'2.50% OID paid at first drawdown'},
+    {id:'security',label:'Security Package',placeholder:'1st ranking charge over 1P reserves (NPV10 ≥ 1.5x). Share pledge. DSRA.'},
+    {id:'covenants',label:'Key Covenants',placeholder:'Net Debt/EBITDA ≤ 3.5x · DSCR ≥ 1.25x · Minimum Liquidity US$2.5M'},
+    {id:'conditions',label:'Conditions Precedent',placeholder:'Satisfactory technical reserves report · AML/KYC clearance · IC approval', type:'textarea'},
+    {id:'governing_law',label:'Governing Law',placeholder:'New South Wales, Australia'},
+  ]},
+  { id:'TSR-002', name:'Term Sheet — Infrastructure Debt', div:'01', ws:'WS-01-04', desc:'Long-tenor infrastructure project finance term sheet with DSCR mechanics', fields:[
+    {id:'borrower',label:'Project Company / SPV',placeholder:'Meridian CCS Pty Ltd'},
+    {id:'arranger',label:'Mandated Lead Arranger',placeholder:'Ascension Capital Partners'},
+    {id:'facility_size',label:'Senior Debt Facility',placeholder:'A$5,740,000,000 (70% of total project cost)'},
+    {id:'facility_type',label:'Facility Type',placeholder:'Senior Secured Project Finance · ECA-Wrapped · 25-year'},
+    {id:'tenor',label:'Tenor',placeholder:'25 years from financial close'},
+    {id:'margin',label:'All-in Rate',placeholder:'BBSW + 1.85% (ECA tranche: 1.45%)'},
+    {id:'dscr',label:'Min. DSCR',placeholder:'1.30x P90 · 1.20x P50 · LLCR ≥ 1.40x'},
+    {id:'security',label:'Security Package',placeholder:'Fixed and floating charge over all project assets. ECA guarantee. Offtake assignment. DSRA 6-months DS.'},
+    {id:'drawdown',label:'Drawdown Structure',placeholder:'Quarterly drawdowns during 36-month construction · First repayment 6 months post-COD'},
+    {id:'conditions',label:'Key CPs',placeholder:'Financial model sign-off · EPC fixed-price contract · Grid connection agreement · Environmental approvals', type:'textarea'},
+  ]},
+  { id:'TSR-003', name:'Term Sheet — Mezzanine / PIK', div:'02', ws:'WS-02-04', desc:'Junior capital term sheet with PIK toggle and equity kicker mechanics', fields:[
+    {id:'borrower',label:'Borrower',placeholder:'H2 Green Steel AB'},
+    {id:'facility_size',label:'Facility Size',placeholder:'€430,000,000'},
+    {id:'instrument',label:'Instrument Type',placeholder:'Subordinated Mezzanine Facility with PIK Toggle'},
+    {id:'margin',label:'Cash Margin',placeholder:'10.50% per annum'},
+    {id:'pik_margin',label:'PIK Margin (if toggled)',placeholder:'12.50% per annum (PIK interest capitalises quarterly)'},
+    {id:'equity_kicker',label:'Equity Kicker',placeholder:'Warrants: 4.5% of fully diluted equity at strike price of €1.10/share'},
+    {id:'tenor',label:'Tenor',placeholder:'7 years from first utilisation'},
+    {id:'ranking',label:'Ranking',placeholder:'Subordinated to €3,870M Senior Secured facility · Senior to equity'},
+    {id:'security',label:'Security',placeholder:'Second-ranking pledge over all project assets and shares. Intercreditor agreement required.'},
+    {id:'financial_cov',label:'Financial Covenants',placeholder:'Gross Leverage ≤ 6.0x · Min Cash ≥ €25M · EBITDA build per agreed ramp schedule', type:'textarea'},
+  ]},
+  { id:'ICM-001', name:'IC Memorandum', div:'01', ws:'WS-01-02', desc:'Full investment committee submission memo with credit analysis and recommendation', fields:[
+    {id:'project',label:'Project Name',placeholder:'Project DTL / Divergent Trade Ltd'},
+    {id:'borrower',label:'Borrower',placeholder:'Divergent Trade Ltd (Gibraltar)'},
+    {id:'transaction',label:'Transaction Summary',placeholder:'US$13.8M bifurcated bridge · 36-month senior secured · First ranking over receivables'},
+    {id:'recommendation',label:'IC Recommendation',placeholder:'APPROVE — subject to 3 Conditions Precedent detailed herein'},
+    {id:'facility_size',label:'Facility Size',placeholder:'US$13,800,000 (Tranche A: US$8.3M · Tranche B: US$5.5M)'},
+    {id:'pricing',label:'Pricing',placeholder:'SOFR + 6.50% · 2.50% OID · Arrangement Fee: US$345,000'},
+    {id:'security',label:'Security Package',placeholder:'First ranking general security over receivables and trade flows. Personal guarantee of directors.'},
+    {id:'key_risks',label:'Key Risks (summarised)',placeholder:'Counterparty concentration · Cross-border execution · FX exposure · Regulatory risk in Gibraltar', type:'textarea'},
+    {id:'mitigants',label:'Risk Mitigants',placeholder:'Enhanced KYC · DSRA · Escrow mechanics · Weekly reporting · ECA political risk cover', type:'textarea'},
+    {id:'financial_summary',label:'Financial Summary',placeholder:'Revenue: US$42M LTM · EBITDA: US$8.7M · Net Debt/EBITDA: 1.6x post-transaction · ICR: 2.8x'},
+  ]},
+  { id:'ICM-002', name:'IC Brief — Emergency', div:'01', ws:'WS-01-02', desc:'Abbreviated IC brief for time-sensitive approvals and waivers', fields:[
+    {id:'project',label:'Project',placeholder:'Project Lighthouse'},
+    {id:'urgency',label:'Urgency / Timeline',placeholder:'IC approval required within 48 hours — drawdown deadline 15 April 2026'},
+    {id:'ask',label:'IC Ask',placeholder:'Approve US$13.8M senior secured bridge facility and authorise LOE execution'},
+    {id:'rationale',label:'Rationale for Emergency Process',placeholder:'Borrower facing covenant breach on existing facility. Window closes at month end.'},
+    {id:'summary',label:'Transaction Summary',placeholder:'Senior secured · 36 months · SOFR+6.50% · 2.5% OID · 1st ranking security over receivables'},
+    {id:'conditions',label:'Conditions of Approval',placeholder:'1. Clean KYC · 2. Technical sign-off · 3. Escrow mechanics confirmed', type:'textarea'},
+  ]},
+  { id:'CIM-001', name:'Confidential Information Memorandum', div:'01', ws:'WS-01-05', desc:'Full institutional CIM for capital raise or M&A process', fields:[
+    {id:'company',label:'Company / Project',placeholder:'Gran Tierra Energy Inc.'},
+    {id:'transaction',label:'Transaction',placeholder:'Reserves-Based Lending Facility — Up to US$75M'},
+    {id:'sector',label:'Sector',placeholder:'Upstream Oil & Gas — Colombia · Peru'},
+    {id:'headline',label:'Investment Headline',placeholder:'Proven producing asset base generating US$38M EBITDA with 1P NPV10 of US$220M'},
+    {id:'key_metrics',label:'Key Financial Metrics',placeholder:'1P Reserves: 18.2 MMboe · Production: 5,400 boe/d · NPV10: US$220M · EV/EBITDA: 4.2x'},
+    {id:'use_of_proceeds',label:'Use of Proceeds',placeholder:'Working capital, development drilling programme (4-well), ARO provisioning'},
+    {id:'investment_highlights',label:'Investment Highlights',placeholder:'1. Low-cost producer (US$12.50/boe opex) · 2. Offtake contracted 80% · 3. Conservative leverage · 4. Experienced management', type:'textarea'},
+    {id:'risk_factors',label:'Key Risk Factors',placeholder:'Commodity price · Regulatory (Colombia) · FX (COP/USD) · Reserve depletion rate', type:'textarea'},
+  ]},
+  { id:'KYC-001', name:'KYC / AML Screening Pack', div:'04', ws:'WS-04-02', desc:'Institutional counterparty KYC/AML clearance document for onboarding', fields:[
+    {id:'counterparty',label:'Counterparty Name',placeholder:'Divergent Trade Ltd'},
+    {id:'jurisdiction',label:'Jurisdiction',placeholder:'Gibraltar (Incorporated 2019)'},
+    {id:'ubo',label:'Ultimate Beneficial Owner(s)',placeholder:'John Smith (51%) — UK Citizen · Jane Doe (49%) — AUS Citizen'},
+    {id:'pep_status',label:'PEP Status',placeholder:'No PEPs identified in screening (WorldCheck, Refinitiv, ComplyAdvantage)'},
+    {id:'sanctions',label:'Sanctions Screening Result',placeholder:'CLEAR — OFAC, UN, EU, AUSTRAC screened 9 April 2026'},
+    {id:'adverse_media',label:'Adverse Media Check',placeholder:'No material adverse media identified in 24-month lookback period'},
+    {id:'source_of_funds',label:'Source of Funds',placeholder:'Commodity trading revenues (fuel distribution, Sub-Saharan Africa). Bank statements provided.'},
+    {id:'risk_rating',label:'Risk Rating',placeholder:'MEDIUM — elevated by offshore jurisdiction; mitigated by enhanced documentation'},
+    {id:'recommendation',label:'Compliance Recommendation',placeholder:'PROCEED — subject to ongoing monitoring and quarterly review', type:'textarea'},
+  ]},
+  { id:'RISK-001', name:'Risk Register', div:'04', ws:'WS-04-01', desc:'Eight-category institutional risk register with RAG ratings and mitigants', fields:[
+    {id:'project',label:'Project / Mandate',placeholder:'Project INARU — US$295M Multi-Tranche'},
+    {id:'as_of',label:'Assessment Date',placeholder:'9 April 2026'},
+    {id:'preparer',label:'Prepared By',placeholder:'Joshua Ting, Executive Managing Partner'},
+    {id:'credit_risk',label:'Credit Risk Summary',placeholder:'Counterparty financial profile: Revenue US$180M · EBITDA US$42M · Net Debt/EBITDA 2.1x · Rating: BB-'},
+    {id:'legal_risk',label:'Legal / Regulatory Risk',placeholder:'Multi-jurisdiction structure (AUS/Gibraltar/Colombia). LatAm regulatory complexity. Requires local counsel.'},
+    {id:'market_risk',label:'Market Risk',placeholder:'Oil price sensitivity (US$55-75/bbl base case). FX: COP/USD unhedged. LIBOR transition complete.'},
+    {id:'execution_risk',label:'Execution Risk',placeholder:'Stage-gate structure limits commitment. Three-CE structure spreads drawdown over 18 months.'},
+    {id:'esg_risk',label:'ESG / Environmental Risk',placeholder:'ARO liability provisioned. No OECD Convention issues identified. ESG baseline completed.'},
+    {id:'overall_rating',label:'Overall Risk Rating (RAG)',placeholder:'AMBER — Elevated complexity offset by stage-gate structure and enhanced security package'},
+  ]},
+  { id:'LOE-001', name:'Letter of Engagement (Deed)', div:'01', ws:'WS-01-01', desc:'Formally executed LOE structured as a deed under NSW law with full fee schedule', fields:[
+    {id:'counterparty',label:'Client / Counterparty',placeholder:'Divergent Trade Ltd (Gibraltar)'},
+    {id:'mandate',label:'Mandate Reference',placeholder:'ACP-LOE-DTL-v4.0'},
+    {id:'acp_role',label:'ACP Role',placeholder:'Exclusive Financial Adviser and Capital Arranger'},
+    {id:'scope',label:'Scope of Services',placeholder:'Capital structuring · Lender identification and approach · Term sheet negotiation · IC preparation · Closing management'},
+    {id:'mobilisation_fee',label:'Mobilisation Fee',placeholder:'A$15,000 per month, commencing Day 30, payable monthly in advance'},
+    {id:'success_fee',label:'Success Fee',placeholder:'2.00% of total gross facility at each Closing Event'},
+    {id:'exclusivity',label:'Exclusivity Period',placeholder:'180 days from deed execution date, renewable by mutual agreement'},
+    {id:'tail',label:'Tail Period',placeholder:'24 months from LOE expiry or termination'},
+    {id:'ncnda',label:'NCNDA / Confidentiality',placeholder:'Mutual non-circumvention and non-disclosure obligations apply from date of execution', type:'textarea'},
+  ]},
+  { id:'NDA-001', name:'Mutual NDA (MNDA)', div:'05', ws:'WS-05-01', desc:'Enhanced IP-protection mutual NDA for strategic partners and counterparties', fields:[
+    {id:'party_a',label:'Party A',placeholder:'Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd'},
+    {id:'party_b',label:'Party B',placeholder:'Bennu Development Corp.'},
+    {id:'purpose',label:'Purpose of Disclosure',placeholder:'Evaluation of a potential strategic advisory relationship and co-origination arrangement'},
+    {id:'duration',label:'Confidentiality Duration',placeholder:'3 years from execution date'},
+    {id:'governing_law',label:'Governing Law',placeholder:'New South Wales, Australia'},
+    {id:'special_provisions',label:'Special IP Provisions',placeholder:'All financial models, deal structures, and introduced counterparties remain IP of disclosing party', type:'textarea'},
+  ]},
+  { id:'NCNDA-001', name:'Multi-Party NCNDA', div:'05', ws:'WS-05-01', desc:'Binding multi-party non-circumvention, non-disclosure agreement', fields:[
+    {id:'parties',label:'All Parties (list)',placeholder:'1. Ascension Capital Partners · 2. [Introducer] · 3. [End Buyer / Counterparty]'},
+    {id:'transaction',label:'Transaction / Opportunity',placeholder:'Fuel distribution offtake — ICPOs and TSRs — Sub-Saharan Africa tranche'},
+    {id:'commission_split',label:'Commission / Fee Split',placeholder:'50% ACP · 30% Introducer · 20% Sub-agent'},
+    {id:'circumvention',label:'Non-Circumvention Clause',placeholder:'No party shall bypass any other party to transact directly with introduced counterparties for a period of 24 months'},
+    {id:'governing_law',label:'Governing Law',placeholder:'England & Wales'},
+  ]},
+  { id:'FEE-001', name:'Fee Invoice', div:'06', ws:'WS-06-01', desc:'Institutional fee invoice with SKU coding and payment instructions', fields:[
+    {id:'invoice_no',label:'Invoice Number',placeholder:'ACP-INV-2026-0412'},
+    {id:'counterparty',label:'Invoice To',placeholder:'Divergent Trade Ltd'},
+    {id:'sku',label:'Fee SKU',placeholder:'ACP-FEE-ARR · ACP-FEE-MOB'},
+    {id:'description',label:'Fee Description',placeholder:'Arrangement Fee — Project DTL · 36-month Senior Secured Bridge Facility · CE-1'},
+    {id:'amount',label:'Amount (ex GST)',placeholder:'USD $345,000'},
+    {id:'gst',label:'GST',placeholder:'N/A — International Services'},
+    {id:'due_date',label:'Payment Due',placeholder:'14 days from invoice date'},
+    {id:'payment_details',label:'Payment Instructions',placeholder:'USD wire to ACP trust account · BSB: 062-000 · Account: 12345678 · SWIFT: CTBAAU2S', type:'textarea'},
+  ]},
+  { id:'QRPT-001', name:'Quarterly Portfolio Report', div:'04', ws:'WS-04-03', desc:'Quarterly LP/investor performance report across all active mandates', fields:[
+    {id:'period',label:'Reporting Period',placeholder:'Q1 2026 (January – March 2026)'},
+    {id:'pipeline_value',label:'Total Pipeline Value',placeholder:'US$34.4 billion (9 active mandates)'},
+    {id:'fee_potential',label:'Aggregate Fee Potential',placeholder:'~US$410M across all active mandates'},
+    {id:'mandates_advanced',label:'Mandates Advanced This Quarter',placeholder:'DTL (IC approved) · INARU (CE-1 structuring) · Firmus (diligence)'},
+    {id:'closings',label:'Closings / Revenues Received',placeholder:'PDG Asia SLL: US$9.0M success fee received 14 Jan 2026'},
+    {id:'watchlist',label:'Watchlist / Concerns',placeholder:'Project Lighthouse: GTE covenant headroom tightening. Monitoring weekly.'},
+    {id:'outlook',label:'Outlook & Pipeline Commentary',placeholder:'Strong deal flow in Australian infrastructure and energy transition. Two new mandates expected Q2.', type:'textarea'},
+  ]},
+  { id:'PITCH-001', name:'Capability Pitchbook', div:'01', ws:'WS-01-06', desc:'Firm credentials and capability pitchbook for new client introductions', fields:[
+    {id:'target',label:'Target Client / Context',placeholder:'New corporate client introduction — energy sector CFO'},
+    {id:'headline',label:'Firm Headline',placeholder:'Ascension Capital Partners — Institutional Alternatives Advisory & Capital Arranging'},
+    {id:'verticals',label:'Coverage Verticals',placeholder:'Energy Transition · Digital Infrastructure · Upstream O&G · Critical Minerals · Structured Private Credit'},
+    {id:'coverage',label:'Geographic Coverage',placeholder:'APAC · EMEA · North America'},
+    {id:'deal_highlights',label:'Representative Transactions',placeholder:'US$295M multi-tranche O&G programme · A$15.8BN data centre financing · €4.3BN green hydrogen · US$5.1BN offshore wind'},
+    {id:'differentiators',label:'Key Differentiators',placeholder:'Boutique institutional platform · Principal-level coverage · No Chinese walls · Full execution capability · Aligned incentives', type:'textarea'},
+  ]},
+  { id:'CSA-001', name:'Contractor Services Agreement', div:'05', ws:'WS-05-03', desc:'Professional services agreement for contractors, fractional executives, and analysts', fields:[
+    {id:'contractor',label:'Contractor Name',placeholder:'Margaret Osei-Bonsu'},
+    {id:'role',label:'Role / Title',placeholder:'Fractional Chief Commercial Officer'},
+    {id:'scope',label:'Scope of Services',placeholder:'Business development strategy · LP outreach · Pipeline qualification · Pitch execution support'},
+    {id:'rate',label:'Remuneration',placeholder:'A$12,500/month retainer + 10% of success fees on originated mandates'},
+    {id:'commencement',label:'Commencement Date',placeholder:'1 May 2026'},
+    {id:'term',label:'Initial Term',placeholder:'6 months, renewable by mutual agreement'},
+    {id:'ip_clause',label:'IP Assignment',placeholder:'All work product, models, templates, and deal information produced under this agreement is the IP of Ascension Capital Partners'},
+    {id:'notice',label:'Notice Period',placeholder:'30 days written notice by either party'},
+    {id:'governing_law',label:'Governing Law',placeholder:'New South Wales, Australia'},
+  ]},
+  { id:'OUTREACH-001', name:'LP Outreach Sequence', div:'03', ws:'WS-03-03', desc:'Five-touch institutional LP outreach sequence with subject lines and cadence', fields:[
+    {id:'target_lp',label:'Target LP / Investor Name',placeholder:'Aware Super — Head of Infrastructure'},
+    {id:'opportunity',label:'Opportunity / Deal',placeholder:'Co-investment opportunity — Meridian CCS · A$8.2BN ECA-wrapped project finance'},
+    {id:'target_allocation',label:'Target Allocation',placeholder:'A$300M–A$500M senior debt participation'},
+    {id:'lp_thesis',label:'LP Investment Thesis',placeholder:'Infrastructure · Low-risk · 25-year tenor · Government-backed · ESG-aligned'},
+    {id:'acp_angle',label:'ACP Angle / Intro',placeholder:'Warm introduction via UBS infra team. Previous interaction at CEDA infrastructure roundtable.'},
+    {id:'timeline',label:'Outreach Timeline',placeholder:'Touch 1: 14 Apr · Follow-up: 21 Apr · Call: 28 Apr · Materials: 5 May · Close: 12 May'},
+  ]},
+  { id:'LBOMODEL-001', name:'LBO Analysis Summary', div:'01', ws:'WS-01-03', desc:'Institutional LBO returns analysis with MOIC/IRR across scenarios', fields:[
+    {id:'target',label:'Target Company',placeholder:'Hypothetical Mid-Market Infrastructure Asset'},
+    {id:'entry_ev',label:'Entry Enterprise Value',placeholder:'A$850,000,000 (7.5x EV/EBITDA)'},
+    {id:'ebitda',label:'Entry EBITDA',placeholder:'A$113,000,000 (LTM)'},
+    {id:'debt_structure',label:'Debt Structure',placeholder:'Senior: A$595M (5.25x) · Mezz: A$85M (0.75x) · Equity: A$170M (1.5x)'},
+    {id:'equity_check',label:'Equity Cheque',placeholder:'A$170,000,000 (20% of EV)'},
+    {id:'hold_period',label:'Hold Period',placeholder:'5 years (exit Year 5)'},
+    {id:'exit_multiple',label:'Exit Multiple Assumption',placeholder:'8.0x EV/EBITDA (base) · 7.0x (downside) · 9.0x (upside)'},
+    {id:'ebitda_growth',label:'EBITDA Growth Assumption',placeholder:'Base: 8% p.a. · Downside: 4% · Upside: 12%'},
+    {id:'return_target',label:'Target Returns',placeholder:'Base IRR: 22% · MOIC: 2.8x · Downside IRR: 14% · Upside IRR: 31%'},
+  ]},
+  { id:'RBL-001', name:'RBL Indicative Terms', div:'02', ws:'WS-02-02', desc:'Reserve-based lending indicative term sheet for upstream O&G borrowers', fields:[
+    {id:'borrower',label:'Borrower',placeholder:'Gran Tierra Energy Inc.'},
+    {id:'facility',label:'Facility',placeholder:'Reserve-Based Lending Facility — Up to US$75,000,000'},
+    {id:'borrowing_base',label:'Initial Borrowing Base',placeholder:'US$48,000,000 (based on 50% of 1P NPV10 of US$220M at US$65/bbl deck)'},
+    {id:'tenor',label:'Tenor',placeholder:'3 years from execution date · Semi-annual redetermination'},
+    {id:'pricing',label:'Pricing',placeholder:'SOFR + 5.00% per annum · Commitment fee: 1.50% on undrawn · OID: 2.00%'},
+    {id:'security',label:'Security',placeholder:'1st ranking charge over all 1P proved reserves · Accounts pledge · Share pledge · DSRA = 6 months interest'},
+    {id:'aro',label:'ARO / LMR',placeholder:'ARO provision: US$12.5M · LMR ratio maintained ≥ 2.0x throughout facility life'},
+    {id:'reporting',label:'Reporting Requirements',placeholder:'Monthly production reporting (boe/d) · Quarterly financial statements · Semi-annual reserves report · Annual engineering certificate', type:'textarea'},
+  ]},
+  { id:'DIST-001', name:'Distressed Liquidity Analysis', div:'04', ws:'WS-04-05', desc:'Liquidity runway and covenant breach analysis for distressed credit situations', fields:[
+    {id:'company',label:'Company',placeholder:'[Distressed Borrower]'},
+    {id:'runway',label:'Liquidity Runway',placeholder:'Current cash: US$4.2M · Monthly burn: US$1.8M · Runway: ~2.3 months'},
+    {id:'breach',label:'Covenant Breach Status',placeholder:'Net Debt/EBITDA covenant: 3.5x limit — currently 4.8x (BREACHED). DSCR: 1.20x minimum — currently 0.87x (BREACHED).'},
+    {id:'maturity',label:'Nearest Debt Maturity',placeholder:'US$18M RCF due 30 June 2026 — 82 days'},
+    {id:'options',label:'Restructuring Options',placeholder:'1. Amend & extend (A&E) · 2. Inject new money (DIP-style) · 3. Debt-for-equity swap · 4. Pre-pack sale', type:'textarea'},
+    {id:'recovery',label:'Recovery Waterfall (estimated)',placeholder:'Senior secured: 85-95c · Second lien: 40-60c · Unsecured: 5-20c · Equity: nil'},
+    {id:'recommendation',label:'Recommended Action',placeholder:'Engage senior lenders immediately. Appoint restructuring counsel. Initiate A&E negotiation.'},
+  ]},
+  { id:'PJFIN-001', name:'Project Finance Model Summary', div:'02', ws:'WS-02-03', desc:'Project finance structure summary with DSCR, DSRA, and drawdown mechanics', fields:[
+    {id:'project',label:'Project Name',placeholder:'Meridian CCS — Moomba Expansion'},
+    {id:'total_cost',label:'Total Project Cost',placeholder:'A$8,200,000,000'},
+    {id:'debt_equity',label:'Debt : Equity Ratio',placeholder:'70% : 30% (Debt: A$5,740M · Equity: A$2,460M)'},
+    {id:'dscr',label:'Min. DSCR',placeholder:'1.30x P90 · 1.20x P50 (tested semi-annually)'},
+    {id:'dsra',label:'DSRA Size',placeholder:'6 months Debt Service (≈ A$215M initial balance)'},
+    {id:'construction',label:'Construction Period',placeholder:'36 months from financial close · Fixed-price EPC contract'),
+    id:'operations',label:'Operations Period',placeholder:'25 years from COD'},
+    {id:'offtake',label:'Offtake / Revenue',placeholder:'Santos (100% offtake) · Government CO₂ price floor A$35/tonne · 3.5 Mtpa capacity'},
+    {id:'eca',label:'ECA Support',placeholder:'EFIC guarantee on A$2.1BN tranche · Export Credit Denmark on €800M tranche'},
+    {id:'waterfall',label:'Cash Waterfall',placeholder:'Opex → Debt Service → DSRA → Maintenance Reserve → Distributions', type:'textarea'},
+  ]},
+];
+
+// ── DATA: DEAL PIPELINE ──────────────────────────────────────────────
+
+const DEALS = [
+  { id:'ACP-01', name:'Project Firmus', borrower:'NEXTDC Ltd', size:'US$10.0BN', sector:'Data Centres', fee:'US$120M', stage:'IC Review', dscr:'1.85x', region:'AUS' },
+  { id:'ACP-02', name:'Project Aeolus', borrower:'Ørsted A/S', size:'US$4.6BN', sector:'Renewables', fee:'US$55M', stage:'Structuring', dscr:'1.42x', region:'GBR/SWE' },
+  { id:'ACP-03', name:'PDG Asia SLL', borrower:'PDG Energy', size:'US$750M', sector:'Renewables', fee:'US$9.0M', stage:'Closed', dscr:'1.55x', region:'SGP' },
+  { id:'ACP-04', name:'Meridian CCS', borrower:'Santos Ltd', size:'US$5.2BN', sector:'CCUS', fee:'US$78M', stage:'Execution', dscr:'1.38x', region:'AUS' },
+  { id:'ACP-05', name:'Project Helios', borrower:'H2 Green Steel', size:'US$4.7BN', sector:'Green Hydrogen', fee:'US$70M', stage:'Structuring', dscr:'1.30x', region:'SWE' },
+  { id:'ACP-06', name:'Boreas Wind', borrower:'Equinor ASA', size:'US$5.1BN', sector:'Renewables', fee:'US$51M', stage:'IC Review', dscr:'1.48x', region:'GBR' },
+  { id:'ACP-07', name:'Titan DC APAC', borrower:'AirTrunk', size:'US$1.2BN', sector:'Data Centres', fee:'US$18M', stage:'Execution', dscr:'1.72x', region:'JPN/SGP' },
+  { id:'ACP-08', name:'Project Lighthouse', borrower:'Gran Tierra Energy', size:'US$75M', sector:'Upstream O&G', fee:'US$9.5M', stage:'Structuring', dscr:'1.25x', region:'COL/PER' },
+  { id:'ACP-09', name:'Project INARU', borrower:'INARU Holdings', size:'US$295M', sector:'O&G — LatAm', fee:'US$14.75M', stage:'Origination', dscr:'—', region:'LatAm' },
+];
+
+// ── TICKER DATA ──────────────────────────────────────────────────────
+
+const TICK_DATA = [
+  {l:'RBA CASH',v:'4.10%',d:0},{l:'SOFR 3M',v:'4.30%',d:0},{l:'BBSW 3M',v:'4.18%',d:1},
+  {l:'AUD/USD',v:'0.6342',d:-1},{l:'10Y UST',v:'4.32%',d:1},{l:'10Y ACGB',v:'4.48%',d:1},
+  {l:'GOLD',v:'$3,048',d:1},{l:'BRENT',v:'$74.82',d:-1},{l:'ASX 200',v:'8,184',d:1},
+  {l:'S&P 500',v:'5,702',d:-1},{l:'INFRA SPREAD',v:'S+185–220bps',d:0},
+  {l:'PVTCRD YLD',v:'11.42%',d:0},{l:'ACP PIPE',v:'US$34.4BN',d:1},{l:'FEES YTD',v:'~US$410M',d:1},
+  {l:'VIX',v:'18.2',d:-1},{l:'EUR/USD',v:'1.0921',d:1},{l:'WTI',v:'$71.14',d:-1},
+];
+
+// ── INIT ─────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderTicker();
+  renderDivisionGrid();
+  renderTemplateList();
+  renderPipeline();
+  updateApiStatus();
+  loadSettings();
+  renderLogs();
+});
+
+// ── TICKER ───────────────────────────────────────────────────────────
+
+function renderTicker() {
+  const inner = document.getElementById('tickerInner');
+  const items = [...TICK_DATA, ...TICK_DATA];
+  inner.innerHTML = items.map(t => `
+    <div class="ticker-item">
+      <span class="t-label">${t.l}</span>
+      <span class="t-val">${t.v}</span>
+      ${t.d > 0 ? '<span class="t-up">▲</span>' : t.d < 0 ? '<span class="t-dn">▼</span>' : '<span style="color:var(--text-dim)">—</span>'}
+    </div>
+  `).join('');
+}
+
+// ── DIVISION GRID ────────────────────────────────────────────────────
+
+function renderDivisionGrid() {
+  const grid = document.getElementById('divisionGrid');
+  grid.innerHTML = DIVISIONS.map(div => {
+    const total = div.workstreams.reduce((s, w) => s + w.templates, 0);
+    return `
+    <div class="division-card" onclick="showPage('div${div.id}')">
+      <div class="div-header">
+        <div class="div-icon">${div.icon}</div>
+        <div class="div-meta">
+          <div class="div-name">${div.name}</div>
+          <div class="div-sub">${div.sub}</div>
+        </div>
+      </div>
+      <div class="div-body">
+        <ul class="ws-list">
+          ${div.workstreams.map(ws => `
+            <li class="ws-item">
+              <div class="status-pip pip-${ws.status}"></div>
+              <span class="ws-id">${ws.id}</span>
+              <span class="ws-name">${ws.name}</span>
+              <span class="ws-count">${ws.templates}T</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+      <div class="div-footer">
+        <span class="template-count">${div.workstreams.length} workstreams · ${total} templates</span>
+        <button class="btn btn-gold div-btn">Open</button>
+      </div>
+    </div>
+  `}).join('');
+}
+
+// ── DIVISION DETAIL PAGES ─────────────────────────────────────────────
+
+function renderDivisionPage(divId) {
+  const div = DIVISIONS.find(d => d.id === divId.replace('div',''));
+  if (!div) return;
+  const el = document.getElementById(`page-${divId}`);
+  const divTemplates = TEMPLATES.filter(t => t.div === div.id);
+
+  el.innerHTML = `
+    <div class="section-header" style="margin-bottom:20px">
+      <div>
+        <div class="section-label">Division ${div.id} — ${div.sub}</div>
+        <div class="section-title">${div.name}</div>
+      </div>
+      <button class="btn btn-gold" onclick="showPage('generator')">⚡ Generate Document</button>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+      <div class="stat-card"><div class="label">Workstreams</div><div class="value">${div.workstreams.length}</div></div>
+      <div class="stat-card"><div class="label">Templates</div><div class="value">${div.workstreams.reduce((s,w)=>s+w.templates,0)}</div></div>
+      <div class="stat-card"><div class="label">Live</div><div class="value" style="color:var(--success)">${div.workstreams.filter(w=>w.status==='live').length}</div></div>
+      <div class="stat-card"><div class="label">In Build</div><div class="value" style="color:var(--warn)">${div.workstreams.filter(w=>w.status!=='live').length}</div></div>
+    </div>
+
+    ${div.workstreams.map(ws => {
+      const wsTmpl = divTemplates.filter(t => t.ws === ws.id);
+      return `
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:14px;overflow:hidden">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);border-left:var(--spine);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:10px;color:var(--gold-dim);font-family:var(--font-mono);margin-bottom:2px">${ws.id}</div>
+            <div style="font-family:var(--font-display);font-size:16px;color:var(--text-primary)">${ws.name}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="chip chip-${ws.status==='live'?'success':ws.status==='draft'?'warn':'mute'}">${ws.status==='live'?'● Live':ws.status==='draft'?'● Draft':'● Build'}</span>
+            <span class="chip chip-gold">${ws.templates} templates</span>
+          </div>
+        </div>
+        <div style="padding:14px 18px">
+          ${wsTmpl.length > 0 ? `
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">
+            ${wsTmpl.map(t => `
+              <div style="background:var(--surface-3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;transition:var(--transition)"
+                   onmouseover="this.style.borderColor='var(--gold-border)'"
+                   onmouseout="this.style.borderColor='var(--border)'"
+                   onclick="openTemplate('${t.id}')">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--gold-dim);margin-bottom:4px">${t.id}</div>
+                <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px">${t.name}</div>
+                <div style="font-size:11px;color:var(--text-dim);line-height:1.4">${t.desc}</div>
+                <div style="margin-top:8px;font-size:11px;color:var(--gold)">⚡ Generate →</div>
+              </div>
+            `).join('')}
+          </div>
+          ` : `<div style="font-size:12px;color:var(--text-dim);padding:8px 0">Templates for this workstream are AI-generated on demand. Click Generate Document to produce any template for this workstream.</div>`}
+        </div>
+      </div>
+    `}).join('')}
+  `;
+}
+
+// ── TEMPLATE LIST ────────────────────────────────────────────────────
+
+function renderTemplateList(filter = '') {
+  const list = document.getElementById('templateList');
+  const groups = {};
+
+  TEMPLATES.filter(t =>
+    !filter ||
+    t.name.toLowerCase().includes(filter.toLowerCase()) ||
+    t.id.toLowerCase().includes(filter.toLowerCase()) ||
+    t.desc.toLowerCase().includes(filter.toLowerCase())
+  ).forEach(t => {
+    const div = DIVISIONS.find(d => d.id === t.div);
+    const key = div ? div.name : 'Other';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(t);
+  });
+
+  list.innerHTML = Object.entries(groups).map(([label, templates]) => `
+    <div class="template-group">
+      <div class="template-group-label">${label}</div>
+      ${templates.map(t => `
+        <div class="template-item ${STATE.activeTemplate?.id === t.id ? 'active' : ''}"
+             id="tmpl-item-${t.id}"
+             onclick="selectTemplate('${t.id}')">
+          <span class="t-id">${t.id}</span>
+          <span class="t-name">${t.name}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function filterTemplates(val) { renderTemplateList(val); }
+
+// ── SELECT TEMPLATE ──────────────────────────────────────────────────
+
+function selectTemplate(id) {
+  const tmpl = TEMPLATES.find(t => t.id === id);
+  if (!tmpl) return;
+  STATE.activeTemplate = tmpl;
+
+  // Update list active state
+  document.querySelectorAll('.template-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(`tmpl-item-${id}`);
+  if (el) el.classList.add('active');
+
+  // Populate config panel
+  document.getElementById('configTemplateId').textContent = tmpl.id;
+  document.getElementById('configTemplateTitle').textContent = tmpl.name;
+  document.getElementById('configTemplateDesc').textContent = tmpl.desc;
+
+  const div = DIVISIONS.find(d => d.id === tmpl.div);
+  const ws = div?.workstreams.find(w => w.id === tmpl.ws);
+  document.getElementById('configChips').innerHTML = [
+    div ? `<span class="chip chip-gold">Div ${div.id}</span>` : '',
+    ws ? `<span class="chip chip-mute">${tmpl.ws}</span>` : '',
+  ].join('');
+
+  // Render fields
+  const fieldGrid = document.getElementById('configFields');
+  const hasTextarea = tmpl.fields.some(f => f.type === 'textarea');
+  fieldGrid.className = `field-grid${hasTextarea ? '' : ' cols-2'}`;
+  fieldGrid.innerHTML = tmpl.fields.map(f => `
+    <div class="field-group ${f.type === 'textarea' ? 'cols-1' : ''}" style="${f.type==='textarea'?'grid-column:1/-1':''}">
+      <label class="field-label" for="f_${f.id}">${f.label}</label>
+      ${f.type === 'textarea'
+        ? `<textarea class="field-input" id="f_${f.id}" placeholder="${f.placeholder}" rows="3"></textarea>`
+        : `<input class="field-input" id="f_${f.id}" placeholder="${f.placeholder}" />`
+      }
+    </div>
+  `).join('');
+
+  // Auto-fill firm data
+  autoFill();
+
+  document.getElementById('genStatusText').textContent = `Template: ${tmpl.id} — Ready`;
+}
+
+function openTemplate(id) {
+  showPage('generator');
+  setTimeout(() => selectTemplate(id), 100);
+}
+
+// ── AUTO-FILL ────────────────────────────────────────────────────────
+
+function autoFill() {
+  const f = STATE.firm;
+  const map = {
+    'governing_law': f.jurisdiction,
+    'arranger': f.name,
+    'acp_role': 'Sole Mandated Arranger, Financial Adviser, and Capital Placement Agent',
+    'preparer': `${f.principal}, ${f.title}`,
+    'as_of': new Date().toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'}),
+  };
+  Object.entries(map).forEach(([id, val]) => {
+    const el = document.getElementById(`f_${id}`);
+    if (el && !el.value) el.value = val;
+  });
+}
+
+// ── GENERATE DOCUMENT ────────────────────────────────────────────────
+
+async function generateDocument() {
+  if (!STATE.activeTemplate) { showToast('Select a template first', 'warn'); return; }
+
+  const apiKey = STATE.apiKey;
+  if (!apiKey) {
+    showToast('API key required. Configure in Settings.', 'error');
+    openApiModal();
+    return;
+  }
+
+  // Collect field values
+  const fields = {};
+  STATE.activeTemplate.fields.forEach(f => {
+    const el = document.getElementById(`f_${f.id}`);
+    fields[f.id] = el ? (el.value || el.placeholder) : '';
+  });
+
+  const tmpl = STATE.activeTemplate;
+  const firm = STATE.firm;
+  const btn = document.getElementById('generateBtn');
+  const statusText = document.getElementById('genStatusText');
+  const outputBody = document.getElementById('outputBody');
+  const outputTitle = document.getElementById('outputTitle');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Generating…';
+  statusText.innerHTML = '<span class="streaming-indicator">Generating <span class="streaming-dots"><span>.</span><span>.</span><span>.</span></span></span>';
+  outputTitle.textContent = `Generating: ${tmpl.name}`;
+
+  outputBody.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px;padding:8px 0">
+      <div class="streaming-indicator" style="font-size:13px;color:var(--gold)">
+        ⚡ Generating ${tmpl.name} <span class="streaming-dots"><span>.</span><span>.</span><span>.</span></span>
+      </div>
+      <div style="font-size:12px;color:var(--text-dim)">Producing institutional-grade document via Claude AI…</div>
+    </div>
+  `;
+
+  const systemPrompt = `You are an institutional financial document generator operating at the standard of Goldman Sachs, KKR, Blackstone, and Ares Management.
+
+You are generating documents exclusively for:
+Firm: ${firm.name} t/a ${firm.legal} (ACN ${firm.acn})
+Principal: ${firm.principal}, ${firm.title}
+Jurisdiction: ${firm.jurisdiction}
+Coverage: APAC · EMEA · North America
+Verticals: Energy Transition · Digital Infrastructure · Upstream O&G · Critical Minerals · Structured Private Credit
+
+BRAND STANDARDS (non-negotiable):
+- Always use "Ascension Capital Partners" — never "Nyne Capital"
+- British English spelling throughout
+- Authoritative, partner-level tone — no waffle, no hedging
+- Every document must begin with the firm name, document type, reference code, and date
+- Include a confidentiality notice at the end: "Ascension Capital Partners | Confidential — ${firm.jurisdiction}"
+- Use structured sections with clear headers
+- All financial figures precisely stated
+- Legal clauses numbered and clearly delineated
+- Institutional quality: every clause, every metric, every cross-reference must be correct and professional
+
+OUTPUT: Generate the complete document in rich HTML format using this exact structure:
+- Use <div class="doc-render"> as the wrapper
+- Use <div class="doc-header"><div class="doc-firm">, <div class="doc-title">, <div class="doc-meta"> for the header
+- Use <h2> for major sections, <h3> for sub-sections
+- Use <table> with <th> and <td> for data tables
+- Use <div class="clause"><div class="clause-num"> for numbered legal clauses
+- Use <div class="highlight"> for key economic terms or critical conditions
+- Use <div class="sig-block"> for signature blocks
+- Use <div class="confidential-footer"> for the confidentiality footer
+
+Generate the COMPLETE document — do not truncate. This is a production document.`;
+
+  const userPrompt = `Generate a complete, institutional-grade ${tmpl.name} (Template ID: ${tmpl.id}).
+
+DOCUMENT PARAMETERS:
+${Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join('\n')}
+
+Instructions:
+1. Generate the full document — every section, every clause, every schedule
+2. Pre-populate ALL fields with the values provided above
+3. Where values are not provided, use realistic institutional defaults appropriate to the transaction type
+4. Include all standard clauses for this document type as used by bulge-bracket advisory firms
+5. Cross-reference related provisions where appropriate
+6. The document must be execution-ready — a senior banker could send this to a client today
+7. Date all references as of 9 April 2026 unless otherwise specified
+8. Reference code: ACP-${tmpl.id}-v1.0-2026-04-09
+
+Generate the complete HTML document now:`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error?.message || `API error ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const content = data.content[0]?.text || '';
+
+    STATE.lastOutput = content;
+
+    // Clean and render
+    let html = content
+      .replace(/```html\n?/g, '')
+      .replace(/```\n?/g, '')
+      .trim();
+
+    outputBody.innerHTML = html;
+
+    // Show action buttons
+    document.getElementById('copyBtn').style.display = 'inline-flex';
+    document.getElementById('downloadBtn').style.display = 'inline-flex';
+    document.getElementById('printBtn').style.display = 'inline-flex';
+    outputTitle.textContent = `${tmpl.name} — Generated`;
+    document.getElementById('outputStatusIcon').textContent = '✓';
+    statusText.textContent = 'Generation complete';
+
+    // Log
+    addLog({ type:'generate', template:tmpl.id, name:tmpl.name, ts: new Date().toISOString() });
+    showToast(`${tmpl.name} generated successfully`, 'success');
+
+  } catch (err) {
+    outputBody.innerHTML = `
+      <div style="color:var(--danger);padding:16px;background:var(--surface-3);border-radius:var(--radius);border:1px solid rgba(196,80,58,0.3)">
+        <div style="font-weight:600;margin-bottom:6px">Generation Error</div>
+        <div style="font-size:12px">${err.message}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px">Check your API key in Settings, or verify the Anthropic API status.</div>
+      </div>
+    `;
+    showToast(err.message, 'error');
+    statusText.textContent = 'Error — see output';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '⚡ Generate';
+}
+
+// ── COPY / DOWNLOAD / PRINT ──────────────────────────────────────────
+
+function copyOutput() {
+  const el = document.getElementById('outputBody');
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard', 'success'));
+}
+
+function downloadOutput() {
+  if (!STATE.activeTemplate) return;
+  const tmpl = STATE.activeTemplate;
+  const el = document.getElementById('outputBody');
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${tmpl.name} — Ascension Capital Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Inter',sans-serif; background:#fff; color:#1A2035; max-width:820px; margin:0 auto; padding:40px 48px; font-size:13px; line-height:1.7; }
+  .doc-header { border-left:5px solid #C9A84C; padding-left:18px; margin-bottom:32px; }
+  .doc-firm { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:#9A7B2E; margin-bottom:4px; }
+  .doc-title { font-family:'Cormorant Garamond', 'EB Garamond', Georgia, serif; font-size:24px; color:#1A2035; line-height:1.2; margin-bottom:6px; }
+  .doc-meta { font-size:11px; color:#666; }
+  h2 { font-family:'Cormorant Garamond', 'EB Garamond', Georgia, serif; font-size:16px; color:#C9A84C; margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid rgba(201,168,76,0.3); }
+  h3 { font-size:13px; font-weight:600; color:#1A2035; margin:16px 0 8px; }
+  p { margin-bottom:10px; }
+  .clause { background:#F9F7F4; border:1px solid #E8E0D0; border-radius:4px; padding:12px 16px; margin:10px 0; }
+  .clause-num { font-weight:600; color:#C9A84C; margin-bottom:4px; font-size:11px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:12px; }
+  th { background:#CBD5E1; color:#555; padding:8px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.07em; border-bottom:1px solid #C9A84C; }
+  td { padding:8px 12px; border-bottom:1px solid #E8E0D0; }
+  .highlight { background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.3); border-radius:4px; padding:12px 16px; margin:12px 0; }
+  .sig-block { margin-top:40px; padding-top:24px; border-top:1px solid #E8E0D0; display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .sig-line { border-bottom:1px solid #999; margin:32px 0 8px; }
+  .sig-label { font-size:10px; color:#999; }
+  .confidential-footer { margin-top:48px; padding-top:16px; border-top:1px solid #E8E0D0; font-size:10px; color:#999; text-align:center; }
+  @media print { body { padding:30px; } }
+</style>
+</head>
+<body>${el.innerHTML}</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ACP-${tmpl.id}-v1.0-${new Date().toISOString().slice(0,10)}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Document downloaded', 'success');
+}
+
+function printDocument() {
+  const el = document.getElementById('outputBody');
+  const content = el.innerHTML;
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ascension Capital Partners — Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Inter',sans-serif; background:#fff; color:#1A2035; max-width:780px; margin:0 auto; padding:40px 48px; font-size:13px; line-height:1.7; }
+  .doc-header { border-left:5px solid #C9A84C; padding-left:18px; margin-bottom:32px; }
+  .doc-firm { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:#9A7B2E; }
+  .doc-title { font-family:'Cormorant Garamond', 'EB Garamond', Georgia, serif; font-size:24px; color:#1A2035; line-height:1.2; margin:4px 0 6px; }
+  .doc-meta { font-size:11px; color:#666; }
+  h2 { font-family:'Cormorant Garamond', 'EB Garamond', Georgia, serif; font-size:16px; color:#C9A84C; margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid rgba(201,168,76,0.3); }
+  h3 { font-size:13px; font-weight:600; color:#1A2035; margin:16px 0 8px; }
+  p { margin-bottom:10px; }
+  .clause { background:#F9F7F4; border:1px solid #E8E0D0; border-radius:4px; padding:12px 16px; margin:10px 0; }
+  .clause-num { font-weight:600; color:#C9A84C; margin-bottom:4px; font-size:11px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:12px; }
+  th { background:#CBD5E1; color:#555; padding:8px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.07em; border-bottom:2px solid #C9A84C; }
+  td { padding:8px 12px; border-bottom:1px solid #E8E0D0; }
+  .highlight { background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.3); border-radius:4px; padding:12px 16px; margin:12px 0; }
+  .sig-block { margin-top:48px; padding-top:24px; border-top:1px solid #E8E0D0; display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .sig-line { border-bottom:1px solid #999; margin:32px 0 8px; }
+  .sig-label { font-size:10px; color:#999; }
+  .confidential-footer { margin-top:48px; padding-top:16px; border-top:1px solid #E8E0D0; font-size:10px; color:#999; text-align:center; }
+</style>
+</head>
+<body>${content}</body>
+</html>`);
+  win.document.close();
+  setTimeout(() => { win.print(); }, 500);
+}
+
+function clearOutput() {
+  document.getElementById('outputBody').innerHTML = `
+    <div class="output-placeholder">
+      <div class="ph-icon">⊡</div>
+      <p>Configure a template and click Generate to produce an institutional-grade document</p>
+    </div>`;
+  ['copyBtn','downloadBtn','printBtn'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('outputTitle').textContent = 'Document Output';
+  document.getElementById('outputStatusIcon').textContent = '📄';
+  document.getElementById('genStatusText').textContent = 'Ready';
+  STATE.lastOutput = '';
+}
+
+// ── PIPELINE ─────────────────────────────────────────────────────────
+
+function renderPipeline() {
+  const stages = ['Origination','Structuring','IC Review','Execution','Closed'];
+  const grid = document.getElementById('pipelineGrid');
+  grid.innerHTML = stages.map(stage => {
+    const deals = DEALS.filter(d => d.stage === stage);
+    return `
+    <div class="pipeline-stage">
+      <div class="stage-header">
+        <div class="stage-name">${stage}</div>
+        <div class="stage-count">${deals.length} mandate${deals.length!==1?'s':''}</div>
+      </div>
+      <div class="stage-cards">
+        ${deals.map(d => `
+          <div class="deal-card">
+            <div class="deal-name">${d.name}</div>
+            <div class="deal-sub">${d.borrower} · ${d.sector} · ${d.region}</div>
+            <div class="deal-sub" style="margin-top:2px">${d.size} · DSCR ${d.dscr}</div>
+            <div class="deal-fee">${d.fee} fee</div>
+          </div>
+        `).join('')}
+        ${deals.length === 0 ? '<div style="font-size:11px;color:var(--text-dim);padding:8px 4px">No active mandates</div>' : ''}
+      </div>
+    </div>
+  `}).join('');
+}
+
+// ── SETTINGS ─────────────────────────────────────────────────────────
+
+function showSettingsPanel(panel) {
+  document.querySelectorAll('.settings-nav-item').forEach((el,i) => {
+    const panels = ['api','firm','defaults','brand'];
+    el.classList.toggle('active', panels[i] === panel);
+  });
+  document.querySelectorAll('.settings-content').forEach(el => el.style.display = 'none');
+  document.getElementById(`settings-${panel}`).style.display = 'block';
+}
+
+function loadSettings() {
+  if (STATE.apiKey) {
+    document.getElementById('apiKeyInput').value = STATE.apiKey;
+    const si = document.getElementById('apiKeyInputSettings');
+    if (si) si.value = STATE.apiKey;
+  }
+  const f = STATE.firm;
+  const fields = {
+    'sf-firmName': f.name, 'sf-legalEntity': f.legal, 'sf-acn': f.acn,
+    'sf-principal': f.principal, 'sf-title': f.title, 'sf-jurisdiction': f.jurisdiction
+  };
+  Object.entries(fields).forEach(([id,val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+}
+
+function saveApiKey(context) {
+  const input = context === 'settings'
+    ? document.getElementById('apiKeyInputSettings')
+    : document.getElementById('apiKeyInput');
+  const key = input?.value?.trim();
+  if (!key) { showToast('Please enter an API key', 'error'); return; }
+  STATE.apiKey = key;
+  localStorage.setItem('acp_api_key', key);
+  updateApiStatus();
+  closeApiModal();
+  showToast('API key saved', 'success');
+
+  // Sync both inputs
+  ['apiKeyInput','apiKeyInputSettings'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = key;
+  });
+}
+
+function saveFirmSettings() {
+  STATE.firm = {
+    name: document.getElementById('sf-firmName')?.value || STATE.firm.name,
+    legal: document.getElementById('sf-legalEntity')?.value || STATE.firm.legal,
+    acn: document.getElementById('sf-acn')?.value || STATE.firm.acn,
+    principal: document.getElementById('sf-principal')?.value || STATE.firm.principal,
+    title: document.getElementById('sf-title')?.value || STATE.firm.title,
+    jurisdiction: document.getElementById('sf-jurisdiction')?.value || STATE.firm.jurisdiction,
+  };
+  localStorage.setItem('acp_firm', JSON.stringify(STATE.firm));
+  showToast('Firm settings saved', 'success');
+}
+
+function saveDefaultSettings() { showToast('Default settings saved', 'success'); }
+
+function updateApiStatus() {
+  const dot = document.getElementById('apiDot');
+  const text = document.getElementById('apiStatusText');
+  if (STATE.apiKey) {
+    dot.className = 'dot';
+    text.textContent = 'API: Connected';
+  } else {
+    dot.className = 'dot warn';
+    text.textContent = 'API: Not configured';
+  }
+}
+
+// ── API MODAL ─────────────────────────────────────────────────────────
+
+function openApiModal() {
+  document.getElementById('apiKeyModal').classList.add('open');
+}
+
+function closeApiModal() {
+  document.getElementById('apiKeyModal').classList.remove('open');
+}
+
+document.getElementById('apiKeyModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeApiModal();
+});
+
+// ── NAVIGATION ────────────────────────────────────────────────────────
+
+const PAGE_META = {
+  'overview': { title:'Overview', breadcrumb:'Platform Overview' },
+  'generator': { title:'Document Generator', breadcrumb:'AI-Powered Generation' },
+  'pipeline': { title:'Deal Pipeline', breadcrumb:'Active Mandates' },
+  'div01': { title:'Front Office', breadcrumb:'Division 01 — Origination & Execution' },
+  'div02': { title:'Structuring & Credit', breadcrumb:'Division 02 — Deal Structuring' },
+  'div03': { title:'LP & Investor Relations', breadcrumb:'Division 03 — Capital Formation' },
+  'div04': { title:'Risk, Compliance & PMO', breadcrumb:'Division 04 — Middle Office' },
+  'div05': { title:'Legal & Compliance', breadcrumb:'Division 05 — Legal' },
+  'div06': { title:'Back Office', breadcrumb:'Division 06 — Finance & Operations' },
+  'div07': { title:'Sector Workpacks', breadcrumb:'Division 07 — Sector Coverage' },
+  'settings': { title:'Settings', breadcrumb:'System Configuration' },
+  'logs': { title:'Activity Log', breadcrumb:'System Activity' },
+};
+
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+  const page = document.getElementById(`page-${pageId}`);
+  if (page) page.classList.add('active');
+
+  // Activate sidebar item
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    if (el.getAttribute('onclick')?.includes(`'${pageId}'`)) el.classList.add('active');
+  });
+
+  // Update topbar
+  const meta = PAGE_META[pageId] || { title: pageId, breadcrumb: '' };
+  document.getElementById('pageTitle').textContent = meta.title;
+  document.getElementById('pageBreadcrumb').textContent = meta.breadcrumb;
+
+  // Lazy render division pages
+  if (pageId.startsWith('div')) renderDivisionPage(pageId);
+
+  // Render logs
+  if (pageId === 'logs') renderLogs();
+}
+
+// ── LOGS ──────────────────────────────────────────────────────────────
+
+function addLog(entry) {
+  STATE.logs.unshift({ ...entry, ts: entry.ts || new Date().toISOString() });
+  if (STATE.logs.length > 100) STATE.logs.pop();
+  localStorage.setItem('acp_logs', JSON.stringify(STATE.logs));
+}
+
+function renderLogs() {
+  const el = document.getElementById('logList');
+  if (!el) return;
+  if (STATE.logs.length === 0) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text-dim);padding:20px 0">No activity logged yet.</div>';
+    return;
+  }
+  el.innerHTML = STATE.logs.map(l => `
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;gap:14px">
+      <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);min-width:160px">${new Date(l.ts).toLocaleString('en-AU')}</span>
+      <span class="chip chip-gold">${l.type?.toUpperCase()}</span>
+      <span style="font-size:11px;color:var(--text-muted)">${l.name || l.template || l.action || ''}</span>
+      ${l.template ? `<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim)">${l.template}</span>` : ''}
+    </div>
+  `).join('');
+}
+
+function clearLogs() {
+  STATE.logs = [];
+  localStorage.removeItem('acp_logs');
+  renderLogs();
+  showToast('Logs cleared', 'success');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toasts');
+  const icons = { success:'✓', error:'✕', warn:'⚠', info:'ℹ' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span style="font-size:14px">${icons[type]||'•'}</span><span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(10px)';
+    toast.style.transition = '0.2s ease';
+    setTimeout(() => toast.remove(), 200);
+  }, 3000);
+}
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    showPage('generator');
+    setTimeout(() => document.getElementById('templateSearch')?.focus(), 200);
+  }
+  if (e.key === 'Escape') closeApiModal();
+});
+
+// ── SESSION LOG ───────────────────────────────────────────────────────
+
+addLog({ type:'session', action:'Platform initialised', ts: new Date().toISOString() });
+
+</script>
+</body>
+</html>

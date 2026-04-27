@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LP Portal — Ascension Capital Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C;--gold-dim:#9A7B2E;--gold-pale:rgba(201,168,76,0.08);--gold-bd:rgba(201,168,76,0.22);
+  --ink:#0A0E1A;--s1:#111827;--s2:#1A2035;--s3:#1A2035;--s4:#2D3548;
+  --border:rgba(255,255,255,0.07);--text:#CBD5E1;--muted:rgba(203,213,225,0.5);--dim:rgba(203,213,225,0.28);
+  --success:#4A9E72;--warn:#C4873A;--danger:#C4503A;
+  --font-d:'Cormorant Garamond', 'EB Garamond', Georgia, serif;--font-b:'Inter',sans-serif;--font-m:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:13px;}
+body{background:var(--ink);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;min-height:100vh;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--s2);}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.login-mountain{position:absolute;inset:0;background-image:url('assets/everest-peak-clean.png');background-size:cover;background-position:center 20%;opacity:0.10;}
+.login-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,8,8,0.97) 0%,rgba(8,8,8,0.90) 50%,rgba(8,8,8,0.80) 100%);}
+.login-card{position:relative;z-index:2;width:100%;max-width:440px;margin:24px;background:var(--s1);border:1px solid var(--gold-bd);border-top:3px solid var(--gold);border-radius:10px;overflow:hidden;}
+.login-header{padding:36px 40px 28px;border-bottom:1px solid var(--border);}
+.login-spine{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.spine-bar{width:4px;height:24px;background:var(--gold);border-radius:2px;flex-shrink:0;}
+.firm-name{font-family:var(--font-d);font-size:16px;color:var(--text);}
+.login-title{font-family:var(--font-d);font-size:26px;color:var(--text);margin-bottom:6px;}
+.login-sub{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold-dim);}
+.login-body{padding:28px 40px 36px;}
+.form-field{margin-bottom:18px;}
+.form-label{display:block;font-size:10.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;}
+.form-input{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--text);font-family:var(--font-b);font-size:13px;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--gold-dim);}
+.btn-login{width:100%;background:var(--gold);color:#000;border:none;border-radius:5px;padding:13px;font-family:var(--font-b);font-size:12px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:6px;}
+.btn-login:hover{background:#E2C97E;}
+.login-footer{padding:14px 40px;border-top:1px solid var(--border);background:rgba(0,0,0,0.3);}
+.login-footer p{font-size:10px;color:var(--dim);text-align:center;line-height:1.6;}
+.login-error{background:rgba(196,80,58,0.12);border:1px solid rgba(196,80,58,0.3);border-radius:5px;padding:10px 14px;font-size:12px;color:#E07060;margin-bottom:16px;display:none;}
+
+/* ── PORTAL SHELL ── */
+.portal{display:none;min-height:100vh;flex-direction:column;}
+.portal.active{display:flex;}
+
+.portal-nav{
+  height:62px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 36px;background:var(--s1);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.pnav-brand{display:flex;align-items:center;gap:12px;}
+.pnav-spine{width:3px;height:20px;background:var(--gold);border-radius:2px;}
+.pnav-firm{font-family:var(--font-d);font-size:15.5px;color:var(--text);}
+.pnav-badge{font-size:9.5px;padding:3px 8px;background:var(--gold-pale);border:1px solid var(--gold-bd);color:var(--gold-dim);border-radius:99px;letter-spacing:0.06em;text-transform:uppercase;}
+.pnav-right{display:flex;align-items:center;gap:16px;}
+.pnav-investor{font-size:11.5px;color:var(--muted);}
+.pnav-investor strong{color:var(--text);}
+.btn-logout{font-size:11px;padding:6px 14px;background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:4px;cursor:pointer;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--gold-bd);color:var(--muted);}
+
+.portal-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 62px);}
+
+/* sidebar */
+.portal-sidebar{background:var(--s1);border-right:1px solid var(--border);padding:28px 0;}
+.sidebar-section{margin-bottom:24px;}
+.sidebar-label{font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);padding:0 22px;margin-bottom:8px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 22px;cursor:pointer;font-size:12.5px;color:var(--muted);border-left:3px solid transparent;transition:all 0.18s;}
+.sidebar-item:hover{color:var(--text);background:var(--gold-pale);}
+.sidebar-item.active{color:var(--gold);border-left-color:var(--gold);background:var(--gold-pale);}
+.sidebar-icon{width:16px;text-align:center;font-size:13px;flex-shrink:0;}
+
+/* main */
+.portal-main{padding:36px 40px;overflow-y:auto;}
+.pane{display:none;}
+.pane.active{display:block;}
+
+/* ── OVERVIEW PANE ── */
+.overview-header{margin-bottom:32px;}
+.pane-label{font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px;}
+.pane-title{font-family:var(--font-d);font-size:30px;color:var(--text);margin-bottom:8px;}
+.pane-sub{font-size:13.5px;font-weight:300;color:var(--muted);line-height:1.6;}
+.as-of{font-size:10.5px;font-family:var(--font-m);color:var(--dim);margin-top:6px;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px;}
+.stat-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px;border-left:3px solid var(--gold);}
+.stat-n{font-family:var(--font-d);font-size:30px;color:var(--gold);line-height:1;margin-bottom:4px;}
+.stat-l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;}
+.stat-delta{font-size:10.5px;color:var(--success);margin-top:4px;}
+
+.allocation-table{background:var(--s2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:28px;}
+.table-header{padding:14px 20px;border-bottom:1px solid var(--gold-bd);display:grid;grid-template-columns:1fr 120px 120px 100px 100px;gap:12px;}
+.th{font-size:9.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
+.table-row{padding:13px 20px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 120px 120px 100px 100px;gap:12px;align-items:center;transition:background 0.15s;}
+.table-row:last-child{border-bottom:none;}
+.table-row:hover{background:rgba(201,168,76,0.03);}
+.td{font-size:12px;color:var(--muted);}
+.td-name{color:var(--text);font-weight:500;}
+.td-val{font-family:var(--font-m);font-size:11.5px;color:var(--gold);}
+.td-status{font-size:10px;padding:3px 8px;border-radius:99px;font-weight:500;width:fit-content;}
+.td-status.live{background:rgba(74,158,114,0.12);color:var(--success);border:1px solid rgba(74,158,114,0.25);}
+.td-status.pipeline{background:var(--gold-pale);color:var(--gold-dim);border:1px solid var(--gold-bd);}
+
+/* ── QUARTERLY REPORT ── */
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+.report-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:24px;}
+.rc-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.rc-val{font-family:var(--font-d);font-size:28px;color:var(--text);margin-bottom:4px;}
+.rc-sub{font-size:12px;color:var(--muted);}
+.chart-bar-wrap{margin-top:16px;}
+.chart-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.cbl{font-size:11px;color:var(--dim);width:140px;flex-shrink:0;}
+.cbb-wrap{flex:1;background:var(--s3);border-radius:99px;height:6px;overflow:hidden;}
+.cbb{height:100%;background:var(--gold);border-radius:99px;transition:width 0.5s ease;}
+.cbv{font-size:10.5px;font-family:var(--font-m);color:var(--gold-dim);width:60px;text-align:right;flex-shrink:0;}
+
+/* ── DOCUMENTS ── */
+.doc-list{display:flex;flex-direction:column;gap:8px;}
+.doc-item{background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:14px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color 0.18s;}
+.doc-item:hover{border-color:var(--gold-bd);}
+.doc-icon{width:36px;height:36px;background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.doc-body{flex:1;min-width:0;}
+.doc-name{font-size:13px;color:var(--text);font-weight:500;margin-bottom:2px;}
+.doc-meta{font-size:11px;color:var(--dim);}
+.doc-size{font-family:var(--font-m);font-size:10.5px;color:var(--dim);}
+.doc-dl{font-size:11px;padding:6px 14px;background:transparent;border:1px solid var(--gold-bd);color:var(--gold-dim);border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s;}
+.doc-dl:hover{background:var(--gold-pale);color:var(--gold);}
+
+/* ── NOTICES ── */
+.notice-list{display:flex;flex-direction:column;gap:10px;}
+.notice-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px 22px;border-left:3px solid var(--gold);}
+.nc-type{font-size:9.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px;}
+.nc-title{font-family:var(--font-d);font-size:17px;color:var(--text);margin-bottom:6px;}
+.nc-body{font-size:12.5px;font-weight:300;color:var(--muted);line-height:1.65;}
+.nc-date{font-size:10.5px;color:var(--dim);margin-top:8px;font-family:var(--font-m);}
+
+/* ── ACCOUNT ── */
+.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.account-block{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:22px;}
+.ab-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+.ab-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.ab-row:last-child{border-bottom:none;}
+.ab-key{color:var(--dim);}
+.ab-val{color:var(--text);font-family:var(--font-m);font-size:11.5px;}
+
+/* ── MESSAGES ── */
+.msg-compose{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;}
+.msg-input{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:12px 14px;color:var(--text);font-family:var(--font-b);font-size:12.5px;resize:vertical;min-height:80px;outline:none;}
+.msg-input:focus{border-color:var(--gold-dim);}
+.msg-actions{display:flex;justify-content:flex-end;margin-top:10px;}
+.btn-send{background:var(--gold);color:#000;border:none;border-radius:4px;padding:9px 20px;font-size:11.5px;font-weight:600;cursor:pointer;letter-spacing:0.05em;}
+.messages-list{display:flex;flex-direction:column;gap:10px;}
+.msg-bubble{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;}
+.msg-bubble.from-acp{border-left:3px solid var(--gold);}
+.msg-from{font-size:11px;font-weight:600;color:var(--gold-dim);margin-bottom:4px;}
+.msg-body{font-size:13px;color:var(--muted);line-height:1.6;}
+.msg-time{font-size:10px;color:var(--dim);margin-top:6px;font-family:var(--font-m);}
+
+/* utils */
+.section-divider{height:1px;background:var(--border);margin:28px 0;}
+.badge{font-size:9px;padding:2px 7px;border-radius:99px;letter-spacing:0.05em;font-weight:500;}
+.badge-green{background:rgba(74,158,114,0.12);color:var(--success);border:1px solid rgba(74,158,114,0.25);}
+.badge-gold{background:var(--gold-pale);color:var(--gold-dim);border:1px solid var(--gold-bd);}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-mountain"></div>
+  <div class="login-overlay"></div>
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-spine">
+        <div class="spine-bar"></div>
+        <div class="firm-name">Ascension Capital Partners</div>
+      </div>
+      <div class="login-title">LP Portal</div>
+      <div class="login-sub">Investor Relations · Restricted Access</div>
+    </div>
+    <div class="login-body">
+      <div class="login-error" id="loginError">Invalid access code or credentials. Please check your details and try again.</div>
+      <div class="form-field">
+        <label class="form-label">LP Access Code</label>
+        <input class="form-input" id="accessCode" type="text" placeholder="ACP-LP-XXXX-XXXX" autocomplete="off" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="emailInput" type="email" placeholder="investor@institution.com" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="passInput" type="password" placeholder="••••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <button class="btn-login" onclick="doLogin()">Access Portal →</button>
+    </div>
+    <div class="login-footer">
+      <p>For access, contact: <a href="/cdn-cgi/l/email-protection#167c79657e6377627f78712325567963627a79797d3875797b" style="color:var(--gold-dim)"><span class="__cf_email__" data-cfemail="4b212438233e2a3f22252c7e780b243e3f2724242065282426">[email&#160;protected]</span></a><br>
+      Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd · ACN 674 649 417</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LP PORTAL ══ -->
+<div class="portal" id="lpPortal">
+
+  <nav class="portal-nav">
+    <div class="pnav-brand">
+      <div class="pnav-spine"></div>
+      <div class="pnav-firm">Ascension Capital Partners</div>
+      <span class="pnav-badge">LP Portal</span>
+    </div>
+    <div class="pnav-right">
+      <div class="pnav-investor">Logged in as: <strong id="lpNameDisplay">—</strong></div>
+      <button class="btn-logout" onclick="doLogout()">Log Out</button>
+    </div>
+  </nav>
+
+  <div class="portal-layout">
+
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Investor</div>
+        <div class="sidebar-item active" onclick="showPane('overview',this)"><span class="sidebar-icon">◈</span> Portfolio Overview</div>
+        <div class="sidebar-item" onclick="showPane('account',this)"><span class="sidebar-icon">◻</span> Capital Account</div>
+        <div class="sidebar-item" onclick="showPane('performance',this)"><span class="sidebar-icon">◻</span> Performance</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Reports</div>
+        <div class="sidebar-item" onclick="showPane('quarterly',this)"><span class="sidebar-icon">◻</span> Quarterly Reports</div>
+        <div class="sidebar-item" onclick="showPane('documents',this)"><span class="sidebar-icon">◻</span> Documents</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Communications</div>
+        <div class="sidebar-item" onclick="showPane('notices',this)"><span class="sidebar-icon">◻</span> Notices & Updates</div>
+        <div class="sidebar-item" onclick="showPane('messages',this)"><span class="sidebar-icon">◻</span> Messages</div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+
+      <!-- Overview -->
+      <div class="pane active" id="pane-overview">
+        <div class="overview-header">
+          <div class="pane-label">Investor Dashboard</div>
+          <div class="pane-title" id="lpFullName">Portfolio Overview</div>
+          <div class="pane-sub">Current allocation status across all active mandates.</div>
+          <div class="as-of" id="asOfDate">As of — April 2026</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-n" id="totalAlloc">—</div>
+            <div class="stat-l">Total Allocation</div>
+            <div class="stat-delta">Committed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-n" id="deployedAmt">—</div>
+            <div class="stat-l">Deployed</div>
+            <div class="stat-delta">Across active mandates</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-n" id="feeIncomeYTD">—</div>
+            <div class="stat-l">Fee Income YTD</div>
+            <div class="stat-delta" style="color:var(--gold-dim)">JT origination</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-n" id="activeMandates">—</div>
+            <div class="stat-l">Active Mandates</div>
+            <div class="stat-delta">In pipeline</div>
+          </div>
+        </div>
+
+        <div class="allocation-table">
+          <div class="table-header">
+            <div class="th">Mandate</div>
+            <div class="th">Sector</div>
+            <div class="th">LP Allocation</div>
+            <div class="th">Status</div>
+            <div class="th">Return Target</div>
+          </div>
+          <div id="allocRows"></div>
+        </div>
+      </div>
+
+      <!-- Capital Account -->
+      <div class="pane" id="pane-account">
+        <div class="overview-header">
+          <div class="pane-label">Capital Account</div>
+          <div class="pane-title">Capital Account Statement</div>
+          <div class="pane-sub">Capital commitments, deployment schedules, and fee distributions.</div>
+        </div>
+        <div class="account-grid">
+          <div class="account-block">
+            <div class="ab-label">Commitment Summary</div>
+            <div class="ab-row"><span class="ab-key">Total Commitment</span><span class="ab-val" id="capCommit">—</span></div>
+            <div class="ab-row"><span class="ab-key">Drawn Down</span><span class="ab-val" id="capDrawn">—</span></div>
+            <div class="ab-row"><span class="ab-key">Undrawn</span><span class="ab-val" id="capUndrawn">—</span></div>
+            <div class="ab-row"><span class="ab-key">Tier</span><span class="ab-val" id="capTier">—</span></div>
+          </div>
+          <div class="account-block">
+            <div class="ab-label">Fee Economics</div>
+            <div class="ab-row"><span class="ab-key">Arrangement Fee</span><span class="ab-val" id="capArrangeFee">—</span></div>
+            <div class="ab-row"><span class="ab-key">Participation</span><span class="ab-val" id="capParticipation">—</span></div>
+            <div class="ab-row"><span class="ab-key">IC Priority</span><span class="ab-val" id="capICPriority">—</span></div>
+            <div class="ab-row"><span class="ab-key">ROFR</span><span class="ab-val" id="capROFR">—</span></div>
+          </div>
+          <div class="account-block">
+            <div class="ab-label">Access & Compliance</div>
+            <div class="ab-row"><span class="ab-key">NDA Status</span><span class="ab-val">Executed</span></div>
+            <div class="ab-row"><span class="ab-key">KYC/AML</span><span class="ab-val">Cleared</span></div>
+            <div class="ab-row"><span class="ab-key">Jurisdiction</span><span class="ab-val" id="capJurisdiction">—</span></div>
+            <div class="ab-row"><span class="ab-key">Relationship Owner</span><span class="ab-val">Joshua Ting</span></div>
+          </div>
+          <div class="account-block">
+            <div class="ab-label">Contact Details</div>
+            <div class="ab-row"><span class="ab-key">ACP Principal</span><span class="ab-val">Joshua Ting</span></div>
+            <div class="ab-row"><span class="ab-key">Direct</span><span class="ab-val">+61 451 338 533</span></div>
+            <div class="ab-row"><span class="ab-key">Email</span><span class="ab-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d77726e75687c6974737a282e5d72686971727276337e7270">[email&#160;protected]</a></span></div>
+            <div class="ab-row"><span class="ab-key">Entity</span><span class="ab-val">ACN 674 649 417</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance -->
+      <div class="pane" id="pane-performance">
+        <div class="overview-header">
+          <div class="pane-label">Investment Performance</div>
+          <div class="pane-title">Portfolio Performance</div>
+          <div class="pane-sub">Return profiles and mandate-level performance metrics.</div>
+        </div>
+        <div class="report-grid">
+          <div class="report-card">
+            <div class="rc-label">Programme Blended IRR (Illustrative)</div>
+            <div class="rc-val">18–25%</div>
+            <div class="rc-sub">Unlevered · 22–35% levered equity</div>
+            <div class="chart-bar-wrap" id="perfBars"></div>
+          </div>
+          <div class="report-card">
+            <div class="rc-label">DSCR — Active Mandates</div>
+            <div class="rc-val">&gt; 2.0x</div>
+            <div class="rc-sub">Programme-level base case · All active mandates</div>
+            <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px" id="dscr-rows"></div>
+          </div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px;font-size:11px;color:var(--dim);line-height:1.7;margin-top:8px">
+          * All returns are unaudited, forward-looking estimates subject to material risks and uncertainties. Past transactions are not indicative of future results. Nothing herein constitutes financial advice or an offer to invest. Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd · ACN 674 649 417.
+        </div>
+      </div>
+
+      <!-- Quarterly Reports -->
+      <div class="pane" id="pane-quarterly">
+        <div class="overview-header">
+          <div class="pane-label">Investor Reporting</div>
+          <div class="pane-title">Quarterly Reports</div>
+          <div class="pane-sub">Quarterly LP performance reports and programme updates.</div>
+        </div>
+        <div class="doc-list">
+          <div class="doc-item" onclick="previewDoc('Q1 2026 LP Report')">
+            <div class="doc-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="1.5" stroke="#C9A84C" stroke-width="1.3"/><line x1="6" y1="6" x2="12" y2="6" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="9" x2="12" y2="9" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="12" x2="9" y2="12" stroke="#C9A84C" stroke-width="1.1"/></svg></div>
+            <div class="doc-body">
+              <div class="doc-name">Q1 2026 — LP Quarterly Report</div>
+              <div class="doc-meta">Ascension Capital Partners · April 2026 · Confidential</div>
+            </div>
+            <div class="doc-size">2.4 MB</div>
+            <button class="doc-dl">Download PDF</button>
+          </div>
+          <div class="doc-item" onclick="previewDoc('Q4 2025 LP Report')">
+            <div class="doc-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="1.5" stroke="#C9A84C" stroke-width="1.3"/><line x1="6" y1="6" x2="12" y2="6" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="9" x2="12" y2="9" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="12" x2="9" y2="12" stroke="#C9A84C" stroke-width="1.1"/></svg></div>
+            <div class="doc-body">
+              <div class="doc-name">Q4 2025 — LP Quarterly Report</div>
+              <div class="doc-meta">Ascension Capital Partners · January 2026 · Confidential</div>
+            </div>
+            <div class="doc-size">2.1 MB</div>
+            <button class="doc-dl">Download PDF</button>
+          </div>
+          <div class="doc-item" onclick="previewDoc('Q3 2025 LP Report')">
+            <div class="doc-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="1.5" stroke="#C9A84C" stroke-width="1.3"/><line x1="6" y1="6" x2="12" y2="6" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="9" x2="12" y2="9" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="12" x2="9" y2="12" stroke="#C9A84C" stroke-width="1.1"/></svg></div>
+            <div class="doc-body">
+              <div class="doc-name">Q3 2025 — LP Quarterly Report</div>
+              <div class="doc-meta">Ascension Capital Partners · October 2025 · Confidential</div>
+            </div>
+            <div class="doc-size">1.8 MB</div>
+            <button class="doc-dl">Download PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="pane" id="pane-documents">
+        <div class="overview-header">
+          <div class="pane-label">Document Library</div>
+          <div class="pane-title">Investor Documents</div>
+          <div class="pane-sub">All investment documentation, legal agreements, and programme materials.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px" id="docCategories"></div>
+      </div>
+
+      <!-- Notices -->
+      <div class="pane" id="pane-notices">
+        <div class="overview-header">
+          <div class="pane-label">Investor Communications</div>
+          <div class="pane-title">Notices & Updates</div>
+          <div class="pane-sub">Official programme notices, mandate updates, and market commentary from Ascension Capital Partners.</div>
+        </div>
+        <div class="notice-list">
+          <div class="notice-card">
+            <div class="nc-type">Programme Update · Q1 2026</div>
+            <div class="nc-title">ACP-US-EI-001 — LoE Executed, Structuring Commencing</div>
+            <div class="nc-body">Ascension Capital Partners confirms the Letter of Engagement for the US$1.5BN AI Power & Energy Infrastructure mandate (ACP-US-EI-001) has been executed. Structuring has commenced. Capital partner pre-qualification underway. Initial IC submission targeting Q2 2026.</div>
+            <div class="nc-date">09 April 2026 · Ascension Capital Partners</div>
+          </div>
+          <div class="notice-card">
+            <div class="nc-type">Mandate Update · MENA</div>
+            <div class="nc-title">ACP-ME-SY-001 & ACP-ME-PF-001/002 — Access Confirmed</div>
+            <div class="nc-body">Access confirmed on three MENA mandates: Senior Syndication ($350M), Real Estate Senior MENA ($130M), and Real Estate Dubai ($127M). KYC/AML clearance completed. LOE execution in progress across all three mandates.</div>
+            <div class="nc-date">07 April 2026 · Ascension Capital Partners</div>
+          </div>
+          <div class="notice-card">
+            <div class="nc-type">Programme Notice · Green Finance</div>
+            <div class="nc-title">$500M Green Bond Programme — ICMA GBP 2025 Framework Finalised</div>
+            <div class="nc-body">The ACP $500M Green Bond framework has been finalised under ICMA Green Bond Principles 2025. Four tranches: A ($175M, 7.75%) · B ($140M, 7.25%) · C ($120M, 7.25%) · D ($65M, 6.75%). SPO coordination with Sustainalytics in progress. Roadshow targeting Q3 2026.</div>
+            <div class="nc-date">01 April 2026 · Ascension Capital Partners</div>
+          </div>
+          <div class="notice-card">
+            <div class="nc-type">Platform Notice · April 2026</div>
+            <div class="nc-title">LP Portal Launch — ir.ascensioncap.io</div>
+            <div class="nc-body">Ascension Capital Partners has launched the LP Investor Portal, providing institutional investors with real-time access to portfolio data, capital account statements, quarterly reports, and direct messaging with the ACP advisory team.</div>
+            <div class="nc-date">11 April 2026 · Ascension Capital Partners</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="pane" id="pane-messages">
+        <div class="overview-header">
+          <div class="pane-label">Secure Messaging</div>
+          <div class="pane-title">Messages</div>
+          <div class="pane-sub">Direct secure communications with the Ascension Capital Partners advisory team.</div>
+        </div>
+        <div class="msg-compose">
+          <div class="form-label" style="margin-bottom:8px">New Message to ACP Advisory Team</div>
+          <textarea class="msg-input" id="msgText" placeholder="Type your message…"></textarea>
+          <div class="msg-actions"><button class="btn-send" onclick="sendMsg()">Send Message</button></div>
+        </div>
+        <div class="messages-list" id="msgList">
+          <div class="msg-bubble from-acp">
+            <div class="msg-from">Joshua Ting · Executive Managing Partner</div>
+            <div class="msg-body">Welcome to the ACP LP Portal. This is your secure channel for all mandate updates, capital account queries, and programme communications. I respond to all messages within one business day. For urgent matters: +61 451 338 533.</div>
+            <div class="msg-time">11 April 2026 · 09:00 AEST</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── LP Data ──
+const LP_ACCOUNTS = {
+  'ACP-LP-ANCH-001': {
+    name:'Macquarie Asset Management', contact:'Senior Portfolio Manager',
+    tier:'Anchor - $100M+', jurisdiction:'Australia',
+    totalAlloc:'US$125M', deployed:'US$45M', feeYTD:'US$2.1M', mandates:3,
+    drawn:'US$45M', undrawn:'US$80M', arrangeFee:'1.75%', participation:'Pro-rata', icPriority:'IC+5', rofr:'Full programme ROFR',
+    pass:'macquarie2026',
+    allocations:[
+      {name:'ACP-US-EI-001 · AI Power', sector:'Energy Infra', alloc:'US$50M', status:'live', target:'24–33% IRR'},
+      {name:'ACP-GL-SN-001 · Struct Notes', sector:'Structured Finance', alloc:'US$40M', status:'live', target:'12–15%'},
+      {name:'ACP-APAC-DI-001 · IDC', sector:'Digital Infra', alloc:'US$35M', status:'live', target:'18–24% IRR'},
+    ],
+    docs:[
+      {cat:'Legal & Constitutional', items:['Co-Origination Agreement','NDA/NCND','Fee Schedule Annex','LOE Template Library']},
+      {cat:'Investment Intelligence', items:['Investment Thesis v2.0','Pipeline Summary — 27 Mandates','Risk Register Q1 2026','KYC/AML Clearance Certificate']},
+      {cat:'Financial Models', items:['LBO Model — US-EI-001','Project Finance — APAC-DI-001','Structured Notes Waterfall Model']},
+    ]
+  },
+  'ACP-LP-CORE-001': {
+    name:'QIC Infrastructure', contact:'Head of Infrastructure Debt',
+    tier:'Core - $25M-100M', jurisdiction:'Australia',
+    totalAlloc:'US$60M', deployed:'US$20M', feeYTD:'US$0.9M', mandates:2,
+    drawn:'US$20M', undrawn:'US$40M', arrangeFee:'1.50%', participation:'Pro-rata', icPriority:'IC+8', rofr:'Energy & Infrastructure ROFR',
+    pass:'qic2026',
+    allocations:[
+      {name:'ACP-UK-CE-002 · Strategic Financing', sector:'Energy Infra', alloc:'US$35M', status:'pipeline', target:'18–22% IRR'},
+      {name:'ACP-ME-SY-001 · MENA Syndication', sector:'Structured Finance', alloc:'US$25M', status:'live', target:'14–18%'},
+    ],
+    docs:[
+      {cat:'Legal & Constitutional', items:['Co-Origination Agreement','NDA/NCND','Fee Schedule Annex']},
+      {cat:'Investment Intelligence', items:['Investment Thesis v2.0','EMEA Mandate Summary','Risk Register Q1 2026']},
+    ]
+  },
+  'ACP-LP-DEMO-001': {
+    name:'Demo Institutional Investor', contact:'Portfolio Manager',
+    tier:'Tactical - $500K-25M', jurisdiction:'Singapore',
+    totalAlloc:'US$15M', deployed:'US$8M', feeYTD:'US$0.3M', mandates:2,
+    drawn:'US$8M', undrawn:'US$7M', arrangeFee:'1.25%', participation:'Deal-by-deal', icPriority:'IC+10', rofr:'APAC mandates only',
+    pass:'demo2026',
+    allocations:[
+      {name:'ACP-APAC-DI-001 · Sovereign Cloud IDC', sector:'Digital Infra', alloc:'US$8M', status:'live', target:'18–24% IRR'},
+      {name:'ACP-APAC-CE-001 · Clean Energy', sector:'Environmental', alloc:'US$7M', status:'pipeline', target:'14–18%'},
+    ],
+    docs:[
+      {cat:'Legal & Constitutional', items:['Co-Origination Agreement','NDA/NCND']},
+      {cat:'Investment Intelligence', items:['Investment Thesis v2.0','APAC Mandate Summary']},
+    ]
+  }
+};
+
+const PERF_BARS = [
+  {l:'750MW IDC', v:'33%', w:90},
+  {l:'Green Hydrogen', v:'18–24%', w:65},
+  {l:'Critical Minerals', v:'22–30%', w:78},
+  {l:'Lendsecure Bridge', v:'35–45% ROE', w:95},
+];
+const DSCR_ROWS = [
+  {l:'ACP-APAC-DI-001', v:'3.2x', c:'var(--success)'},
+  {l:'Meridian CCS', v:'1.38x P90', c:'var(--gold)'},
+  {l:'Project Helios', v:'2.0–2.5x', c:'var(--gold)'},
+  {l:'PDG Asia SLL', v:'1.55x', c:'var(--gold)'},
+];
+
+let currentLP = null;
+
+function doLogin() {
+  const code  = document.getElementById('accessCode').value.trim().toUpperCase();
+  const email = document.getElementById('emailInput').value.trim();
+  const pass  = document.getElementById('passInput').value.trim();
+  const err   = document.getElementById('loginError');
+
+  const lp = LP_ACCOUNTS[code];
+  if (!lp || pass.toLowerCase() !== lp.pass) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  currentLP = lp;
+  loadPortal(lp);
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('lpPortal').classList.add('active');
+}
+
+function doLogout() {
+  currentLP = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('lpPortal').classList.remove('active');
+  document.getElementById('passInput').value = '';
+}
+
+function loadPortal(lp) {
+  document.getElementById('lpNameDisplay').textContent = lp.name;
+  document.getElementById('lpFullName').textContent = lp.name + ' — Portfolio Overview';
+  document.getElementById('asOfDate').textContent = 'As of 11 April 2026 · Ascension Capital Partners';
+  document.getElementById('totalAlloc').textContent = lp.totalAlloc;
+  document.getElementById('deployedAmt').textContent = lp.deployed;
+  document.getElementById('feeIncomeYTD').textContent = lp.feeYTD;
+  document.getElementById('activeMandates').textContent = lp.mandates;
+  document.getElementById('capCommit').textContent = lp.totalAlloc;
+  document.getElementById('capDrawn').textContent = lp.drawn;
+  document.getElementById('capUndrawn').textContent = lp.undrawn;
+  document.getElementById('capTier').textContent = lp.tier;
+  document.getElementById('capArrangeFee').textContent = lp.arrangeFee;
+  document.getElementById('capParticipation').textContent = lp.participation;
+  document.getElementById('capICPriority').textContent = lp.icPriority;
+  document.getElementById('capROFR').textContent = lp.rofr;
+  document.getElementById('capJurisdiction').textContent = lp.jurisdiction;
+
+  // Allocation rows
+  const tbody = document.getElementById('allocRows');
+  tbody.innerHTML = lp.allocations.map(a => `
+    <div class="table-row">
+      <div class="td td-name">${a.name}</div>
+      <div class="td">${a.sector}</div>
+      <div class="td td-val">${a.alloc}</div>
+      <div class="td"><span class="td-status ${a.status}">${a.status === 'live' ? '● Active' : '◎ Pipeline'}</span></div>
+      <div class="td" style="font-family:var(--font-m);font-size:11px;color:var(--gold-dim)">${a.target}</div>
+    </div>
+  `).join('');
+
+  // Perf bars
+  document.getElementById('perfBars').innerHTML = PERF_BARS.map(b => `
+    <div class="chart-bar-row">
+      <div class="cbl">${b.l}</div>
+      <div class="cbb-wrap"><div class="cbb" style="width:${b.w}%"></div></div>
+      <div class="cbv">${b.v}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('dscr-rows').innerHTML = DSCR_ROWS.map(r => `
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <span style="color:var(--dim)">${r.l}</span>
+      <span style="font-family:var(--font-m);font-size:11.5px;color:${r.c}">${r.v}</span>
+    </div>
+  `).join('');
+
+  // Docs
+  const docWrap = document.getElementById('docCategories');
+  docWrap.innerHTML = lp.docs.map(cat => `
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">${cat.cat}</div>
+      <div class="doc-list">${cat.items.map(item => `
+        <div class="doc-item" onclick="previewDoc('${item}')">
+          <div class="doc-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="1.5" stroke="#C9A84C" stroke-width="1.3"/><line x1="6" y1="6" x2="12" y2="6" stroke="#C9A84C" stroke-width="1.1"/><line x1="6" y1="9" x2="12" y2="9" stroke="#C9A84C" stroke-width="1.1"/></svg></div>
+          <div class="doc-body"><div class="doc-name">${item}</div><div class="doc-meta">Ascension Capital Partners · Confidential · April 2026</div></div>
+          <button class="doc-dl">Download</button>
+        </div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function showPane(id, el) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => { s.classList.remove('active'); s.querySelector('.sidebar-icon').textContent = '◻'; });
+  document.getElementById('pane-' + id).classList.add('active');
+  el.classList.add('active');
+  el.querySelector('.sidebar-icon').textContent = '◈';
+}
+
+function sendMsg() {
+  const txt = document.getElementById('msgText').value.trim();
+  if (!txt) return;
+  const list = document.getElementById('msgList');
+  const now = new Date().toLocaleDateString('en-AU', {day:'2-digit',month:'long',year:'numeric'}) + ' · ' + new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}) + ' AEST';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = `<div class="msg-from">${currentLP?.name || 'LP'} · Investor</div><div class="msg-body">${txt}</div><div class="msg-time">${now}</div>`;
+  list.insertBefore(bubble, list.firstChild);
+  document.getElementById('msgText').value = '';
+  setTimeout(() => {
+    const resp = document.createElement('div');
+    resp.className = 'msg-bubble from-acp';
+    resp.innerHTML = `<div class="msg-from">Ascension Capital Partners · Automated</div><div class="msg-body">Message received. Joshua Ting will respond within one business day. For urgent matters: +61 451 338 533 or joshuating53@outlook.com.</div><div class="msg-time">${now}</div>`;
+    list.insertBefore(resp, list.firstChild);
+  }, 1200);
+}
+
+function previewDoc(name) {
+  alert('Document: ' + name + '\n\nThis doc

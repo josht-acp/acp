@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ascension Capital Partners — Institutional Advisory Platform">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230b1120'/><text x='16' y='22' text-anchor='middle' fill='%23c9a24c' font-family='serif' font-size='18' font-weight='700'>A</text></svg>">
+<title>Ascension Capital Partners — Institutional Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06090f;--panel:#0b1120;--card:#0f1730;--card2:#131e3e;--border:#1a2a4a;--border2:#243558;--gold:#c9a24c;--gold-dim:#8a6e30;--gold-pale:rgba(201,162,76,.08);--gold-glow:rgba(201,162,76,.15);--ice:#c8d6e8;--muted:#5a7099;--white:#eef2f7;--green:#2dbd8a;--green-d:rgba(45,189,138,.12);--amber:#e8a838;--amber-d:rgba(232,168,56,.12);--red:#e05555;--red-d:rgba(224,85,85,.12);--teal:#29a9b0;--teal-d:rgba(41,169,176,.12);--purple:#8b7ec8;--serif:'Playfair Display',Georgia,serif;--sans:'Outfit',-apple-system,sans-serif;--mono:'DM Mono','SF Mono',monospace;--r:4px;--t:.2s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);font-size:13px;background:var(--bg);color:var(--ice);-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--bg)}
+input,select,textarea,button{font-family:inherit;font-size:inherit;color:inherit;border:none;outline:none;background:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--gold-dim)}
+.app{display:flex;height:100vh}
+
+/* ══ SIDEBAR ══ */
+.sb{width:220px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;z-index:100}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-brand h1{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--gold);letter-spacing:.06em;line-height:1.3}
+.sb-brand .sub{font-family:var(--mono);font-size:8.5px;color:var(--muted);letter-spacing:.08em;margin-top:4px;text-transform:uppercase}
+.sb-sec{font-family:var(--mono);font-size:8px;color:var(--gold-dim);letter-spacing:1.5px;text-transform:uppercase;padding:16px 18px 6px}
+.sb-items{flex:1;overflow-y:auto;padding:4px 0}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:all var(--t);border-left:2px solid transparent;color:var(--muted);font-size:12px;font-weight:500}
+.ni:hover{color:var(--ice);background:var(--gold-pale)}.ni.act{color:var(--gold);border-left-color:var(--gold);background:var(--gold-pale)}
+.ni .nv-ic{width:16px;text-align:center;font-size:11px;flex-shrink:0}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border);font-family:var(--mono);font-size:8.5px;color:var(--muted)}
+.sb-foot .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:middle}
+
+/* ══ MAIN ══ */
+.mn{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.mh{height:48px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.mh .pt{font-family:var(--serif);font-size:15px;font-weight:500;color:var(--white)}
+.mh .meta{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.mb{flex:1;overflow-y:auto;padding:24px}
+.pnl{display:none}.pnl.act{display:block}
+
+/* ══ COMPONENTS ══ */
+.kpi-r{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity var(--t)}.kpi:hover::after{opacity:1}
+.kl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.kv{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--white);line-height:1;margin-bottom:3px}
+.kd{font-family:var(--mono);font-size:10px}.kd.up{color:var(--green)}.kd.dn{color:var(--red)}.kd.fl{color:var(--muted)}
+
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.st{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--white)}
+.ss{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+.tw{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;text-align:left;background:rgba(201,162,76,.04);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,42,74,.5);font-size:12px;white-space:nowrap}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--gold-pale)}
+
+.bg{display:inline-block;padding:2px 8px;border-radius:2px;font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.bg-g{background:var(--green-d);color:var(--green)}.bg-a{background:var(--amber-d);color:var(--amber)}.bg-r{background:var(--red-d);color:var(--red)}
+.bg-t{background:var(--teal-d);color:var(--teal)}.bg-gd{background:var(--gold-pale);color:var(--gold)}.bg-m{background:rgba(90,112,153,.12);color:var(--muted)}
+
+.btn{padding:7px 16px;border-radius:var(--r);font-size:11px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all var(--t);text-transform:uppercase}
+.btn-g{background:var(--gold);color:var(--bg)}.btn-g:hover{background:#d4ae58}
+.btn-o{border:1px solid var(--border);color:var(--ice)}.btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.btn-s{padding:4px 10px;font-size:10px}
+
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.fgp{display:flex;flex-direction:column;gap:4px}.fgp.full{grid-column:1/-1}
+.fl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.fi{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--white);font-size:12px;transition:border-color var(--t)}
+.fi:focus{border-color:var(--gold)}.fi option{background:var(--panel)}
+textarea.fi{min-height:70px;resize:vertical;font-family:var(--sans)}
+
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:18px}
+.ic{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:border-color var(--t)}.ic:hover{border-color:var(--gold-dim)}
+
+.stabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:18px}
+.stab{padding:9px 16px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all var(--t)}
+.stab:hover{color:var(--ice)}.stab.act{color:var(--gold);border-bottom-color:var(--gold)}
+.sp{display:none}.sp.act{display:block}
+
+.dp{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:1000px){.dp{grid-template-columns:1fr}}
+
+.mo{display:none;position:fixed;inset:0;background:rgba(6,9,15,.85);z-index:1000;align-items:center;justify-content:center}.mo.open{display:flex}
+.md{background:var(--panel);border:1px solid var(--border);border-radius:6px;width:90%;max-width:640px;max-height:85vh;overflow-y:auto;padding:28px}
+.mt{font-family:var(--serif);font-size:18px;color:var(--gold);margin-bottom:18px}
+.ma{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+
+.pb{height:4px;background:var(--border);border-radius:2px;overflow:hidden}.pf{height:100%;border-radius:2px;transition:width .5s ease}
+
+/* Kanban */
+.kb{display:flex;gap:12px;overflow-x:auto;padding-bottom:12px}
+.kc{min-width:230px;max-width:260px;flex-shrink:0}
+.kch{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border);color:var(--ice)}
+.kch .ct{background:var(--gold-pale);color:var(--gold);padding:1px 6px;border-radius:2px;font-size:9px}
+.kcrd{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px;cursor:pointer;transition:all var(--t)}
+.kcrd:hover{border-color:var(--gold-dim);transform:translateY(-1px)}
+
+/* Waterfall */
+.wf{display:flex;align-items:flex-end;gap:4px;height:130px;padding:0 8px}
+.wb{flex:1;min-width:26px;background:var(--gold);border-radius:2px 2px 0 0;position:relative;transition:height .4s ease}
+.wb .wl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--muted);white-space:nowrap}
+.wb .wv{position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;color:var(--gold)}
+
+/* Toast */
+.toast-c{position:fixed;top:60px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--panel);border:1px solid var(--gold-dim);border-radius:var(--r);padding:10px 16px;font-size:12px;display:flex;align-items:center;gap:8px;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sb">
+<div class="sb-brand"><h1>Ascension<br>Capital Partners</h1><div class="sub">Institutional Advisory Platform</div></div>
+<div class="sb-items">
+<div class="sb-sec">Front Office</div>
+<div class="ni act" data-p="cmd"><span class="nv-ic">◆</span>Command Centre</div>
+<div class="ni" data-p="pipe"><span class="nv-ic">◇</span>Deal Pipeline</div>
+<div class="ni" data-p="orig"><span class="nv-ic">▸</span>Deal Origination</div>
+<div class="ni" data-p="capx"><span class="nv-ic">◈</span>Capital Markets</div>
+<div class="ni" data-p="ally"><span class="nv-ic">⬡</span>Alliance Partners</div>
+<div class="sb-sec">Middle Office</div>
+<div class="ni" data-p="val"><span class="nv-ic">△</span>Valuations Engine</div>
+<div class="ni" data-p="risk"><span class="nv-ic">⊘</span>Risk & Compliance</div>
+<div class="ni" data-p="docs"><span class="nv-ic">▤</span>Document Engine</div>
+<div class="sb-sec">Back Office</div>
+<div class="ni" data-p="crm"><span class="nv-ic">◎</span>Counterparty CRM</div>
+<div class="ni" data-p="ppl"><span class="nv-ic">◉</span>People OS</div>
+<div class="ni" data-p="ops"><span class="nv-ic">⚙</span>Operations</div>
+<div class="ni" data-p="fin"><span class="nv-ic">$</span>Finance & Reporting</div>
+</div>
+<div class="sb-foot"><span class="dot"></span>SYSTEM LIVE · v3.0</div>
+</aside>
+
+<div class="mn">
+<header class="mh"><span class="pt" id="pgT">Command Centre</span><span class="meta" id="pgM"></span></header>
+<div class="mb" id="mbody">
+
+<!-- ═══ CMD ═══ -->
+<div class="pnl act" id="p-cmd">
+<div class="kpi-r" id="ck"></div>
+<div class="dp">
+<div>
+<div class="sh"><span class="st">Pipeline by Stage</span><span class="ss">Live Mandates</span></div>
+<div class="tw"><table id="cStg"><thead><tr><th>Stage</th><th>Deals</th><th>Agg. EV</th><th>Wtd Fees</th></tr></thead><tbody></tbody></table></div>
+<div class="sh" style="margin-top:18px"><span class="st">Action Items</span></div>
+<div id="cAct" style="max-height:220px;overflow-y:auto;"></div>
+</div>
+<div>
+<div class="sh"><span class="st">Revenue Waterfall</span><span class="ss">Fee Projection (C$K)</span></div>
+<div class="ic" style="padding:22px 14px 34px;"><div class="wf" id="cWF"></div></div>
+<div class="sh" style="margin-top:18px"><span class="st">Team Capacity</span></div>
+<div id="cTeam"></div>
+</div>
+</div>
+</div>
+
+<!-- ═══ PIPELINE ═══ -->
+<div class="pnl" id="p-pipe">
+<div class="sh"><span class="st">Active Deal Pipeline</span>
+<div style="display:flex;gap:8px;"><button class="btn btn-o btn-s" onclick="tPV()">Toggle View</button><button class="btn btn-g btn-s" onclick="oDM()">+ New Deal</button></div></div>
+<div id="pKB" class="kb"></div>
+<div id="pTB" style="display:none;" class="tw"><table id="pTI"><thead><tr><th>Deal</th><th>Structure</th><th>Sector</th><th>EV</th><th>EBITDA</th><th>Multiple</th><th>Stage</th><th>Lead</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- ═══ ORIGINATION ═══ -->
+<div class="pnl" id="p-orig">
+<div class="sh"><span class="st">Deal Origination Engine</span><span class="ss">Sourcing & Screening</span></div>
+<div class="stabs"><div class="stab act" data-st="oScr">Screening Matrix</div><div class="stab" data-st="oSco">Deal Scorecard</div><div class="stab" data-st="oTgt">Target Universe</div></div>
+<div class="sp act" id="s-oScr">
+<div class="fg" style="margin-bottom:18px;">
+<div class="fgp"><label class="fl">Sector</label><select class="fi" id="oSec" onchange="rOrig()"><option value="">All Sectors</option><option>Technology / SaaS</option><option>Healthcare / Life Sci</option><option>Industrials / Infra</option><option>Energy / Resources</option><option>Financial Services</option><option>Consumer / Retail</option><option>Business Services</option></select></div>
+<div class="fgp"><label class="fl">EV Range</label><select class="fi" id="oEV" onchange="rOrig()"><option value="">All Sizes</option><option value="0-500">$0–500M</option><option value="500-2000">$500M–2B</option><option value="2000-10000">$2B–10B</option></select></div>
+</div>
+<div class="tw"><table id="oTbl"><thead><tr><th>Target</th><th>Sector</th><th>EV ($M)</th><th>EBITDA ($M)</th><th>Margin</th><th>Growth</th><th>Fit Score</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+</div>
+<div class="sp" id="s-oSco"><div class="ic" style="max-width:800px;"><div class="mt">10-Factor Institutional Deal Scorecard</div><div id="scG" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div><div style="margin-top:16px;display:flex;align-items:center;gap:16px;"><div style="font-family:var(--serif);font-size:28px;color:var(--gold);" id="scT">—</div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);">/ 100 COMPOSITE SCORE</div></div></div></div>
+<div class="sp" id="s-oTgt"><div class="cg" id="oTgts"></div></div>
+</div>
+
+<!-- ═══ CAPITAL MARKETS ═══ -->
+<div class="pnl" id="p-capx">
+<div class="sh"><span class="st">Capital Markets & Structuring</span><span class="ss">LBO · IC Memo · Debt</span></div>
+<div class="stabs"><div class="stab act" data-st="cLbo">LBO Engine</div><div class="stab" data-st="cIC">IC Memo Builder</div><div class="stab" data-st="cDbt">Debt Structuring</div></div>
+
+<div class="sp act" id="s-cLbo">
+<div class="dp">
+<div class="ic">
+<div class="fl" style="margin-bottom:12px;">TRANSACTION ASSUMPTIONS</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Target EBITDA ($M)</label><input class="fi" id="lE" type="number" value="500"></div>
+<div class="fgp"><label class="fl">Entry Multiple (x)</label><input class="fi" id="lM" type="number" value="12" step=".5"></div>
+<div class="fgp"><label class="fl">Equity % of EV</label><input class="fi" id="lQ" type="number" value="40"></div>
+<div class="fgp"><label class="fl">Hold Period (yrs)</label><input class="fi" id="lH" type="number" value="5"></div>
+<div class="fgp"><label class="fl">EBITDA Growth (% p.a.)</label><input class="fi" id="lG" type="number" value="8"></div>
+<div class="fgp"><label class="fl">Exit Multiple (x)</label><input class="fi" id="lX" type="number" value="11" step=".5"></div>
+<div class="fgp"><label class="fl">Sr Debt Rate (%)</label><input class="fi" id="lSR" type="number" value="5.5" step=".25"></div>
+<div class="fgp"><label class="fl">Sub Debt Rate (%)</label><input class="fi" id="lSB" type="number" value="9" step=".25"></div>
+</div>
+<button class="btn btn-g" onclick="rLBO()" style="width:100%;">Run LBO Model</button>
+</div>
+<div class="ic" id="lOut"><div class="fl" style="margin-bottom:12px;">MODEL OUTPUT</div><div style="color:var(--muted);font-size:12px;">Configure assumptions and run →</div></div>
+</div>
+<div style="margin-top:18px;"><div class="sh"><span class="st">Returns Sensitivity</span></div><div class="ic" id="lSens" style="overflow-x:auto;"><div style="color:var(--muted);font-size:12px;">Run LBO to generate sensitivity</div></div></div>
+</div>
+
+<div class="sp" id="s-cIC">
+<div class="ic" style="max-width:900px;">
+<div class="mt">Investment Committee Memo Builder</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Target Company</label><input class="fi" id="icT" placeholder="Company name"></div>
+<div class="fgp"><label class="fl">Transaction Type</label><select class="fi" id="icTx"><option>Leveraged Buyout</option><option>Growth Equity</option><option>Strategic M&A</option><option>Direct Lending</option><option>Distressed</option></select></div>
+<div class="fgp"><label class="fl">Enterprise Value ($M)</label><input class="fi" id="icEV" type="number"></div>
+<div class="fgp"><label class="fl">EBITDA ($M)</label><input class="fi" id="icEB" type="number"></div>
+<div class="fgp"><label class="fl">Equity Check ($M)</label><input class="fi" id="icEQ" type="number"></div>
+<div class="fgp"><label class="fl">Target IRR (%)</label><input class="fi" id="icIR" type="number"></div>
+<div class="fgp full"><label class="fl">Investment Thesis</label><textarea class="fi" id="icTH" placeholder="Revenue durability, margin expansion..."></textarea></div>
+<div class="fgp full"><label class="fl">Key Risks</label><textarea class="fi" id="icRK" placeholder="Concentration, regulatory..."></textarea></div>
+</div>
+<button class="btn btn-g" onclick="rIC()">Generate IC Memo</button>
+<div id="icOut" style="margin-top:18px;"></div>
+</div>
+</div>
+
+<div class="sp" id="s-cDbt">
+<div class="dp">
+<div class="ic">
+<div class="fl" style="margin-bottom:12px;">CAPITAL STRUCTURE BUILDER</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Total EV ($M)</label><input class="fi" id="dEV" type="number" value="2000"></div>
+<div class="fgp"><label class="fl">EBITDA ($M)</label><input class="fi" id="dEB" type="number" value="250"></div>
+<div class="fgp"><label class="fl">Revolver ($M)</label><input class="fi" id="dRC" type="number" value="100"></div>
+<div class="fgp"><label class="fl">TLA ($M)</label><input class="fi" id="dTA" type="number" value="400"></div>
+<div class="fgp"><label class="fl">TLB ($M)</label><input class="fi" id="dTB" type="number" value="600"></div>
+<div class="fgp"><label class="fl">Mezz ($M)</label><input class="fi" id="dMZ" type="number" value="200"></div>
+<div class="fgp"><label class="fl">Sr Rate (%)</label><input class="fi" id="dSR" type="number" value="5.5" step=".25"></div>
+<div class="fgp"><label class="fl">Mezz Rate (%)</label><input class="fi" id="dMR" type="number" value="10" step=".25"></div>
+</div>
+<button class="btn btn-g" onclick="rDebt()" style="width:100%;">Analyze Structure</button>
+</div>
+<div class="ic" id="dOut"><div class="fl" style="margin-bottom:12px;">STRUCTURE ANALYSIS</div><div style="color:var(--muted);font-size:12px;">Configure and analyze →</div></div>
+</div>
+</div>
+</div>
+
+<!-- ═══ ALLIANCE PARTNERS ═══ -->
+<div class="pnl" id="p-ally">
+<div class="sh"><span class="st">Strategic Alliance Partners</span><span class="ss">Co-Investment · ROFO · Fee Share</span></div>
+<div class="kpi-r" id="alKPI"></div>
+<div class="cg" id="alCards"></div>
+<div class="sh" style="margin-top:18px;"><span class="st">Alliance Deal Activity</span></div>
+<div class="tw"><table id="alDeals"><thead><tr><th>Deal</th><th>Alliance Partner</th><th>Structure</th><th>EV</th><th>Stage</th><th>ROFO Status</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- ═══ VALUATIONS ═══ -->
+<div class="pnl" id="p-val">
+<div class="sh"><span class="st">Valuations Engine</span><span class="ss">DCF · Comps · Precedents</span></div>
+<div class="stabs"><div class="stab act" data-st="vDCF">DCF Model</div><div class="stab" data-st="vCmp">Trading Comps</div><div class="stab" data-st="vPrc">Precedent Txns</div></div>
+<div class="sp act" id="s-vDCF">
+<div class="dp">
+<div class="ic">
+<div class="fl" style="margin-bottom:12px;">DCF ASSUMPTIONS</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Base EBITDA ($M)</label><input class="fi" id="dcE" type="number" value="300"></div>
+<div class="fgp"><label class="fl">Rev Growth (%)</label><input class="fi" id="dcRG" type="number" value="6" step=".5"></div>
+<div class="fgp"><label class="fl">EBITDA Margin (%)</label><input class="fi" id="dcMG" type="number" value="25" step=".5"></div>
+<div class="fgp"><label class="fl">Tax Rate (%)</label><input class="fi" id="dcTX" type="number" value="25"></div>
+<div class="fgp"><label class="fl">Capex % Rev</label><input class="fi" id="dcCX" type="number" value="4" step=".5"></div>
+<div class="fgp"><label class="fl">WACC (%)</label><input class="fi" id="dcWC" type="number" value="9.5" step=".25"></div>
+<div class="fgp"><label class="fl">Terminal Growth (%)</label><input class="fi" id="dcTG" type="number" value="2.5" step=".25"></div>
+<div class="fgp"><label class="fl">Net Debt ($M)</label><input class="fi" id="dcND" type="number" value="800"></div>
+</div>
+<button class="btn btn-g" onclick="rDCF()" style="width:100%;">Run DCF</button>
+</div>
+<div class="ic" id="dcOut"><div class="fl" style="margin-bottom:12px;">DCF OUTPUT</div><div style="color:var(--muted);font-size:12px;">Configure and run →</div></div>
+</div>
+</div>
+<div class="sp" id="s-vCmp"><div class="tw"><table id="cmpT"><thead><tr><th>Company</th><th>EV ($B)</th><th>Revenue ($B)</th><th>EBITDA ($M)</th><th>EV/Rev</th><th>EV/EBITDA</th><th>P/E</th><th>Growth</th><th>Margin</th></tr></thead><tbody></tbody></table></div><div class="ic" id="cmpS" style="max-width:500px;margin-top:12px;"></div></div>
+<div class="sp" id="s-vPrc"><div class="tw"><table id="prcT"><thead><tr><th>Date</th><th>Target</th><th>Acquirer</th><th>EV ($M)</th><th>EV/EBITDA</th><th>EV/Rev</th><th>Premium</th></tr></thead><tbody></tbody></table></div></div>
+</div>
+
+<!-- ═══ RISK ═══ -->
+<div class="pnl" id="p-risk">
+<div class="sh"><span class="st">Risk & Compliance</span><span class="ss">Concentration · Regulatory · Conflicts</span></div>
+<div class="kpi-r" id="rKPI"></div>
+<div class="dp">
+<div><div class="sh"><span class="st">Sector Concentration</span></div><div class="tw"><table id="rConc"><thead><tr><th>Sector</th><th>Exposure</th><th>% Portfolio</th><th>Limit</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+<div><div class="sh"><span class="st">Compliance Tracker</span></div><div id="rComp"></div></div>
+</div>
+</div>
+
+<!-- ═══ DOCUMENTS ═══ -->
+<div class="pnl" id="p-docs">
+<div class="sh"><span class="st">Document Engine</span><span class="ss">Templates · Registry · E-Sign Config</span></div>
+<div class="stabs"><div class="stab act" data-st="dTpl">Templates</div><div class="stab" data-st="dReg">Registry</div><div class="stab" data-st="dAPI">E-Signature Config</div></div>
+<div class="sp act" id="s-dTpl"><div class="cg" id="docTpl"></div></div>
+<div class="sp" id="s-dReg"><div class="tw"><table id="docReg"><thead><tr><th>Document</th><th>Type</th><th>Deal</th><th>Status</th><th>Modified</th><th>Owner</th></tr></thead><tbody></tbody></table></div></div>
+<div class="sp" id="s-dAPI">
+<div class="ic" style="max-width:600px;">
+<div class="mt">Dropbox Sign API Configuration</div>
+<div class="fg">
+<div class="fgp full"><label class="fl">API Key</label><input class="fi" id="dsKey" type="password" placeholder="Enter Dropbox Sign API key"></div>
+<div class="fgp full"><label class="fl">Webhook Proxy (Zapier)</label><input class="fi" id="dsHook" placeholder="https://hooks.zapier.com/..."></div>
+</div>
+<button class="btn btn-g" onclick="saveAPIConfig()">Save Configuration</button>
+<div id="dsStatus" style="margin-top:12px;"></div>
+</div>
+</div>
+</div>
+
+<!-- ═══ CRM ═══ -->
+<div class="pnl" id="p-crm">
+<div class="sh"><span class="st">Counterparty CRM</span><span class="ss">Contacts · Relationships · Interactions</span></div>
+<div class="kpi-r" id="crKPI"></div>
+<button class="btn btn-g btn-s" onclick="oCRM()" style="margin-bottom:14px;">+ Add Contact</button>
+<div class="tw"><table id="crTbl"><thead><tr><th>Name</th><th>Organisation</th><th>Role</th><th>Type</th><th>Relationship</th><th>Last Contact</th><th>Deals</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- ═══ PEOPLE ═══ -->
+<div class="pnl" id="p-ppl">
+<div class="sh"><span class="st">People OS</span><span class="ss">Team · Contractors · Onboarding</span></div>
+<div class="kpi-r" id="ppKPI"></div>
+<div class="tw"><table id="ppTbl"><thead><tr><th>Name</th><th>Role</th><th>Type</th><th>Status</th><th>Cost/mo</th><th>Start</th><th>Utilisation</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- ═══ OPS ═══ -->
+<div class="pnl" id="p-ops">
+<div class="sh"><span class="st">Operations Hub</span><span class="ss">Tools · Sprints · Burn</span></div>
+<div class="stabs"><div class="stab act" data-st="oTls">Tool Stack</div><div class="stab" data-st="oSpr">30/60/90 Sprints</div><div class="stab" data-st="oBrn">Burn Model</div></div>
+<div class="sp act" id="s-oTls"><div class="tw"><table id="opTbl"><thead><tr><th>Tool</th><th>Category</th><th>Status</th><th>Cost/mo</th><th>Priority</th><th>Notes</th></tr></thead><tbody></tbody></table></div></div>
+<div class="sp" id="s-oSpr"><div id="opSpr"></div></div>
+<div class="sp" id="s-oBrn"><div class="kpi-r" id="opBK"></div><div class="dp"><div class="ic" id="opBB"></div><div class="ic" id="opBP"></div></div></div>
+</div>
+
+<!-- ═══ FINANCE ═══ -->
+<div class="pnl" id="p-fin">
+<div class="sh"><span class="st">Finance & Reporting</span><span class="ss">Revenue · Expense · Forecast</span></div>
+<div class="kpi-r" id="fnKPI"></div>
+<div class="dp">
+<div><div class="sh"><span class="st">Revenue Pipeline by Stage</span></div><div class="tw"><table id="fnRev"><thead><tr><th>Stage</th><th>Deals</th><th>Est. Fees</th><th>Probability</th><th>Wtd Revenue</th></tr></thead><tbody></tbody></table></div></div>
+<div><div class="sh"><span class="st">Monthly Expense Breakdown</span></div><div class="tw"><table id="fnExp"><thead><tr><th>Category</th><th>Monthly</th><th>Annual</th><th>% Total</th></tr></thead><tbody></tbody></table></div></div>
+</div>
+</div>
+
+</div></div></div>
+
+<!-- DEAL MODAL -->
+<div class="mo" id="dModal">
+<div class="md">
+<div class="mt" id="dMT">New Deal</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Deal Name</label><input class="fi" id="dmN"></div>
+<div class="fgp"><label class="fl">Structure</label><select class="fi" id="dmS"><option>Mega-Fund LBO</option><option>Growth Equity</option><option>Direct Lending</option><option>Strategic M&A</option><option>Co-Investment</option><option>Mezzanine</option><option>Distressed</option><option>Infrastructure</option></select></div>
+<div class="fgp"><label class="fl">Sector</label><select class="fi" id="dmSe"><option>Technology / SaaS</option><option>Healthcare / Life Sci</option><option>Industrials / Infra</option><option>Financial Services</option><option>Consumer / Retail</option><option>Energy / Resources</option><option>Real Estate</option><option>Business Services</option></select></div>
+<div class="fgp"><label class="fl">EV ($M)</label><input class="fi" id="dmEV" type="number"></div>
+<div class="fgp"><label class="fl">EBITDA ($M)</label><input class="fi" id="dmEB" type="number"></div>
+<div class="fgp"><label class="fl">Entry Multiple</label><input class="fi" id="dmMU" type="number" step=".5"></div>
+<div class="fgp"><label class="fl">Stage</label><select class="fi" id="dmSt"><option>Origination</option><option>Scoring</option><option>Term Sheet</option><option>IC Review</option><option>Active Diligence</option><option>Underwriting</option><option>Signing</option><option>Closed</option><option>Passed</option></select></div>
+<div class="fgp"><label class="fl">Lead</label><input class="fi" id="dmL"></div>
+<div class="fgp"><label class="fl">Target IRR (%)</label><input class="fi" id="dmIR" type="number"></div>
+<div class="fgp"><label class="fl">Target MOIC</label><input class="fi" id="dmMO" type="number" step=".1"></div>
+<div class="fgp"><label class="fl">Alliance Partner</label><select class="fi" id="dmAl"><option>None</option><option>Blackstone Strategic Partners</option><option>Apollo Credit</option><option>KKR Co-Investment</option><option>Ares Management</option><option>GIP Alliance</option><option>Oaktree Co-Invest</option></select></div>
+<div class="fgp"><label class="fl">Gross Leverage (x)</label><input class="fi" id="dmGL" type="number" step=".1"></div>
+<div class="fgp full"><label class="fl">Notes</label><textarea class="fi" id="dmNo"></textarea></div>
+</div>
+<div class="ma"><button class="btn btn-o" onclick="cDM()">Cancel</button><button class="btn btn-g" onclick="sD()">Save Deal</button></div>
+</div>
+</div>
+
+<!-- CRM MODAL -->
+<div class="mo" id="crmModal">
+<div class="md">
+<div class="mt">Add Counterparty Contact</div>
+<div class="fg">
+<div class="fgp"><label class="fl">Full Name</label><input class="fi" id="crN"></div>
+<div class="fgp"><label class="fl">Organisation</label><input class="fi" id="crO"></div>
+<div class="fgp"><label class="fl">Role / Title</label><input class="fi" id="crR"></div>
+<div class="fgp"><label class="fl">Type</label><select class="fi" id="crTp"><option>Strategic Buyer</option><option>PE Sponsor</option><option>Credit Fund</option><option>LP / Investor</option><option>Legal Counsel</option><option>Advisor</option><option>Management</option><option>Other</option></select></div>
+<div class="fgp"><label class="fl">Email</label><input class="fi" id="crEM"></div>
+<div class="fgp"><label class="fl">Phone</label><input class="fi" id="crPH"></div>
+<div class="fgp full"><label class="fl">Notes</label><textarea class="fi" id="crNt"></textarea></div>
+</div>
+<div class="ma"><button class="btn btn-o" onclick="cCRM()">Cancel</button><button class="btn btn-g" onclick="sCRM()">Save Contact</button></div>
+</div>
+</div>
+
+<div class="toast-c" id="toastC"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DATA LAYER
+// ═══════════════════════════════════════════════════════════════════
+const SK='acp_v3';
+const DD=[
+{id:1,name:"Gran Tierra Energy",structure:"Strategic M&A",sector:"Energy / Resources",ev:1200,ebitda:180,multiple:6.7,stage:"Active Diligence",lead:"JT — MD",irr:0,moic:0,alliance:"None",leverage:3.5,notes:"Program mandate. Capital restructuring + asset monetisation. LOE executed. CIM in progress."},
+{id:2,name:"TechCo Platform LBO",structure:"Mega-Fund LBO",sector:"Technology / SaaS",ev:8200,ebitda:607,multiple:13.5,stage:"IC Review",lead:"MD — TMT",irr:31,moic:3.8,alliance:"KKR Co-Investment",leverage:6.5,notes:"Flagship LBO. HC diligence complete. Management presentations Q1."},
+{id:3,name:"HC Platform Buyout",structure:"Mega-Fund LBO",sector:"Healthcare / Life Sci",ev:5500,ebitda:458,multiple:12.0,stage:"Active Diligence",lead:"MD — HC",irr:27,moic:3.2,alliance:"Blackstone Strategic Partners",leverage:6.0,notes:"Platform build strategy. 3 add-ons identified. HSR filing pending."},
+{id:4,name:"InfraCo Regulated Asset",structure:"Infrastructure",sector:"Industrials / Infra",ev:4100,ebitda:289,multiple:14.2,stage:"Term Sheet",lead:"MD — Infra",irr:22,moic:2.7,alliance:"GIP Alliance",leverage:5.5,notes:"Regulated asset. Inflation-linked revenue. Long-dated hold."},
+{id:5,name:"SaaS Growth Minority",structure:"Growth Equity",sector:"Technology / SaaS",ev:600,ebitda:27,multiple:22.0,stage:"Scoring",lead:"VP — TMT",irr:35,moic:4.1,alliance:"None",leverage:0,notes:"Rule of 40 = 68. ARR $180M growing 45% YoY."},
+{id:6,name:"RetailCo Strategic",structure:"Strategic M&A",sector:"Consumer / Retail",ev:1800,ebitda:212,multiple:8.5,stage:"Origination",lead:"MD — Consumer",irr:0,moic:0,alliance:"None",leverage:3.5,notes:"Strategic buyer mandate. Synergy thesis dominant."},
+{id:7,name:"BizServices Unitranche",structure:"Direct Lending",sector:"Business Services",ev:450,ebitda:63,multiple:7.2,stage:"Underwriting",lead:"Dir. — Credit",irr:14,moic:1.8,alliance:"Ares Management",leverage:5.5,notes:"Unitranche. SOFR+525bps. Covenant-lite. B/B+ expected."},
+{id:8,name:"Energy Transition DL",structure:"Direct Lending",sector:"Energy / Resources",ev:320,ebitda:47,multiple:6.8,stage:"Term Sheet",lead:"VP — Credit",irr:12,moic:1.65,alliance:"Apollo Credit",leverage:5.0,notes:"TLB. Renewables infra. Long-dated contract coverage 85%."},
+{id:9,name:"Blackstone Co-Invest A",structure:"Co-Investment",sector:"Industrials / Infra",ev:950,ebitda:83,multiple:11.5,stage:"Scoring",lead:"MD — All",irr:19,moic:2.3,alliance:"Blackstone Strategic Partners",leverage:5.8,notes:"Allocation review pending. 14-day ROFO window active."},
+];
+
+const DC=[
+{name:"Margaret Osei-Bonsu (Advisor)",org:"Independent",role:"Fractional CCO",type:"Advisor",rel:"Active",lastContact:"2025-03-18",deals:2},
+{name:"David Chen",org:"Blackstone",role:"Managing Director — Strategic Partners",type:"PE Sponsor",rel:"Tier 1",lastContact:"2025-03-15",deals:2},
+{name:"Sarah Patel",org:"Apollo Credit",role:"Partner — Direct Lending",type:"Credit Fund",rel:"Tier 1",lastContact:"2025-03-12",deals:1},
+{name:"James Liu",org:"KKR",role:"Director — Co-Investments",type:"PE Sponsor",rel:"Tier 1",lastContact:"2025-03-10",deals:1},
+{name:"Anna Kovacs",org:"Ares Management",role:"VP — Private Credit",type:"Credit Fund",rel:"Tier 2",lastContact:"2025-03-08",deals:1},
+{name:"Robert Thorne",org:"Gran Tierra Energy",role:"CEO",type:"Management",rel:"Active Mandate",lastContact:"2025-03-17",deals:1},
+{name:"Michelle Torres",org:"GIP",role:"Principal — Infrastructure",type:"PE Sponsor",rel:"Tier 2",lastContact:"2025-03-05",deals:1},
+{name:"Andrew Pike",org:"Herbert Smith Freehills",role:"Partner — M&A",type:"Legal Counsel",rel:"Retained",lastContact:"2025-03-14",deals:3},
+];
+
+function load(){try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}return null;}
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+let S=load()||{deals:DD,contacts:DC,nextDealId:10,nextContactId:9,activities:[],apiConfig:{}};
+if(!S.deals||!S.deals.length){S.deals=DD;S.nextDealId=10;}
+if(!S.contacts)S.contacts=DC;
+if(!S.activities)S.activities=[];
+if(!S.apiConfig)S.apiConfig={};
+
+function addAct(t){S.activities.unshift({text:t,ts:new Date().toISOString()});if(S.activities.length>50)S.activities.length=50;save();}
+
+// ═══ HELPERS ═══
+const F=(n,d=0)=>n==null||isNaN(n)?'—':Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const FM=v=>v>=1000?'$'+F(v/1000,1)+'B':'$'+F(v)+'M';
+const P=v=>F(v,1)+'%';
+const SO=['Origination','Scoring','Term Sheet','IC Review','Active Diligence','Underwriting','Signing','Closed','Passed'];
+const SB={'Origination':'bg-m','Scoring':'bg-t','Term Sheet':'bg-t','IC Review':'bg-a','Active Diligence':'bg-g','Underwriting':'bg-a','Signing':'bg-gd','Closed':'bg-g','Passed':'bg-r'};
+const FA={'Origination':{f:.015,p:.05},'Scoring':{f:.015,p:.10},'Term Sheet':{f:.015,p:.25},'IC Review':{f:.015,p:.40},'Active Diligence':{f:.015,p:.60},'Underwriting':{f:.015,p:.75},'Signing':{f:.015,p:.90},'Closed':{f:.015,p:1},'Passed':{f:0,p:0}};
+const TEAM=[
+{name:'JT',role:'Principal & Managing Director',type:'Principal',status:'Active',cost:0,start:'2024-01-01',util:100},
+{name:'Margaret Osei-Bonsu',role:'Fractional CCO',type:'Fractional',status:'Onboarding',cost:4500,start:'2025-04-01',util:0},
+{name:'Arjun Mehta',role:'Offshore IB Analyst',type:'Offshore',status:'Active',cost:2200,start:'2025-02-15',util:85},
+{name:'Priya Subramaniam',role:'CIM Associate',type:'Offshore',status:'Active',cost:2000,start:'2025-02-20',util:70},
+{name:'Vivienne Tan',role:'Virtual EA',type:'Offshore',status:'Onboarding',cost:1800,start:'2025-04-01',util:0},
+{name:'James Whitfield-Clarke',role:'Fractional CFO',type:'Fractional',status:'Onboarding',cost:5000,start:'2025-04-15',util:0},
+{name:'TBC',role:'Bookkeeper',type:'Contractor',status:'Sourcing',cost:1500,start:'TBD',util:0},
+];
+const TOOLS=[
+{name:'Claude (Anthropic)',cat:'AI / Analysis',status:'Active',cost:20,pri:'P0',notes:'Core analytical platform.'},
+{name:'Dropbox Sign',cat:'E-Signature',status:'Active',cost:15,pri:'P0',notes:'LOE execution. CORS fix via Zapier pending.'},
+{name:'Google Workspace',cat:'Productivity',status:'Active',cost:14,pri:'P0',notes:'Email, Drive, Calendar, Docs.'},
+{name:'Canva',cat:'Design',status:'Active',cost:17,pri:'P1',notes:'Pitchbook graphics, one-pagers.'},
+{name:'MadeMarket',cat:'CRM / Deals',status:'Pending',cost:49,pri:'P1',notes:'Integration pending.'},
+{name:'Linear',cat:'Project Mgmt',status:'Evaluating',cost:8,pri:'P2',notes:'Sprint tracking.'},
+{name:'Notion',cat:'Knowledge Base',status:'Active',cost:10,pri:'P1',notes:'SOPs, playbooks, internal wiki.'},
+{name:'QuickBooks Online',cat:'Accounting',status:'Pending',cost:35,pri:'P1',notes:'Awaiting CFO onboarding.'},
+{name:'Slack',cat:'Communication',status:'Active',cost:0,pri:'P1',notes:'Free tier.'},
+{name:'Zoom',cat:'Meetings',status:'Active',cost:14,pri:'P1',notes:'Client + team calls.'},
+{name:'1Password',cat:'Security',status:'Active',cost:5,pri:'P0',notes:'Credential management.'},
+{name:'Zapier',cat:'Automation',status:'Active',cost:20,pri:'P1',notes:'Webhook proxy + workflows.'},
+];
+const PARTNERS=[
+{name:"Blackstone Strategic Partners",tier:"Tier 1",type:"PE / Real Assets",committed:2500,rofo:14,fee:"1.0% mgmt / 10% carry",status:"Active"},
+{name:"Apollo Credit Syndication",tier:"Tier 1",type:"Direct Lending / CLO",committed:1800,rofo:10,fee:"0.75% origination",status:"Active"},
+{name:"KKR Co-Investment Program",tier:"Tier 1",type:"PE / Infrastructure",committed:1200,rofo:14,fee:"1.0% mgmt / 10% carry",status:"Active"},
+{name:"Ares Management — Credit",tier:"Tier 2",type:"Direct Lending",committed:750,rofo:7,fee:"0.5% origination",status:"Active"},
+{name:"GIP — Infrastructure",tier:"Tier 2",type:"Energy Transition",committed:600,rofo:14,fee:"Co-invest terms",status:"Active"},
+{name:"Oaktree Distressed Co-Invest",tier:"Tier 2",type:"Special Situations",committed:400,rofo:7,fee:"Co-invest terms",status:"Monitoring"},
+];
+const SCREENING=[
+{name:"NovaTech Systems",sector:"Technology / SaaS",ev:2400,ebitda:320,margin:22,growth:14,fit:87,status:"Active"},
+{name:"MedBridge Health",sector:"Healthcare / Life Sci",ev:1800,ebitda:230,margin:19,growth:11,fit:82,status:"Active"},
+{name:"PacificInfra Corp",sector:"Industrials / Infra",ev:3200,ebitda:410,margin:16,growth:6,fit:78,status:"Monitoring"},
+{name:"GreenVolt Energy",sector:"Energy / Resources",ev:900,ebitda:125,margin:24,growth:18,fit:91,status:"Active"},
+{name:"FinEdge Capital",sector:"Financial Services",ev:650,ebitda:95,margin:28,growth:9,fit:74,status:"Monitoring"},
+{name:"UrbanRetail Group",sector:"Consumer / Retail",ev:1100,ebitda:145,margin:13,growth:5,fit:62,status:"Passed"},
+{name:"CloudSync Platform",sector:"Technology / SaaS",ev:480,ebitda:52,margin:32,growth:42,fit:94,status:"Active"},
+{name:"ClearPath Logistics",sector:"Business Services",ev:720,ebitda:88,margin:15,growth:8,fit:71,status:"Monitoring"},
+{name:"BioGenix Pharma",sector:"Healthcare / Life Sci",ev:5200,ebitda:680,margin:21,growth:12,fit:85,status:"Active"},
+{name:"SolarEdge Assets",sector:"Energy / Resources",ev:1500,ebitda:210,margin:20,growth:22,fit:89,status:"Active"},
+];
+
+// ═══ NAV ═══
+const PT={cmd:'Command Centre',pipe:'Deal Pipeline',orig:'Deal Origination',capx:'Capital Markets & Structuring',ally:'Alliance Partners',val:'Valuations Engine',risk:'Risk & Compliance',docs:'Document Engine',crm:'Counterparty CRM',ppl:'People OS',ops:'Operations Hub',fin:'Finance & Reporting'};
+function nav(n){document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('act'));document.querySelectorAll('.ni').forEach(i=>i.classList.remove('act'));
+const el=document.getElementById('p-'+n);if(el)el.classList.add('act');document.querySelector(`.ni[data-p="${n}"]`)?.classList.add('act');
+document.getElementById('pgT').textContent=PT[n]||n;
+document.getElementById('pgM').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+rP(n);}
+document.querySelectorAll('.ni').forEach(i=>i.addEventListener('click',()=>nav(i.dataset.p)));
+document.querySelectorAll('.stab').forEach(t=>t.addEventListener('click',function(){const p=this.closest('.pnl');p.querySelectorAll('.stab').forEach(x=>x.classList.remove('act'));p.querySelectorAll('.sp').forEach(x=>x.classList.remove('act'));this.classList.add('act');const tgt=document.getElementById('s-'+this.dataset.st);if(tgt)tgt.classList.add('act');}));
+
+function toast(msg){const c=document.getElementById('toastC'),t=document.createElement('div');t.className='toast';t.innerHTML=`<span style="color:var(--gold);">◈</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3000);}
+
+// ═══ KPI helper ═══
+function KH(l,v,d,c){return `<div class="kpi"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kd ${c}">${d}</div></div>`;}
+
+// ═══ COMMAND CENTRE ═══
+function rCmd(){const ds=S.deals.filter(d=>d.stage!=='Passed'),tEV=ds.reduce((s,d)=>s+(d.ev||0),0),
+tF=ds.reduce((s,d)=>{const a=FA[d.stage]||{};return s+((d.ev||0)*(a.f||0)*(a.p||0));},0),
+ac=ds.length,cl=S.deals.filter(d=>d.stage==='Closed').length,
+ddp=ds.filter(d=>['Active Diligence','Underwriting','Signing','Closed'].includes(d.stage)).length;
+document.getElementById('ck').innerHTML=[KH('Active Mandates',ac,'+2 this month','up'),KH('Pipeline EV',FM(tEV),'Aggregate EV','fl'),KH('Wtd Fee Revenue','$'+F(tF/1000,0)+'K','Probability-weighted','up'),KH('Conversion Rate',P(ddp/Math.max(ac,1)*100),'DD+ stage','up'),KH('Contacts',S.contacts.length,'In CRM','fl')].join('');
+
+const sm={};S.deals.forEach(d=>{if(!sm[d.stage])sm[d.stage]={c:0,ev:0,f:0};sm[d.stage].c++;sm[d.stage].ev+=(d.ev||0);const a=FA[d.stage]||{};sm[d.stage].f+=(d.ev||0)*(a.f||0)*(a.p||0);});
+document.querySelector('#cStg tbody').innerHTML=SO.filter(s=>sm[s]).map(s=>{const m=sm[s];return`<tr><td><span class="bg ${SB[s]}">${s}</span></td><td>${m.c}</td><td>${FM(m.ev)}</td><td>$${F(m.f/1000,0)}K</td></tr>`;}).join('');
+
+const wd=SO.filter(s=>s!=='Passed'&&sm[s]).map(s=>({l:s.replace('Active ','').replace('Diligence','DD').substring(0,8),v:Math.round((sm[s]?.f||0)/1000)})),mx=Math.max(...wd.map(w=>w.v),1);
+document.getElementById('cWF').innerHTML=wd.map(w=>`<div class="wb" style="height:${Math.max(w.v/mx*110,4)}px;"><span class="wv">${w.v}</span><span class="wl">${w.l}</span></div>`).join('');
+
+// Action items
+const acts=[...S.deals.filter(d=>d.stage==='Active Diligence').map(d=>({d:d.name,a:'Complete diligence workstreams → IC presentation',u:'HIGH',c:'var(--red)'})),
+...S.deals.filter(d=>d.stage==='IC Review').map(d=>({d:d.name,a:'Finalize IC memo and distribute',u:'HIGH',c:'var(--red)'})),
+...S.deals.filter(d=>d.stage==='Term Sheet').map(d=>({d:d.name,a:'Negotiate and execute binding term sheet',u:'MED',c:'var(--amber)'})),
+...S.deals.filter(d=>d.stage==='Scoring'&&d.alliance!=='None').map(d=>({d:d.name,a:`ROFO window active — confirm allocation with ${(d.alliance||'').split(' ')[0]}`,u:'MED',c:'var(--amber)'}))].slice(0,8);
+document.getElementById('cAct').innerHTML=acts.length?acts.map(a=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);"><span style="font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;background:${a.c}22;color:${a.c};flex-shrink:0;">${a.u}</span><div><span style="font-weight:600;font-size:12px;color:var(--white);">${a.d}</span><span style="font-size:11px;color:var(--muted);"> — ${a.a}</span></div></div>`).join(''):'<div class="ic"><div style="color:var(--muted);">No pending action items.</div></div>';
+
+document.getElementById('cTeam').innerHTML=TEAM.map(t=>`<div style="display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--border);"><div style="width:7px;height:7px;border-radius:50%;background:${t.status==='Active'?'var(--green)':t.status==='Onboarding'?'var(--amber)':'var(--muted)'};flex-shrink:0;"></div><div style="flex:1;"><div style="font-size:12px;font-weight:500;">${t.name}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">${t.role}</div></div><span class="bg ${t.status==='Active'?'bg-g':t.status==='Onboarding'?'bg-a':'bg-m'}">${t.status}</span></div>`).join('');}
+
+// ═══ PIPELINE ═══
+let pv='kb';function tPV(){pv=pv==='kb'?'tb':'kb';document.getElementById('pKB').style.display=pv==='kb'?'flex':'none';document.getElementById('pTB').style.display=pv==='tb'?'block':'none';rPipe();}
+function rPipe(){if(pv==='kb'){document.getElementById('pKB').innerHTML=SO.map(st=>{const ds=S.deals.filter(d=>d.stage===st);return`<div class="kc"><div class="kch"><span>${st}</span><span class="ct">${ds.length}</span></div>${ds.map(d=>`<div class="kcrd" onclick="oDM(${d.id})"><div style="font-weight:600;font-size:12px;color:var(--white);">${d.name}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">${d.structure} · ${d.sector}</div><div style="font-family:var(--mono);font-size:11px;color:var(--gold);margin-top:6px;">${FM(d.ev)} · ${F(d.multiple,1)}x</div></div>`).join('')}</div>`;}).join('');}else{document.querySelector('#pTI tbody').innerHTML=S.deals.map(d=>`<tr><td style="font-weight:600;color:var(--white);cursor:pointer;" onclick="oDM(${d.id})">${d.name}</td><td>${d.structure}</td><td>${d.sector}</td><td style="font-family:var(--mono);">${FM(d.ev)}</td><td style="font-family:var(--mono);">$${F(d.ebitda)}M</td><td style="font-family:var(--mono);">${F(d.multiple,1)}x</td><td><span class="bg ${SB[d.stage]}">${d.stage}</span></td><td>${d.lead}</td><td><button class="btn btn-o btn-s" onclick="oDM(${d.id})">Edit</button> <button class="btn btn-s" style="color:var(--red);border:1px solid var(--red-d);" onclick="delD(${d.id})">×</button></td></tr>`).join('');}}
+
+// Deal Modal
+let eID=null;
+function oDM(id){eID=id||null;document.getElementById('dMT').textContent=id?'Edit Deal':'New Deal';
+if(id){const d=S.deals.find(x=>x.id===id);if(d){document.getElementById('dmN').value=d.name;document.getElementById('dmS').value=d.structure;document.getElementById('dmSe').value=d.sector;document.getElementById('dmEV').value=d.ev;document.getElementById('dmEB').value=d.ebitda;document.getElementById('dmMU').value=d.multiple;document.getElementById('dmSt').value=d.stage;document.getElementById('dmL').value=d.lead;document.getElementById('dmIR').value=d.irr;document.getElementById('dmMO').value=d.moic;document.getElementById('dmAl').value=d.alliance||'None';document.getElementById('dmGL').value=d.leverage||'';document.getElementById('dmNo').value=d.notes;}}
+else{['dmN','dmEV','dmEB','dmMU','dmL','dmIR','dmMO','dmGL','dmNo'].forEach(id=>document.getElementById(id).value='');}
+document.getElementById('dModal').classList.add('open');}
+function cDM(){document.getElementById('dModal').classList.remove('open');eID=null;}
+function sD(){const d={name:document.getElementById('dmN').value||'Unnamed',structure:document.getElementById('dmS').value,sector:document.getElementById('dmSe').value,ev:parseFloat(document.getElementById('dmEV').value)||0,ebitda:parseFloat(document.getElementById('dmEB').value)||0,multiple:parseFloat(document.getElementById('dmMU').value)||0,stage:document.getElementById('dmSt').value,lead:document.getElementById('dmL').value||'TBD',irr:parseFloat(document.getElementById('dmIR').value)||0,moic:parseFloat(document.getElementById('dmMO').value)||0,alliance:document.getElementById('dmAl').value,leverage:parseFloat(document.getElementById('dmGL').value)||0,notes:document.getElementById('dmNo').value};
+if(eID){const i=S.deals.findIndex(x=>x.id===eID);if(i>=0){S.deals[i]={...S.deals[i],...d};addAct('Updated: '+d.name);}}else{d.id=S.nextDealId++;S.deals.push(d);addAct('New deal: '+d.name);}
+save();cDM();rPipe();rCmd();toast('Deal saved: '+d.name);}
+function delD(id){if(!confirm('Delete this deal?'))return;const d=S.deals.find(x=>x.id===id);S.deals=S.deals.filter(x=>x.id!==id);if(d)addAct('Deleted: '+d.name);save();rPipe();rCmd();}
+
+// ═══ ORIGINATION ═══
+function rOrig(){const sec=document.getElementById('oSec').value,evR=document.getElementById('oEV').value;
+let f=SCREENING;if(sec)f=f.filter(t=>t.sector===sec);if(evR){const[lo,hi]=evR.split('-').map(Number);f=f.filter(t=>t.ev>=lo&&t.ev<=(hi||999999));}
+document.querySelector('#oTbl tbody').innerHTML=f.map(t=>`<tr><td style="font-weight:600;color:var(--white);">${t.name}</td><td>${t.sector}</td><td style="font-family:var(--mono);">${FM(t.ev)}</td><td style="font-family:var(--mono);">$${F(t.ebitda)}M</td><td style="font-family:var(--mono);">${P(t.margin)}</td><td style="font-family:var(--mono);color:${t.growth>15?'var(--green)':'var(--ice)'};">${P(t.growth)}</td><td><div style="display:flex;align-items:center;gap:6px;"><div class="pb" style="width:50px;"><div class="pf" style="width:${t.fit}%;background:${t.fit>85?'var(--green)':t.fit>70?'var(--amber)':'var(--red)'}"></div></div><span style="font-family:var(--mono);font-size:10px;">${t.fit}</span></div></td><td><span class="bg ${t.status==='Active'?'bg-g':t.status==='Monitoring'?'bg-a':'bg-r'}">${t.status}</span></td></tr>`).join('');
+const fcts=['Market Size','Growth Trajectory','EBITDA Margin Quality','Revenue Durability','Competitive Moat','Management Team','Capital Efficiency','Regulatory Risk (Inv)','Txn Feasibility','Exit Optionality'];
+document.getElementById('scG').innerHTML=fcts.map(f=>`<div style="display:flex;align-items:center;gap:8px;"><label style="font-size:11px;width:150px;flex-shrink:0;">${f}</label><input type="range" min="1" max="10" value="${5+Math.floor(Math.random()*4)}" style="flex:1;accent-color:var(--gold);" oninput="uSC()"><span style="font-family:var(--mono);font-size:11px;width:20px;text-align:right;color:var(--gold);" class="sv">${5+Math.floor(Math.random()*4)}</span></div>`).join('');uSC();
+document.getElementById('oTgts').innerHTML=SCREENING.filter(t=>t.fit>=80).map(t=>`<div class="ic"><div style="font-weight:600;font-size:13px;color:var(--white);margin-bottom:4px;">${t.name}</div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:8px;">${t.sector} · ${FM(t.ev)}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-family:var(--mono);font-size:10px;"><div>EBITDA <span style="color:var(--gold);">$${F(t.ebitda)}M</span></div><div>Margin <span style="color:var(--gold);">${P(t.margin)}</span></div><div>Growth <span style="color:var(--green);">${P(t.growth)}</span></div><div>Fit <span style="color:var(--gold);">${t.fit}/100</span></div></div></div>`).join('');}
+function uSC(){const r=document.querySelectorAll('#scG input[type="range"]'),v=document.querySelectorAll('#scG .sv');let t=0;r.forEach((x,i)=>{v[i].textContent=x.value;t+=parseInt(x.value);});document.getElementById('scT').textContent=t;}
+
+// ═══ CAPITAL MARKETS — LBO ═══
+function rLBO(){const eb=parseFloat(document.getElementById('lE').value)||500,em=parseFloat(document.getElementById('lM').value)||12,eq=parseFloat(document.getElementById('lQ').value)||40,h=parseInt(document.getElementById('lH').value)||5,g=parseFloat(document.getElementById('lG').value)||8,xm=parseFloat(document.getElementById('lX').value)||11,sr=parseFloat(document.getElementById('lSR').value)||5.5,sb=parseFloat(document.getElementById('lSB').value)||9;
+const eEV=eb*em,eqA=eEV*(eq/100),tD=eEV-eqA,sD=tD*.7,subD=tD*.3;let rows=[],dBal=tD;
+for(let y=1;y<=h;y++){const e2=eb*Math.pow(1+g/100,y),int=sD*(sr/100)*Math.max(0,1-(y-1)*.05)+subD*(sb/100),tx=(e2-int)*.25,cx=e2*.06,fcf=e2-int-tx-cx,am=Math.min(fcf*.5,dBal);dBal=Math.max(0,dBal-am);rows.push({y,eb:e2,int,fcf,dBal});}
+const xEB=eb*Math.pow(1+g/100,h),xEV=xEB*xm,xEq=Math.max(0,xEV-dBal),moic=xEq/eqA,irr=(Math.pow(moic,1/h)-1)*100;
+document.getElementById('lOut').innerHTML=`<div class="fl" style="margin-bottom:12px;">MODEL OUTPUT</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">${[['Entry EV',FM(eEV)],['Equity Check',FM(eqA)],['Total Debt',FM(tD)],['Sr Debt',FM(sD)],['Exit EBITDA',FM(xEB)],['Exit EV',FM(xEV)],['Exit Equity',FM(xEq)],['Residual Debt',FM(dBal)]].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-size:11px;color:var(--muted);">${l}</span><span style="font-family:var(--mono);font-size:12px;color:var(--white);">${v}</span></div>`).join('')}</div>
+<div style="display:flex;gap:20px;padding:14px;background:var(--gold-pale);border:1px solid var(--gold-dim);border-radius:var(--r);">
+<div style="text-align:center;"><div style="font-family:var(--serif);font-size:30px;color:var(--gold);">${F(moic,2)}x</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">MOIC</div></div>
+<div style="text-align:center;"><div style="font-family:var(--serif);font-size:30px;color:${irr>=20?'var(--green)':'var(--amber)'};">${P(irr)}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">IRR</div></div>
+<div style="text-align:center;"><div style="font-family:var(--serif);font-size:30px;color:var(--ice);">${h}yr</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">HOLD</div></div></div>
+<table style="width:100%;margin-top:14px;"><thead><tr><th>Year</th><th>EBITDA</th><th>Interest</th><th>FCF</th><th>Debt Bal</th></tr></thead><tbody>${rows.map(r=>`<tr><td>Y${r.y}</td><td style="font-family:var(--mono);">$${F(r.eb)}M</td><td style="font-family:var(--mono);">$${F(r.int)}M</td><td style="font-family:var(--mono);color:${r.fcf>0?'var(--green)':'var(--red)'};">$${F(r.fcf)}M</td><td style="font-family:var(--mono);">$${F(r.dBal)}M</td></tr>`).join('')}</tbody></table>`;
+// Sensitivity
+const xms=[xm-2,xm-1,xm,xm+1,xm+2],grs=[g-4,g-2,g,g+2,g+4];let sH=`<div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:8px;">IRR: Exit Multiple (→) vs EBITDA Growth (↓)</div><table style="width:100%;"><thead><tr><th></th>${xms.map(m=>`<th>${F(m,1)}x</th>`).join('')}</tr></thead><tbody>`;
+grs.forEach(gr=>{sH+=`<tr><td style="font-weight:600;">${P(gr)}</td>`;xms.forEach(m=>{const e2=eb*Math.pow(1+gr/100,h),ev2=e2*m,eq2=Math.max(0,ev2-dBal),mc=eq2/eqA,ir=(Math.pow(Math.max(mc,.01),1/h)-1)*100,cl=ir>=25?'var(--green)':ir>=15?'var(--amber)':'var(--red)';sH+=`<td style="font-family:var(--mono);color:${cl};text-align:center;">${P(ir)}</td>`;});sH+=`</tr>`;});
+sH+=`</tbody></table>`;document.getElementById('lSens').innerHTML=sH;}
+
+// IC Memo
+function rIC(){const t=document.getElementById('icT').value||'Target Co',tx=document.getElementById('icTx').value,ev=parseFloat(document.getElementById('icEV').value)||0,eb=parseFloat(document.getElementById('icEB').value)||0,eq=parseFloat(document.getElementById('icEQ').value)||0,ir=parseFloat(document.getElementById('icIR').value)||0,th=document.getElementById('icTH').value||'Not specified',rk=document.getElementById('icRK').value||'Not specified',mu=eb?(ev/eb).toFixed(1):'—';
+document.getElementById('icOut').innerHTML=`<div class="ic" style="border-color:var(--gold-dim);"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;"><div><div style="font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;">CONFIDENTIAL — INVESTMENT COMMITTEE MEMORANDUM</div><div style="font-family:var(--serif);font-size:20px;color:var(--white);margin-top:4px;">${t}</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">${new Date().toLocaleDateString('en-AU')}</div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px;background:var(--bg);border-radius:var(--r);margin-bottom:18px;">${[['Transaction',tx],['Enterprise Value',FM(ev)],['EBITDA',FM(eb)],['EV/EBITDA',mu+'x'],['Equity Check',FM(eq)],['Target IRR',P(ir)],['Leverage','TBD'],['Hold','TBD']].map(([l,v])=>`<div><div style="font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;">${l}</div><div style="font-family:var(--mono);font-size:13px;color:var(--gold);margin-top:2px;">${v}</div></div>`).join('')}</div>
+<div style="margin-bottom:14px;"><div class="fl" style="margin-bottom:6px;">INVESTMENT THESIS</div><div style="font-size:12px;line-height:1.7;">${th}</div></div>
+<div style="margin-bottom:14px;"><div class="fl" style="margin-bottom:6px;">KEY RISKS & MITIGANTS</div><div style="font-size:12px;line-height:1.7;">${rk}</div></div>
+<div style="padding:10px 14px;background:var(--gold-pale);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;"><div class="fl" style="margin-bottom:4px;color:var(--gold);">RECOMMENDATION</div><div style="font-size:12px;">Proceed to Active Diligence. Commission third-party commercial, financial, and legal workstreams.</div></div></div>`;
+addAct('IC Memo drafted: '+t);save();}
+
+// Debt Structuring
+function rDebt(){const ev=parseFloat(document.getElementById('dEV').value)||2000,eb=parseFloat(document.getElementById('dEB').value)||250,rc=parseFloat(document.getElementById('dRC').value)||0,ta=parseFloat(document.getElementById('dTA').value)||0,tb=parseFloat(document.getElementById('dTB').value)||0,mz=parseFloat(document.getElementById('dMZ').value)||0,sr=parseFloat(document.getElementById('dSR').value)||5.5,mr=parseFloat(document.getElementById('dMR').value)||10;
+const tD=rc+ta+tb+mz,eq=ev-tD,sD=rc+ta+tb,gL=eb?tD/eb:0,sL=eb?sD/eb:0,iE=sD*(sr/100)+mz*(mr/100),iC=iE?eb/iE:0,dscr=iE?(eb*.75)/(iE+tD*.05):0,ltv=ev?tD/ev*100:0,wc=tD?(sD*sr+mz*mr)/tD:0;
+document.getElementById('dOut').innerHTML=`<div class="fl" style="margin-bottom:12px;">STRUCTURE ANALYSIS</div>
+<div style="margin-bottom:14px;">${[['Total EV',FM(ev)],['Total Debt',FM(tD)],['Equity',FM(eq)],['Sr Secured',FM(sD)],['Mezzanine',FM(mz)]].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;"><span style="color:var(--muted);">${l}</span><span style="font-family:var(--mono);color:var(--white);">${v}</span></div>`).join('')}</div>
+<div class="fl" style="margin-bottom:8px;color:var(--gold);">CREDIT METRICS</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">${[['Gross Leverage',F(gL,1)+'x',gL<=6],['Sr Leverage',F(sL,1)+'x',sL<=4.5],['Interest Coverage',F(iC,1)+'x',iC>=2],['DSCR',F(dscr,2)+'x',dscr>=1.2],['LTV',P(ltv),ltv<=70],['Wtd Cost of Debt',P(wc),wc<=8]].map(([l,v,ok])=>`<div style="padding:8px;background:var(--bg);border-radius:var(--r);border-left:3px solid ${ok?'var(--green)':'var(--red)'};"><div style="font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;">${l}</div><div style="font-family:var(--serif);font-size:18px;color:${ok?'var(--green)':'var(--red)'};">${v}</div></div>`).join('')}</div>`;}
+
+// ═══ ALLIANCE PARTNERS ═══
+function rAlly(){const alD=S.deals.filter(d=>d.alliance&&d.alliance!=='None'),tC=PARTNERS.reduce((s,p)=>s+p.committed,0);
+document.getElementById('alKPI').innerHTML=[KH('Alliance Partners',PARTNERS.length,'3 Tier 1 · 3 Tier 2','fl'),KH('Committed AUM',FM(tC),'Partner capital available','up'),KH('Active Co-Invests',alD.length,'With ROFO active','fl'),KH('Avg ROFO Window',F(PARTNERS.reduce((s,p)=>s+p.rofo,0)/PARTNERS.length,0)+' days','Exclusivity period','fl')].join('');
+document.getElementById('alCards').innerHTML=PARTNERS.map(p=>{const tc=p.tier==='Tier 1'?'var(--gold)':'var(--teal)';return`<div class="ic" style="border-left:3px solid ${tc};"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="font-weight:600;font-size:13px;color:var(--white);">${p.name}</div><span class="bg ${p.tier==='Tier 1'?'bg-gd':'bg-t'}">${p.tier}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-family:var(--mono);font-size:10px;"><div>Type <span style="color:var(--ice);">${p.type}</span></div><div>Committed <span style="color:var(--gold);">${FM(p.committed)}</span></div><div>ROFO <span style="color:var(--amber);">${p.rofo}d</span></div><div>Fee <span style="color:var(--ice);">${p.fee}</span></div></div></div>`;}).join('');
+document.querySelector('#alDeals tbody').innerHTML=alD.map(d=>`<tr><td style="font-weight:600;color:var(--white);">${d.name}</td><td>${d.alliance}</td><td>${d.structure}</td><td style="font-family:var(--mono);">${FM(d.ev)}</td><td><span class="bg ${SB[d.stage]}">${d.stage}</span></td><td><span class="bg bg-a">Active</span></td></tr>`).join('');}
+
+// ═══ VALUATIONS ═══
+function rDCF(){const eb=parseFloat(document.getElementById('dcE').value)||300,rg=parseFloat(document.getElementById('dcRG').value)||6,mg=parseFloat(document.getElementById('dcMG').value)||25,tx=parseFloat(document.getElementById('dcTX').value)||25,cx=parseFloat(document.getElementById('dcCX').value)||4,wc=parseFloat(document.getElementById('dcWC').value)||9.5,tg=parseFloat(document.getElementById('dcTG').value)||2.5,nd=parseFloat(document.getElementById('dcND').value)||800;
+const bR=eb/(mg/100);let pv=0,lU=0,rows=[];
+for(let y=1;y<=5;y++){const rv=bR*Math.pow(1+rg/100,y),e2=rv*(mg/100),da=rv*.03,ebit=e2-da,nopat=ebit*(1-tx/100),cp=rv*(cx/100),nwc=rv*.02,ufcf=nopat+da-cp-nwc,disc=Math.pow(1+wc/100,y),pvU=ufcf/disc;pv+=pvU;lU=ufcf;rows.push({y,rv,e2,ufcf,pvU});}
+const tv=lU*(1+tg/100)/(wc/100-tg/100),pvTV=tv/Math.pow(1+wc/100,5),evC=pv+pvTV,eqV=evC-nd;
+document.getElementById('dcOut').innerHTML=`<div class="fl" style="margin-bottom:12px;">DCF OUTPUT</div>
+<div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+<div style="text-align:center;padding:12px 18px;background:var(--gold-pale);border:1px solid var(--gold-dim);border-radius:var(--r);"><div style="font-family:var(--serif);font-size:26px;color:var(--gold);">${FM(evC)}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">Enterprise Value</div></div>
+<div style="text-align:center;padding:12px 18px;background:var(--green-d);border:1px solid rgba(45,189,138,.3);border-radius:var(--r);"><div style="font-family:var(--serif);font-size:26px;color:var(--green);">${FM(eqV)}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">Equity Value</div></div></div>
+${[['PV of CFs',FM(pv)],['Terminal Value',FM(tv)],['PV of TV',FM(pvTV)],['TV % of EV',P(pvTV/evC*100)],['Net Debt',FM(nd)]].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;"><span style="color:var(--muted);">${l}</span><span style="font-family:var(--mono);color:var(--white);">${v}</span></div>`).join('')}
+<table style="width:100%;margin-top:12px;"><thead><tr><th>Yr</th><th>Revenue</th><th>EBITDA</th><th>UFCF</th><th>PV(UFCF)</th></tr></thead><tbody>${rows.map(r=>`<tr><td>Y${r.y}</td><td style="font-family:var(--mono);">$${F(r.rv)}M</td><td style="font-family:var(--mono);">$${F(r.e2)}M</td><td style="font-family:var(--mono);">$${F(r.ufcf)}M</td><td style="font-family:var(--mono);color:var(--green);">$${F(r.pvU)}M</td></tr>`).join('')}</tbody></table>`;}
+
+function rComps(){const c=[{n:"ServiceNow",ev:195,rv:9.8,eb:3200,er:19.9,ee:60.9,pe:62,g:22,m:33},{n:"Workday",ev:72,rv:7.3,eb:1800,er:9.9,ee:40.0,pe:45,g:17,m:25},{n:"Datadog",ev:42,rv:2.4,eb:580,er:17.5,ee:72.4,pe:85,g:26,m:24},{n:"CrowdStrike",ev:88,rv:3.9,eb:900,er:22.6,ee:97.8,pe:110,g:33,m:23},{n:"Palo Alto",ev:120,rv:7.5,eb:2100,er:16.0,ee:57.1,pe:55,g:15,m:28},{n:"Fortinet",ev:58,rv:5.6,eb:1700,er:10.4,ee:34.1,pe:38,g:12,m:30}];
+document.querySelector('#cmpT tbody').innerHTML=c.map(x=>`<tr><td style="font-weight:600;color:var(--white);">${x.n}</td><td style="font-family:var(--mono);">$${F(x.ev)}B</td><td style="font-family:var(--mono);">$${F(x.rv,1)}B</td><td style="font-family:var(--mono);">$${F(x.eb)}M</td><td style="font-family:var(--mono);">${F(x.er,1)}x</td><td style="font-family:var(--mono);">${F(x.ee,1)}x</td><td style="font-family:var(--mono);">${F(x.pe,1)}x</td><td style="font-family:var(--mono);color:var(--green);">${P(x.g)}</td><td style="font-family:var(--mono);">${P(x.m)}</td></tr>`).join('');
+const ae=c.reduce((s,x)=>s+x.ee,0)/c.length,me=[...c.map(x=>x.ee)].sort((a,b)=>a-b)[3],ar=c.reduce((s,x)=>s+x.er,0)/c.length;
+document.getElementById('cmpS').innerHTML=`<div class="fl" style="margin-bottom:8px;">COMP SUMMARY</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-family:var(--mono);font-size:8px;color:var(--muted);">Mean EV/EBITDA</div><div style="font-family:var(--serif);font-size:20px;color:var(--gold);">${F(ae,1)}x</div></div><div><div style="font-family:var(--mono);font-size:8px;color:var(--muted);">Median EV/EBITDA</div><div style="font-family:var(--serif);font-size:20px;color:var(--gold);">${F(me,1)}x</div></div><div><div style="font-family:var(--mono);font-size:8px;color:var(--muted);">Mean EV/Revenue</div><div style="font-family:var(--serif);font-size:20px;color:var(--gold);">${F(ar,1)}x</div></div></div>`;}
+
+function rPrec(){const p=[{d:"2024-Q4",t:"Synopsys / Ansys",a:"Synopsys",ev:35000,ee:42.0,er:14.8,pr:29},{d:"2024-Q3",t:"Juniper Networks",a:"HPE",ev:14000,ee:22.5,er:2.5,pr:32},{d:"2024-Q2",t:"HashiCorp",a:"IBM",ev:6400,ee:0,er:10.2,pr:44},{d:"2024-Q1",t:"Hess Corp",a:"Chevron",ev:60000,ee:8.5,er:4.2,pr:10},{d:"2023-Q4",t:"Splunk",a:"Cisco",ev:28000,ee:55.0,er:7.0,pr:31},{d:"2023-Q3",t:"Albertsons",a:"Kroger",ev:25000,ee:8.2,er:0.4,pr:18},{d:"2023-Q2",t:"Broadcom/VMware",a:"Broadcom",ev:69000,ee:25.0,er:5.2,pr:48}];
+document.querySelector('#prcT tbody').innerHTML=p.map(x=>`<tr><td style="font-family:var(--mono);">${x.d}</td><td style="font-weight:600;color:var(--white);">${x.t}</td><td>${x.a}</td><td style="font-family:var(--mono);">${FM(x.ev)}</td><td style="font-family:var(--mono);">${x.ee?F(x.ee,1)+'x':'NM'}</td><td style="font-family:var(--mono);">${F(x.er,1)}x</td><td style="font-family:var(--mono);color:var(--green);">${P(x.pr)}</td></tr>`).join('');}
+
+// ═══ RISK ═══
+function rRisk(){const ds=S.deals.filter(d=>d.stage!=='Passed'),tX=ds.reduce((s,d)=>s+(d.ev||0),0),sc={};ds.forEach(d=>{if(!sc[d.sector])sc[d.sector]=0;sc[d.sector]+=(d.ev||0);});
+const mx=Math.max(...Object.values(sc)),mp=tX?mx/tX*100:0,am=ds.reduce((s,d)=>s+(d.multiple||0),0)/Math.max(ds.length,1);
+document.getElementById('rKPI').innerHTML=[KH('Total Exposure',FM(tX),'All active mandates','fl'),KH('Max Sector Conc.',P(mp),'Limit 40%',mp<=40?'up':'dn'),KH('Avg Entry Multiple',F(am,1)+'x','Portfolio-weighted','fl'),KH('Risk Items','3','Requires attention','dn')].join('');
+document.querySelector('#rConc tbody').innerHTML=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,e])=>{const p=tX?e/tX*100:0,ok=p<=40;return`<tr><td>${s}</td><td style="font-family:var(--mono);">${FM(e)}</td><td style="font-family:var(--mono);">${P(p)}</td><td style="font-family:var(--mono);">40%</td><td><span class="bg ${ok?'bg-g':'bg-r'}">${ok?'Within':'Breach'}</span></td></tr>`;}).join('');
+document.getElementById('rComp').innerHTML=[{i:'KYC / AML Checks',s:'Complete',d:'Gran Tierra Energy'},{i:'Conflicts Clearance',s:'Pending',d:'TechCo Platform LBO'},{i:'Regulatory Filing (HSR)',s:'In Progress',d:'HC Platform Buyout'},{i:'NDA Execution',s:'Complete',d:'All Active Mandates'},{i:'FIRB Review',s:'Not Required',d:'InfraCo'},{i:'Legal Counsel Review',s:'Pending',d:'16 Document Templates'}].map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);"><div><div style="font-size:12px;font-weight:500;">${c.i}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">${c.d}</div></div><span class="bg ${c.s==='Complete'?'bg-g':c.s==='Pending'?'bg-a':c.s==='In Progress'?'bg-t':'bg-m'}">${c.s}</span></div>`).join('');}
+
+// ═══ DOCUMENTS ═══
+function rDocs(){const tpl=[{n:'Confidential Information Memorandum',c:'CIM',ct:3},{n:'Letter of Engagement',c:'LOE',ct:2},{n:'Program Mandate Pitchbook',c:'PITCH',ct:1},{n:'Investment Committee Memo',c:'IC',ct:4},{n:'Term Sheet',c:'TS',ct:2},{n:'Share Purchase Agreement',c:'SPA',ct:0},{n:'Shareholders Agreement',c:'SHA',ct:0},{n:'Board Presentation',c:'BOARD',ct:1},{n:'Credit Committee Memo',c:'CREDIT',ct:1},{n:'Management Presentation',c:'MGMT',ct:0},{n:'Data Room Index',c:'DR',ct:1},{n:'Financial Model Package',c:'MODEL',ct:2},{n:'NDA / Confidentiality',c:'NDA',ct:5},{n:'Fee Letter',c:'FEE',ct:1},{n:'Mandate Letter',c:'MANDATE',ct:2},{n:'Side Letter',c:'SIDE',ct:0}];
+document.getElementById('docTpl').innerHTML=tpl.map(t=>`<div class="ic"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span class="bg bg-gd">${t.c}</span><span style="font-family:var(--mono);font-size:9px;color:var(--muted);">${t.ct} generated</span></div><div style="font-weight:600;font-size:12px;color:var(--white);">${t.n}</div></div>`).join('');
+const reg=[{n:'Gran Tierra — Program Mandate Pitchbook',t:'PITCH',d:'Gran Tierra Energy',s:'Final',m:'2025-03-15',o:'JT'},{n:'Gran Tierra — Letter of Engagement',t:'LOE',d:'Gran Tierra Energy',s:'Executed',m:'2025-03-12',o:'JT'},{n:'Gran Tierra — Annex A–H + Schedules',t:'LOE',d:'Gran Tierra Energy',s:'Final',m:'2025-03-12',o:'JT'},{n:'TechCo — IC Memo v2',t:'IC',d:'TechCo Platform LBO',s:'Draft',m:'2025-03-10',o:'Arjun M.'},{n:'HC Platform — CIM Draft',t:'CIM',d:'HC Platform Buyout',s:'In Review',m:'2025-03-08',o:'Priya S.'},{n:'BizServices — Credit Memo',t:'CREDIT',d:'BizServices Unitranche',s:'Final',m:'2025-03-05',o:'JT'}];
+document.querySelector('#docReg tbody').innerHTML=reg.map(d=>`<tr><td style="font-weight:500;color:var(--white);">${d.n}</td><td><span class="bg bg-gd">${d.t}</span></td><td>${d.d}</td><td><span class="bg ${d.s==='Final'||d.s==='Executed'?'bg-g':d.s==='Draft'?'bg-m':'bg-a'}">${d.s}</span></td><td style="font-family:var(--mono);font-size:11px;">${d.m}</td><td>${d.o}</td></tr>`).join('');
+// API config
+if(S.apiConfig.key)document.getElementById('dsKey').value=S.apiConfig.key;
+if(S.apiConfig.hook)document.getElementById('dsHook').value=S.apiConfig.hook;}
+function saveAPIConfig(){S.apiConfig={key:document.getElementById('dsKey').value,hook:document.getElementById('dsHook').value};save();document.getElementById('dsStatus').innerHTML=`<div style="padding:8px 12px;background:var(--green-d);border:1px solid rgba(45,189,138,.3);border-radius:var(--r);font-size:12px;color:var(--green);">Configuration saved to localStorage.</div>`;toast('API config saved');}
+
+// ═══ CRM ═══
+function rCRM(){document.getElementById('crKPI').innerHTML=[KH('Total Contacts',S.contacts.length,'In database','fl'),KH('PE Sponsors',S.contacts.filter(c=>c.type==='PE Sponsor').length,'Active relationships','fl'),KH('Credit Funds',S.contacts.filter(c=>c.type==='Credit Fund').length,'Capital partners','fl'),KH('Legal Counsel',S.contacts.filter(c=>c.type==='Legal Counsel').length,'Retained advisors','fl')].join('');
+document.querySelector('#crTbl tbody').innerHTML=S.contacts.map(c=>`<tr><td style="font-weight:600;color:var(--white);">${c.name}</td><td>${c.org}</td><td>${c.role}</td><td><span class="bg ${c.type.includes('PE')?'bg-gd':c.type.includes('Credit')?'bg-t':c.type==='Legal Counsel'?'bg-a':'bg-m'}">${c.type}</span></td><td style="font-family:var(--mono);font-size:10px;">${c.rel}</td><td style="font-family:var(--mono);font-size:11px;">${c.lastContact}</td><td style="font-family:var(--mono);">${c.deals}</td></tr>`).join('');}
+function oCRM(){document.getElementById('crmModal').classList.add('open');}
+function cCRM(){document.getElementById('crmModal').classList.remove('open');}
+function sCRM(){const c={name:document.getElementById('crN').value||'Unknown',org:document.getElementById('crO').value||'',role:document.getElementById('crR').value||'',type:document.getElementById('crTp').value,rel:'New',lastContact:new Date().toISOString().split('T')[0],deals:0};S.contacts.push(c);save();cCRM();rCRM();toast('Contact added: '+c.name);}
+
+// ═══ PEOPLE ═══
+function rPpl(){const a=TEAM.filter(t=>t.status==='Active').length,ob=TEAM.filter(t=>t.status==='Onboarding').length,tc=TEAM.reduce((s,t)=>s+t.cost,0);
+document.getElementById('ppKPI').innerHTML=[KH('Team Size',TEAM.length,a+' active, '+ob+' onboarding','up'),KH('Monthly Team Cost','$'+F(tc),'Fractional + offshore','fl'),KH('FTE Equivalent','4.2','At ~15% bulge bracket cost','up'),KH('Avg Utilisation',P(TEAM.filter(t=>t.util>0).reduce((s,t)=>s+t.util,0)/Math.max(TEAM.filter(t=>t.util>0).length,1)),'Active members','fl')].join('');
+document.querySelector('#ppTbl tbody').innerHTML=TEAM.map(t=>`<tr><td style="font-weight:500;color:var(--white);">${t.name}</td><td>${t.role}</td><td><span class="bg ${t.type==='Principal'?'bg-gd':t.type==='Fractional'?'bg-t':'bg-m'}">${t.type}</span></td><td><span class="bg ${t.status==='Active'?'bg-g':t.status==='Onboarding'?'bg-a':'bg-m'}">${t.status}</span></td><td style="font-family:var(--mono);">${t.cost?'$'+F(t.cost):'—'}</td><td style="font-family:var(--mono);">${t.start}</td><td><div style="display:flex;align-items:center;gap:6px;"><div class="pb" style="width:50px;"><div class="pf" style="width:${t.util}%;background:${t.util>=70?'var(--green)':t.util>0?'var(--amber)':'var(--border)'}"></div></div><span style="font-family:var(--mono);font-size:10px;">${t.util}%</span></div></td></tr>`).join('');}
+
+// ═══ OPERATIONS ═══
+function rOps(){document.querySelector('#opTbl tbody').innerHTML=TOOLS.map(t=>`<tr><td style="font-weight:500;color:var(--white);">${t.name}</td><td>${t.cat}</td><td><span class="bg ${t.status==='Active'?'bg-g':t.status==='Pending'?'bg-a':'bg-t'}">${t.status}</span></td><td style="font-family:var(--mono);">$${F(t.cost)}/mo</td><td><span class="bg ${t.pri==='P0'?'bg-r':t.pri==='P1'?'bg-a':'bg-m'}">${t.pri}</span></td><td style="font-size:11px;color:var(--muted);white-space:normal;max-width:200px;">${t.notes}</td></tr>`).join('');
+const sprints=[{n:'30-Day Sprint',p:'Phase 0 — Foundation',items:[{t:'Execute Gran Tierra LOE',d:1},{t:'Onboard Arjun + Priya',d:1},{t:'Deploy Command Centre v3',d:1},{t:'Activate core tool stack',d:1},{t:'Complete Gran Tierra Pitchbook',d:1},{t:'Establish doc template library',d:0}]},{n:'60-Day Sprint',p:'Phase 0 — Acceleration',items:[{t:'Onboard Margaret (CCO) + Vivienne (EA)',d:0},{t:'MadeMarket CRM integration',d:0},{t:'Legal review — 16 templates',d:0},{t:'3 additional mandates',d:0},{t:'Dropbox Sign CORS fix',d:0},{t:'First revenue event ($25K+)',d:0}]},{n:'90-Day Sprint',p:'Phase 0 → Phase 1',items:[{t:'Onboard James (CFO) + Bookkeeper',d:0},{t:'$500K ARR gate assessment',d:0},{t:'QuickBooks + reporting live',d:0},{t:'5+ active mandates with fee visibility',d:0},{t:'Full platform operational',d:0},{t:'Phase 1 scaling plan',d:0}]}];
+document.getElementById('opSpr').innerHTML=sprints.map(s=>{const dn=s.items.filter(i=>i.d).length,tt=s.items.length,pc=Math.round(dn/tt*100);return`<div class="ic" style="margin-bottom:14px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div><div style="font-weight:600;font-size:14px;color:var(--white);">${s.n}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);">${s.p}</div></div><div style="font-family:var(--mono);font-size:12px;color:var(--gold);">${dn}/${tt} (${pc}%)</div></div><div class="pb" style="margin-bottom:10px;"><div class="pf" style="width:${pc}%;background:var(--gold);"></div></div>${s.items.map(i=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;"><span style="color:${i.d?'var(--green)':'var(--muted)'};">${i.d?'✓':'○'}</span><span style="${i.d?'text-decoration:line-through;color:var(--muted);':''}">${i.t}</span></div>`).join('')}</div>`;}).join('');
+// Burn
+const tc=TEAM.reduce((s,t)=>s+t.cost,0),tlc=TOOLS.reduce((s,t)=>s+t.cost,0),tot=tc+tlc+500,fte=85000,sv=fte-tot;
+document.getElementById('opBK').innerHTML=[KH('Monthly Burn','$'+F(tot),'Team + Tools + Misc','fl'),KH('Annual Run-Rate','$'+F(tot*12),'Current trajectory','fl'),KH('FTE Equiv Cost','$'+F(fte)+'/mo','Bulge bracket benchmark','fl'),KH('Monthly Savings','$'+F(sv),P(sv/fte*100)+' cost advantage','up')].join('');
+document.getElementById('opBB').innerHTML=`<div class="fl" style="margin-bottom:12px;">COST BREAKDOWN</div>${[['Team (Fractional + Offshore)','$'+F(tc),P(tc/tot*100)],['Tool Stack','$'+F(tlc),P(tlc/tot*100)],['Misc / Contingency','$500',P(500/tot*100)],['Total Monthly Burn','$'+F(tot),'100%']].map(([l,v,p],i)=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);${i===3?'font-weight:700;color:var(--gold);':''}"><span style="font-size:12px;">${l}</span><span style="font-family:var(--mono);font-size:12px;">${v} <span style="color:var(--muted);font-size:10px;">${p}</span></span></div>`).join('')}`;
+document.getElementById('opBP').innerHTML=`<div class="fl" style="margin-bottom:12px;">12-MONTH PROJECTION</div>${[1,3,6,9,12].map(m=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;"><span>Month ${m}</span><span style="font-family:var(--mono);">$${F(tot*m)} <span style="color:var(--green);font-size:10px;">↓${P((fte*m-tot*m)/(fte*m)*100)} vs FTE</span></span></div>`).join('')}`;}
+
+// ═══ FINANCE ═══
+function rFin(){const ds=S.deals,tc=TEAM.reduce((s,t)=>s+t.cost,0),tlc=207,tot=tc+tlc+500,rs={};
+ds.forEach(d=>{const a=FA[d.stage]||{};if(!rs[d.stage])rs[d.stage]={c:0,f:0,w:0};const fee=(d.ev||0)*(a.f||0);rs[d.stage].c++;rs[d.stage].f+=fee;rs[d.stage].w+=fee*(a.p||0);});
+const tW=Object.values(rs).reduce((s,r)=>s+r.w,0),tF=Object.values(rs).reduce((s,r)=>s+r.f,0);
+document.getElementById('fnKPI').innerHTML=[KH('Gross Fee Pipeline','$'+F(tF/1000,0)+'K','If all close','fl'),KH('Wtd Revenue','$'+F(tW/1000,0)+'K','Probability-weighted','up'),KH('Monthly Expense','$'+F(tot),'Team + Tools + Misc','fl'),KH('Breakeven Gap','$'+F(Math.max(0,tot*12-tW))+'K','Annual basis',tW>=tot*12?'up':'dn')].join('');
+document.querySelector('#fnRev tbody').innerHTML=SO.filter(s=>rs[s]).map(s=>{const r=rs[s],a=FA[s]||{};return`<tr><td><span class="bg ${SB[s]}">${s}</span></td><td>${r.c}</td><td style="font-family:var(--mono);">$${F(r.f/1000,0)}K</td><td style="font-family:var(--mono);">${P(a.p*100)}</td><td style="font-family:var(--mono);color:var(--gold);">$${F(r.w/1000,0)}K</td></tr>`;}).join('');
+const exp=[{c:'Team — Fractional',m:TEAM.filter(t=>t.type==='Fractional').reduce((s,t)=>s+t.cost,0)},{c:'Team — Offshore',m:TEAM.filter(t=>['Offshore','Contractor'].includes(t.type)).reduce((s,t)=>s+t.cost,0)},{c:'Tool Stack',m:tlc},{c:'Misc / Contingency',m:500}];
+document.querySelector('#fnExp tbody').innerHTML=exp.map(e=>`<tr><td>${e.c}</td><td style="font-family:var(--mono);">$${F(e.m)}</td><td style="font-family:var(--mono);">$${F(e.m*12)}</td><td style="font-family:var(--mono);">${P(e.m/tot*100)}</td></tr>`).join('')+`<tr style="font-weight:700;border-top:2px solid var(--gold);"><td style="color:var(--gold);">Total</td><td style="font-family:var(--mono);color:var(--gold);">$${F(tot)}</td><td style="font-family:var(--mono);color:var(--gold);">$${F(tot*12)}</td><td style="font-family:var(--mono);color:var(--gold);">100%</td></tr>`;}
+
+// ═══ PANEL ROUTER ═══
+function rP(n){switch(n){case'cmd':rCmd();break;case'pipe':rPipe();break;case'orig':rOrig();break;case'capx':rLBO();break;case'ally':rAlly();break;case'val':rComps();rPrec();break;case'risk':rRisk();break;case'docs':rDocs();break;case'crm':rCRM();break;case'ppl':rPpl();break;case'ops':rOps();break;case'fin':rFin();break;}}
+
+// ═══ INIT ═══
+nav('cmd');
+</script>
+</body>
+</html>

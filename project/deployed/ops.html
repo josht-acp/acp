@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP — Operations Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-d:#9A7B2E;--gold-pale:rgba(201,168,76,0.07);--gold-bd:rgba(201,168,76,0.2);
+  --ink:#0A0E1A;--s1:#111827;--s2:#111827;--s3:#1A2035;--s4:#2D3548;--s5:#2D3548;
+  --bd:rgba(255,255,255,0.06);--bd2:rgba(255,255,255,0.1);
+  --tx:#CBD5E1;--mt:rgba(203,213,225,0.5);--dm:rgba(203,213,225,0.25);
+  --green:#3D9970;--amber:#C4873A;--red:#C0402A;--blue:#4A72C4;--purple:#7B5EA7;
+  --fd:'Cormorant Garamond', 'EB Garamond', Georgia, serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:13px;scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--tx);font-family:var(--fb);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--gold-d);}
+
+/* ── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:54px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  background:rgba(6,6,6,0.92);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--bd);
+}
+.nav-l{display:flex;align-items:center;gap:14px;}
+.spine{width:2px;height:18px;background:var(--gold);border-radius:2px;flex-shrink:0;}
+.nav-firm{font-family:var(--fd);font-size:15px;letter-spacing:0.01em;}
+.nav-tag{font-size:9px;padding:2px 8px;border-radius:99px;background:rgba(74,114,196,0.12);
+  border:1px solid rgba(74,114,196,0.25);color:#7A9FD4;letter-spacing:0.08em;text-transform:uppercase;}
+.nav-r{display:flex;align-items:center;gap:16px;}
+.nav-time{font-family:var(--fm);font-size:10.5px;color:var(--dm);}
+.tz-pill{font-family:var(--fm);font-size:9.5px;padding:3px 10px;border-radius:99px;
+  border:1px solid var(--bd2);color:var(--dm);transition:all 0.3s;}
+.tz-pill.live-apac{border-color:rgba(61,153,112,0.4);color:var(--green);background:rgba(61,153,112,0.07);}
+.tz-pill.live-emea{border-color:rgba(74,114,196,0.4);color:#7A9FD4;background:rgba(74,114,196,0.07);}
+.tz-pill.live-na  {border-color:rgba(196,135,58,0.4);color:var(--amber);background:rgba(196,135,58,0.07);}
+.nav-status{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--green);}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);
+  animation:pulse 2.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+
+/* ── LAYOUT ─────────────────────────── */
+.layout{display:grid;grid-template-columns:224px 1fr;min-height:100vh;padding-top:54px;}
+
+/* ── SIDEBAR ─────────────────────────── */
+.sidebar{
+  background:var(--s1);border-right:1px solid var(--bd);
+  position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;
+  display:flex;flex-direction:column;
+  padding:20px 0 24px;
+}
+.sb-grp{margin-bottom:22px;}
+.sb-hd{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--dm);padding:0 18px;margin-bottom:8px;}
+.sb-i{
+  display:flex;align-items:center;gap:9px;padding:8px 18px;
+  font-size:12px;color:var(--mt);cursor:pointer;
+  border-left:2px solid transparent;transition:all 0.15s;
+  text-decoration:none;
+}
+.sb-i:hover{color:var(--tx);background:var(--gold-pale);}
+.sb-i.on{color:var(--gold);border-left-color:var(--gold);background:var(--gold-pale);}
+.sb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.g{background:var(--green);}.b{background:var(--blue);}.a{background:var(--amber);}
+.r{background:var(--red);}.p{background:var(--purple);}
+.gr{background:var(--s5);border:1px solid var(--bd);}
+
+.sb-foot{margin-top:auto;padding:16px 18px;border-top:1px solid var(--bd);}
+.sb-stat{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--dm);margin-bottom:7px;}
+.sb-stat .pulse{width:6px;height:6px;}
+.sb-stat span{color:var(--green);}
+
+/* ── MAIN ───────────────────────────── */
+.main{overflow-y:auto;background:var(--ink);}
+.pane{display:none;padding:32px 36px 48px;}
+.pane.on{display:block;}
+
+/* ── PAGE HEADER ─────────────────────── */
+.ph{margin-bottom:28px;}
+.ph-label{font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold-d);margin-bottom:6px;}
+.ph-title{font-family:var(--fd);font-size:28px;line-height:1.15;margin-bottom:8px;}
+.ph-sub{font-size:13px;font-weight:300;color:var(--mt);line-height:1.65;max-width:680px;}
+
+/* ── STAT ROW ────────────────────────── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.stat{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:18px 20px;
+  border-left:3px solid var(--gold);}
+.stat-n{font-family:var(--fd);font-size:30px;color:var(--gold);line-height:1;margin-bottom:4px;}
+.stat-l{font-size:9.5px;color:var(--dm);text-transform:uppercase;letter-spacing:0.1em;}
+.stat-chg{font-size:10.5px;color:var(--green);margin-top:4px;}
+
+/* ── CARDS ───────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.card{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:20px;}
+.card-hd{font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--dm);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:4px;}
+.card-sub{font-size:11.5px;color:var(--mt);line-height:1.55;}
+
+/* ── AGENT CARDS ─────────────────────── */
+.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.ag{
+  background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  padding:18px;cursor:pointer;transition:all 0.18s;
+  border-top:3px solid transparent;position:relative;overflow:hidden;
+}
+.ag::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.2s;
+  background:linear-gradient(135deg,rgba(201,168,76,0.04),transparent);}
+.ag:hover{border-color:var(--gold-bd);transform:translateY(-1px);}
+.ag:hover::before{opacity:1;}
+.ag.nemo{border-top-color:var(--blue);}
+.ag.deal{border-top-color:var(--amber);}
+.ag.doc {border-top-color:var(--purple);}
+.ag.comp{border-top-color:var(--red);}
+.ag.fin {border-top-color:var(--green);}
+.ag.com {border-top-color:#C4873A;}
+.ag.dat {border-top-color:#666;}
+.ag-id{font-family:var(--fm);font-size:9.5px;color:var(--dm);margin-bottom:5px;}
+.ag-name{font-size:13.5px;font-weight:600;margin-bottom:3px;}
+.ag-role{font-size:10.5px;color:var(--mt);line-height:1.5;margin-bottom:12px;}
+.ag-status{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--green);}
+.ag-status .dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.ag-btn{
+  margin-top:12px;width:100%;background:transparent;
+  border:1px solid var(--bd2);color:var(--dm);border-radius:4px;
+  padding:7px;font-size:10.5px;cursor:pointer;transition:all 0.15s;font-family:var(--fb);
+}
+.ag-btn:hover{border-color:var(--gold-bd);color:var(--gold-d);}
+
+/* ── PIPELINE TABLE ──────────────────── */
+.table-wrap{background:var(--s2);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:24px;}
+.table-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;
+  border-bottom:1px solid var(--bd);}
+.table-hd-t{font-size:12px;font-weight:600;color:var(--tx);}
+table{width:100%;border-collapse:collapse;}
+th{font-size:9.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--dm);padding:10px 16px;text-align:left;border-bottom:1px solid var(--bd);}
+td{font-size:11.5px;color:var(--mt);padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.03);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--gold-pale);color:var(--tx);}
+.td-name{color:var(--tx);font-weight:500;}
+.td-code{font-family:var(--fm);font-size:10px;color:var(--gold-d);}
+
+/* ── BADGES ──────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 8px;
+  border-radius:99px;font-weight:500;white-space:nowrap;}
+.b-green{background:rgba(61,153,112,0.12);border:1px solid rgba(61,153,112,0.25);color:var(--green);}
+.b-amber{background:rgba(196,135,58,0.12);border:1px solid rgba(196,135,58,0.25);color:var(--amber);}
+.b-blue {background:rgba(74,114,196,0.12);border:1px solid rgba(74,114,196,0.25);color:#7A9FD4;}
+.b-red  {background:rgba(192,64,42,0.12); border:1px solid rgba(192,64,42,0.25); color:#E07060;}
+.b-gold {background:var(--gold-pale);      border:1px solid var(--gold-bd);       color:var(--gold-d);}
+.b-gray {background:rgba(80,80,80,0.15);   border:1px solid rgba(120,120,120,0.2);color:var(--dm);}
+
+/* ── TASK QUEUE ──────────────────────── */
+.q-filters{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.qf{font-size:10.5px;padding:4px 12px;border:1px solid var(--bd);border-radius:99px;
+  color:var(--dm);cursor:pointer;transition:all 0.15s;}
+.qf:hover{border-color:var(--gold-bd);color:var(--mt);}
+.qf.on{border-color:var(--gold);color:var(--gold);background:var(--gold-pale);}
+.q-list{display:flex;flex-direction:column;gap:6px;}
+.q-item{
+  background:var(--s2);border:1px solid var(--bd);border-radius:6px;
+  padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;
+  align-items:center;cursor:pointer;transition:border-color 0.15s;
+}
+.q-item:hover{border-color:var(--gold-bd);}
+.q-item.p0{border-left:3px solid var(--red);}
+.q-item.p1{border-left:3px solid var(--amber);}
+.q-item.p2{border-left:3px solid var(--gold-d);}
+.qi-name{font-size:12px;font-weight:500;margin-bottom:4px;}
+.qi-meta{font-size:10.5px;color:var(--dm);display:flex;gap:10px;}
+.q-btns{display:flex;gap:5px;}
+.qb{font-size:10px;padding:4px 10px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--bd);background:transparent;color:var(--dm);
+  transition:all 0.15s;font-family:var(--fb);}
+.qb.ok{border-color:rgba(61,153,112,0.3);color:var(--green);}
+.qb.ok:hover{background:rgba(61,153,112,0.1);}
+.qb.no{border-color:rgba(192,64,42,0.3);color:#E07060;}
+.qb.no:hover{background:rgba(192,64,42,0.1);}
+
+/* ── PRP PANEL ───────────────────────── */
+.prp-panel{background:var(--s2);border:1px solid var(--gold-bd);border-radius:8px;padding:24px;margin-bottom:24px;}
+.prp-agents{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;}
+.prp-btn{background:var(--s3);border:1px solid var(--bd);border-radius:5px;
+  padding:9px 10px;cursor:pointer;font-size:11px;color:var(--mt);
+  transition:all 0.15s;text-align:center;font-family:var(--fb);}
+.prp-btn:hover{border-color:var(--gold-bd);color:var(--tx);}
+.prp-btn.on{border-color:var(--gold);color:var(--gold);background:var(--gold-pale);}
+.prp-ta{width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:5px;
+  padding:14px;color:var(--tx);font-family:var(--fm);font-size:11px;line-height:1.75;
+  min-height:160px;resize:vertical;outline:none;}
+.prp-ta:focus{border-color:var(--gold-d);}
+.prp-actions{display:flex;gap:8px;margin-top:10px;}
+
+/* ── BUTTONS ─────────────────────────── */
+.btn{border-radius:4px;padding:9px 20px;font-size:11.5px;font-weight:600;
+  cursor:pointer;letter-spacing:0.04em;transition:all 0.18s;font-family:var(--fb);border:none;}
+.btn-gold{background:var(--gold);color:#000;}
+.btn-gold:hover{background:#E2C97E;}
+.btn-outline{background:transparent;border:1px solid var(--gold-bd);color:var(--gold-d);}
+.btn-outline:hover{background:var(--gold-pale);}
+.btn-ghost{background:transparent;border:1px solid var(--bd2);color:var(--dm);}
+.btn-ghost:hover{border-color:var(--bd2);color:var(--mt);}
+
+/* ── CLI BLOCK ───────────────────────── */
+.cli{background:#000;border:1px solid var(--bd);border-radius:7px;
+  padding:18px;font-family:var(--fm);font-size:11px;line-height:1.85;
+  color:#72C499;overflow-x:auto;margin-bottom:14px;position:relative;}
+.cli-title{position:absolute;top:10px;right:14px;font-size:9.5px;color:var(--dm);}
+.cli .cmt{color:rgba(255,255,255,0.25);}
+.cli .kw{color:#72C499;}
+.cli .val{color:#C4A55A;}
+.cli .flag{color:#7A9FD4;}
+
+/* ── TZ WINDOWS ──────────────────────── */
+.tz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.tz-win{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:16px;
+  transition:border-color 0.3s;}
+.tz-win.active-win{border-color:rgba(61,153,112,0.35);}
+.tz-label{font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.tz-time{font-family:var(--fm);font-size:13px;color:var(--tx);margin-bottom:4px;}
+.tz-range{font-size:10.5px;color:var(--dm);}
+.tz-who{font-size:10.5px;color:var(--mt);margin-top:6px;}
+
+/* ── ROADMAP ─────────────────────────── */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.rm-phase{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:18px;}
+.rm-phase.current{border-color:var(--gold-bd);background:var(--gold-pale);}
+.rm-num{font-family:var(--fm);font-size:9px;color:var(--dm);margin-bottom:6px;}
+.rm-title{font-size:13px;font-weight:600;margin-bottom:6px;}
+.rm-weeks{font-size:10.5px;color:var(--dm);margin-bottom:10px;}
+.rm-items{list-style:none;}
+.rm-items li{font-size:10.5px;color:var(--mt);padding:3px 0;display:flex;gap:7px;line-height:1.45;}
+.rm-items li::before{content:'→';color:var(--gold-d);flex-shrink:0;}
+.rm-gate{margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);
+  font-size:10px;color:var(--green);}
+
+/* ── DEPLOY STEPS ────────────────────── */
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:grid;grid-template-columns:40px 1fr;gap:16px;position:relative;padding-bottom:24px;}
+.step:last-child{padding-bottom:0;}
+.step:not(:last-child)::before{
+  content:'';position:absolute;left:19px;top:36px;bottom:0;
+  width:1px;background:var(--bd);}
+.step-n{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:var(--fm);font-size:12px;font-weight:600;
+  background:var(--s3);border:1px solid var(--bd);color:var(--dm);flex-shrink:0;}
+.step-n.done{background:rgba(61,153,112,0.12);border-color:rgba(61,153,112,0.3);color:var(--green);}
+.step-n.now {background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold);}
+.step-n.next{background:rgba(74,114,196,0.08);border-color:rgba(74,114,196,0.2);color:#7A9FD4;}
+.step-body{padding-top:8px;}
+.step-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+.step-desc{font-size:11.5px;color:var(--mt);line-height:1.6;margin-bottom:8px;}
+.step-tag{font-size:10px;padding:2px 9px;border-radius:99px;
+  background:rgba(61,153,112,0.08);border:1px solid rgba(61,153,112,0.2);color:var(--green);}
+.step-tag.t-now{background:var(--gold-pale);border-color:var(--gold-bd);color:var(--gold-d);}
+.step-tag.t-next{background:rgba(74,114,196,0.08);border-color:rgba(74,114,196,0.2);color:#7A9FD4;}
+
+/* ── MODAL ───────────────────────────── */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);
+  z-index:500;align-items:center;justify-content:center;padding:24px;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--s1);border:1px solid var(--gold-bd);border-radius:10px;
+  padding:30px;max-width:620px;width:100%;max-height:82vh;overflow-y:auto;}
+.modal-title{font-family:var(--fd);font-size:22px;margin-bottom:4px;}
+.modal-sub{font-size:12px;color:var(--mt);margin-bottom:20px;line-height:1.65;}
+.prp-out{background:#000;border-radius:6px;padding:16px;font-family:var(--fm);
+  font-size:10.5px;color:#72C499;line-height:1.8;white-space:pre-wrap;
+  word-break:break-word;max-height:340px;overflow-y:auto;}
+.modal-footer{display:flex;gap:8px;margin-top:18px;}
+
+/* ── COPY TOAST ──────────────────────── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--s1);
+  border:1px solid var(--gold-bd);color:var(--gold);border-radius:6px;
+  padding:10px 18px;font-size:12px;z-index:999;transform:translateY(20px);
+  opacity:0;transition:all 0.25s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── DIVIDER ─────────────────────────── */
+.divider{height:1px;background:var(--bd);margin:24px 0;}
+
+/* ── INLINE CODE ─────────────────────── */
+code{font-family:var(--fm);font-size:10.5px;background:var(--s3);
+  border:1px solid var(--bd);padding:1px 6px;border-radius:3px;color:var(--gold-d);}
+
+@media(max-width:960px){
+  .agent-grid,.grid3,.stats,.roadmap{grid-template-columns:1fr 1fr;}
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;height:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-l">
+    <div class="spine"></div>
+    <div class="nav-firm">Ascension Capital Partners</div>
+    <span class="nav-tag">Ops Command Centre</span>
+  </div>
+  <div class="nav-r">
+    <span class="nav-time" id="liveTime">—</span>
+    <span class="tz-pill" id="tzPill">—</span>
+    <div class="nav-status"><div class="pulse"></div>7 agents active</div>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-grp">
+    <div class="sb-hd">Platform</div>
+    <div class="sb-i on" onclick="show('overview',this)"><div class="sb-dot g"></div>Command Centre</div>
+    <div class="sb-i" onclick="show('pipeline',this)"><div class="sb-dot g"></div>Deal Pipeline</div>
+    <div class="sb-i" onclick="show('deploy',this)"><div class="sb-dot a"></div>Deploy Guide</div>
+  </div>
+  <div class="sb-grp">
+    <div class="sb-hd">Shadow Cloud</div>
+    <div class="sb-i" onclick="show('agents',this)"><div class="sb-dot b"></div>Agents</div>
+    <div class="sb-i" onclick="show('activate',this)"><div class="sb-dot b"></div>Activate Agent</div>
+    <div class="sb-i" onclick="show('queue',this)"><div class="sb-dot g"></div>Task Queue</div>
+  </div>
+  <div class="sb-grp">
+    <div class="sb-hd">Infrastructure</div>
+    <div class="sb-i" onclick="show('paperclip',this)"><div class="sb-dot a"></div>Paperclip Setup</div>
+    <div class="sb-i" onclick="show('roadmap',this)"><div class="sb-dot p"></div>Roadmap</div>
+  </div>
+
+  <div class="sb-foot">
+    <div class="sb-stat"><div class="pulse"></div><span>7 agents</span> active</div>
+    <div class="sb-stat" style="color:var(--green)">✓ Notion connected</div>
+    <div class="sb-stat" style="color:var(--gold-d)">⚡ Deploy pending</div>
+    <div class="sb-stat" style="color:var(--dm)">◎ Paperclip: install ready</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ═══ COMMAND CENTRE ═══ -->
+<div class="pane on" id="pane-overview">
+  <div class="ph">
+    <div class="ph-label">ACP Operations</div>
+    <div class="ph-title">Command Centre</div>
+    <div class="ph-sub">Real-time platform status · Shadow Cloud orchestration · Timezone overwatch · Build progress</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n">27</div><div class="stat-l">Active Mandates</div><div class="stat-chg">↑ $13.7BN programme</div></div>
+    <div class="stat"><div class="stat-n">7</div><div class="stat-l">AI Agents</div><div class="stat-chg">All systems active</div></div>
+    <div class="stat"><div class="stat-n">$1K</div><div class="stat-l">Monthly AI Budget</div><div class="stat-chg">vs $350K+ FTE</div></div>
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Days to Launch</div><div class="stat-chg">↑ Deploy today</div></div>
+  </div>
+
+  <!-- Timezone windows -->
+  <div class="tz-grid" id="tzGrid">
+    <div class="tz-win" id="tz-apac">
+      <div class="tz-label" style="color:var(--green)"><div class="pulse" style="width:7px;height:7px"></div>APAC</div>
+      <div class="tz-time" id="tz-apac-t">—</div>
+      <div class="tz-range">08:00–12:00 AEST</div>
+      <div class="tz-who">JT primary · Sydney</div>
+    </div>
+    <div class="tz-win" id="tz-emea">
+      <div class="tz-label" style="color:#7A9FD4">◈ EMEA</div>
+      <div class="tz-time" id="tz-emea-t">—</div>
+      <div class="tz-range">09:00–13:00 BST</div>
+      <div class="tz-who">SA primary · EMEA/MENA</div>
+    </div>
+    <div class="tz-win" id="tz-na">
+      <div class="tz-label" style="color:var(--amber)">◈ NA</div>
+      <div class="tz-time" id="tz-na-t">—</div>
+      <div class="tz-range">09:00–18:00 EST</div>
+      <div class="tz-who">JT async · Arjun support</div>
+    </div>
+  </div>
+
+  <!-- Platform properties -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-hd">Platform Properties<span class="badge b-amber">Deploy pending</span></div>
+    <table>
+      <thead><tr><th>Property</th><th>URL</th><th>File</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">Public Site</td><td><code>ascensioncap.io</code></td><td><code>index.html</code></td><td><span class="badge b-amber">Needs domain</span></td></tr>
+        <tr><td class="td-name">Template OS</td><td><code>portal.ascensioncap.io</code></td><td><code>portal.html</code></td><td><span class="badge b-amber">Needs domain</span></td></tr>
+        <tr><td class="td-name">LP Portal</td><td><code>ir.ascensioncap.io</code></td><td><code>ir.html</code></td><td><span class="badge b-amber">Needs domain</span></td></tr>
+        <tr><td class="td-name">Client Data Rooms</td><td><code>docs.ascensioncap.io</code></td><td><code>docs.html</code></td><td><span class="badge b-amber">Needs domain</span></td></tr>
+        <tr><td class="td-name">Shadow Cloud Ops</td><td><code>ops.ascensioncap.io</code></td><td><code>ops.html</code></td><td><span class="badge b-blue">This page</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Agent quick status -->
+  <div class="card-hd" style="margin-bottom:12px">Agent Status<span class="badge b-green">7 / 7 Active</span></div>
+  <div class="agent-grid">
+    <div class="ag nemo" onclick="openAgent('nemo')"><div class="ag-id">NC-001 · CEO · Layer 1</div><div class="ag-name">NemoClaw</div><div class="ag-role">Orchestrator · Daily Brief · JT Proxy</div><div class="ag-status"><div class="dot"></div>Active · $150/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('nemo')">Activate →</button></div>
+    <div class="ag deal" onclick="openAgent('deal')"><div class="ag-id">DC-001 · Front Office</div><div class="ag-name">DealClaw</div><div class="ag-role">Deal Origination · Pipeline · Outreach</div><div class="ag-status"><div class="dot"></div>Active · $200/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('deal')">Activate →</button></div>
+    <div class="ag doc" onclick="openAgent('doc')"><div class="ag-id">DOC-001 · Back Office</div><div class="ag-name">DocClaw</div><div class="ag-role">Document Production · 140+ templates</div><div class="ag-status"><div class="dot"></div>Active · $200/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('doc')">Activate →</button></div>
+    <div class="ag comp" onclick="openAgent('comp')"><div class="ag-id">CC-001 · Middle Office</div><div class="ag-name">CompliClaw</div><div class="ag-role">KYC/AML · Sanctions · Compliance</div><div class="ag-status"><div class="dot"></div>Active · $100/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('comp')">Activate →</button></div>
+    <div class="ag fin" onclick="openAgent('fin')"><div class="ag-id">FC-001 · Middle Office</div><div class="ag-name">FinClaw</div><div class="ag-role">DSCR · IRR · Fee Models · IC Analytics</div><div class="ag-status"><div class="dot"></div>Active · $150/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('fin')">Activate →</button></div>
+    <div class="ag com" onclick="openAgent('com')"><div class="ag-id">COM-001 · Front Office</div><div class="ag-name">CommsClaw</div><div class="ag-role">Email Drafting · Outreach · Gmail CLI</div><div class="ag-status"><div class="dot"></div>Active · $100/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('com')">Activate →</button></div>
+    <div class="ag dat" onclick="openAgent('dat')"><div class="ag-id">DAT-001 · Middle Office</div><div class="ag-name">DataClaw</div><div class="ag-role">Market Intel · Lender Profiles · Comps</div><div class="ag-status"><div class="dot"></div>Active · $100/mo</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('dat')">Activate →</button></div>
+  </div>
+</div>
+
+<!-- ═══ DEAL PIPELINE ═══ -->
+<div class="pane" id="pane-pipeline">
+  <div class="ph"><div class="ph-label">Front Office</div><div class="ph-title">Deal Pipeline</div><div class="ph-sub">27 active mandates · $13.7BN programme · 8 verticals · APAC · EMEA · NA</div></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">27</div><div class="stat-l">Total Mandates</div></div>
+    <div class="stat"><div class="stat-n">$13.7B</div><div class="stat-l">Programme Value</div></div>
+    <div class="stat"><div class="stat-n">~$23M</div><div class="stat-l">Est. Fee Pipeline</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Verticals</div></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-hd"><span class="table-hd-t">Priority Mandates</span><span class="badge b-amber">P1 — Action required</span></div>
+    <table>
+      <thead><tr><th>Code</th><th>Mandate</th><th>Size</th><th>Stage</th><th>EMP</th><th>Fee Est.</th></tr></thead>
+      <tbody id="pipelineTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ DEPLOY GUIDE ═══ -->
+<div class="pane" id="pane-deploy">
+  <div class="ph"><div class="ph-label">Action Required</div><div class="ph-title">Deploy Guide — Get Live Today</div><div class="ph-sub">Exact steps to take ACP from files to a live institutional platform. Estimated total time: 90 minutes.</div></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n done">✓</div>
+      <div class="step-body">
+        <div class="step-title">Files Built — All HTML Ready</div>
+        <div class="step-desc">5 HTML files + vercel.json are complete. Download from this session before it ends. Files: <code>index.html</code> <code>ir.html</code> <code>docs.html</code> <code>portal.html</code> <code>ops.html</code> <code>vercel.json</code></div>
+        <span class="step-tag">Done</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n now">2</div>
+      <div class="step-body">
+        <div class="step-title">Register Domain — Namecheap (~$15)</div>
+        <div class="step-desc">Go to namecheap.com → search <code>ascensioncap.io</code> → purchase. Takes 2 minutes. This is your only blocker today.</div>
+        <div class="cli"><span class="cmt"># After purchase — DNS you'll set in Step 4</span></div>
+        <span class="step-tag t-now">Do this now</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n now">3</div>
+      <div class="step-body">
+        <div class="step-title">Deploy to Vercel — Free, 2 Minutes</div>
+        <div class="step-desc">Go to vercel.com → Sign up (GitHub or email) → New Project → Drag all 6 files into the upload box → Deploy. Your site is live on a Vercel URL instantly.</div>
+        <div class="cli"><span class="cmt"># Or via CLI if you have Node installed:</span>
+<span class="kw">npm</span> <span class="flag">i</span> <span class="val">-g vercel</span>
+<span class="kw">cd</span> <span class="val">/path/to/your/files</span>
+<span class="kw">vercel</span> <span class="flag">--prod</span></div>
+        <span class="step-tag t-now">Do this now</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n next">4</div>
+      <div class="step-body">
+        <div class="step-title">Connect Domain → Vercel DNS</div>
+        <div class="step-desc">In Vercel → Project Settings → Domains → Add <code>ascensioncap.io</code>. Then in Namecheap DNS, set these records:</div>
+        <div class="cli"><span class="cmt"># Namecheap DNS Records</span>
+<span class="kw">@</span>       A       <span class="val">76.76.21.21</span>
+<span class="kw">www</span>     CNAME   <span class="val">cname.vercel-dns.com</span>
+<span class="kw">ir</span>      CNAME   <span class="val">cname.vercel-dns.com</span>
+<span class="kw">docs</span>    CNAME   <span class="val">cname.vercel-dns.com</span>
+<span class="kw">portal</span>  CNAME   <span class="val">cname.vercel-dns.com</span>
+<span class="kw">ops</span>     CNAME   <span class="val">cname.vercel-dns.com</span></div>
+        <div class="step-desc">Propagation: 5–30 minutes. Then add each subdomain in Vercel dashboard under Domains.</div>
+        <span class="step-tag t-next">After domain purchase</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n next">5</div>
+      <div class="step-body">
+        <div class="step-title">Wire Zapier Webhook → Contact Form</div>
+        <div class="step-desc">Create a free Zapier account → New Zap → Trigger: Webhooks by Zapier (catch hook) → copy the hook URL → open <code>index.html</code> in any text editor → find <code>REPLACE_WITH_YOUR_HOOK_ID/REPLACE_WITH_HOOK_KEY</code> → paste your URL → save → re-upload to Vercel.</div>
+        <span class="step-tag t-next">This week</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n next">6</div>
+      <div class="step-body">
+        <div class="step-title">Install Paperclip — Orchestration Layer</div>
+        <div class="step-desc">This is Week 2, not today. But when ready:</div>
+        <div class="cli"><span class="kw">git</span> clone https://github.com/paperclipai/paperclip
+<span class="kw">cd</span> paperclip
+<span class="kw">pnpm</span> install
+<span class="kw">pnpm</span> paperclip onboard</div>
+        <span class="step-tag t-next">Week 2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AGENTS ═══ -->
+<div class="pane" id="pane-agents">
+  <div class="ph"><div class="ph-label">Shadow Cloud</div><div class="ph-title">Agent Workforce</div><div class="ph-sub">7 agents · NemoClaw orchestration · Click any agent to view PRP prompt and activate in Claude</div></div>
+  <div class="agent-grid">
+    <div class="ag nemo" onclick="openAgent('nemo')"><div class="ag-id">NC-001 · Layer 1 · CEO</div><div class="ag-name">NemoClaw</div><div class="ag-role">Chief AI Officer · Orchestrator · Daily Brief · JT Proxy · APAC/EMEA/NA handovers</div><div class="ag-status"><div class="dot"></div>Active · $150/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('nemo')">View PRP → Activate</button></div>
+    <div class="ag deal" onclick="openAgent('deal')"><div class="ag-id">DC-001 · Front Office</div><div class="ag-name">DealClaw</div><div class="ag-role">Deal Origination · Pipeline Intelligence · Outreach Management · Alliance Pipeline</div><div class="ag-status"><div class="dot"></div>Active · $200/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('deal')">View PRP → Activate</button></div>
+    <div class="ag doc" onclick="openAgent('doc')"><div class="ag-id">DOC-001 · Back Office</div><div class="ag-name">DocClaw</div><div class="ag-role">Document Production · CIM · Term Sheets · IC Packs · 140+ templates</div><div class="ag-status"><div class="dot"></div>Active · $200/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('doc')">View PRP → Activate</button></div>
+    <div class="ag comp" onclick="openAgent('comp')"><div class="ag-id">CC-001 · Middle Office</div><div class="ag-name">CompliClaw</div><div class="ag-role">KYC/AML · OFAC/UN Sanctions · PEP Screening · UBO Trace · ABSOLUTE RULE: No engagement without KYC</div><div class="ag-status"><div class="dot"></div>Active · $100/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('comp')">View PRP → Activate</button></div>
+    <div class="ag fin" onclick="openAgent('fin')"><div class="ag-id">FC-001 · Middle Office</div><div class="ag-name">FinClaw</div><div class="ag-role">DSCR · IRR · LBO · Fee Waterfalls · IC Analytics · RBL · Project Finance</div><div class="ag-status"><div class="dot"></div>Active · $150/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('fin')">View PRP → Activate</button></div>
+    <div class="ag com" onclick="openAgent('com')"><div class="ag-id">COM-001 · Front Office</div><div class="ag-name">CommsClaw</div><div class="ag-role">Email Drafting · 10 Templates · Outreach Sequences · Gmail CLI · Never self-dispatches</div><div class="ag-status"><div class="dot"></div>Active · $100/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('com')">View PRP → Activate</button></div>
+    <div class="ag dat" onclick="openAgent('dat')"><div class="ag-id">DAT-001 · Middle Office</div><div class="ag-name">DataClaw</div><div class="ag-role">Lender Profiling · Market Data · Sector Intel · Deal Comps · Counterparty Research</div><div class="ag-status"><div class="dot"></div>Active · $100/mo budget</div><button class="ag-btn" onclick="event.stopPropagation();openAgent('dat')">View PRP → Activate</button></div>
+  </div>
+</div>
+
+<!-- ═══ ACTIVATE ═══ -->
+<div class="pane" id="pane-activate">
+  <div class="ph"><div class="ph-label">Shadow Cloud</div><div class="ph-title">Activate Agent</div><div class="ph-sub">Select an agent · copy PRP prompt · paste as first message in a new Claude session · begin issuing tasks</div></div>
+  <div class="prp-panel">
+    <div style="font-size:13px;font-weight:600;margin-bottom:4px">Select Agent</div>
+    <div style="font-size:11.5px;color:var(--mt);margin-bottom:14px;line-height:1.6">Choose an agent then copy the PRP prompt. Open a new Claude.ai session and paste it as your first message.</div>
+    <div class="prp-agents" id="prpAgentBtns"></div>
+    <textarea class="prp-ta" id="prpTA" placeholder="Select an agent above to load its activation prompt…"></textarea>
+    <div class="prp-actions">
+      <button class="btn btn-gold" onclick="window.open('https://claude.ai/new','_blank')">Open Claude.ai →</button>
+      <button class="btn btn-outline" onclick="copyPRP()">Copy Prompt</button>
+      <button class="btn btn-ghost" onclick="logNewTask()">Log to Task Queue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TASK QUEUE ═══ -->
+<div class="pane" id="pane-queue">
+  <div class="ph"><div class="ph-label">Shadow Cloud</div><div class="ph-title">Task Queue</div><div class="ph-sub">All agent tasks · Approve or reject before any external dispatch</div></div>
+  <div class="q-filters" id="qFilters">
+    <div class="qf on" onclick="filterQ('all',this)">All</div>
+    <div class="qf" onclick="filterQ('review',this)">JT Review</div>
+    <div class="qf" onclick="filterQ('queued',this)">Queued</div>
+    <div class="qf" onclick="filterQ('nemo',this)">NemoClaw</div>
+    <div class="qf" onclick="filterQ('deal',this)">DealClaw</div>
+    <div class="qf" onclick="filterQ('compli',this)">CompliClaw</div>
+  </div>
+  <div class="q-list" id="qList"></div>
+</div>
+
+<!-- ═══ PAPERCLIP ═══ -->
+<div class="pane" id="pane-paperclip">
+  <div class="ph"><div class="ph-label">Infrastructure</div><div class="ph-title">Paperclip Setup</div><div class="ph-sub">Open-source multi-agent orchestration. Org charts · Budgets · Governance · Audit trail. Install in Week 2 after platform is live.</div></div>
+
+  <div class="grid2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-hd">What Paperclip Does</div>
+      <div style="font-size:11.5px;color:var(--mt);line-height:1.75">
+        <div style="margin-bottom:8px">Paperclip is the <strong style="color:var(--tx)">company</strong>. The OpenClaw agents are the <strong style="color:var(--tx)">employees</strong>. It adds the organisational control plane that 7 capable agents are missing:</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div>→ Persistent agent state (no cold starts)</div>
+          <div>→ Atomic task checkout (no double-work)</div>
+          <div>→ Hard budget enforcement per agent</div>
+          <div>→ Immutable audit trail on every action</div>
+          <div>→ Goal ancestry — agents know the <em>why</em></div>
+          <div>→ Approval gates with governance + rollback</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Budget Architecture</div>
+      <table style="width:100%">
+        <thead><tr><th>Agent</th><th>Budget/mo</th></tr></thead>
+        <tbody>
+          <tr><td class="td-name">NemoClaw</td><td>US$150</td></tr>
+          <tr><td class="td-name">DealClaw</td><td>US$200</td></tr>
+          <tr><td class="td-name">CompliClaw</td><td>US$100</td></tr>
+          <tr><td class="td-name">FinClaw</td><td>US$150</td></tr>
+          <tr><td class="td-name">DocClaw</td><td>US$200</td></tr>
+          <tr><td class="td-name">CommsClaw</td><td>US$100</td></tr>
+          <tr><td class="td-name">DataClaw</td><td>US$100</td></tr>
+          <tr><td><strong style="color:var(--gold)">Total</strong></td><td><strong style="color:var(--gold)">US$1,000</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:10.5px;color:var(--green)">vs. US$350,000+ FTE equivalent → 29× cost efficiency</div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;color:var(--dm);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">Week 2 Install Sequence</div>
+  <div class="cli"><span class="cli-title">Terminal</span>
+<span class="cmt"># Step 1 — Clone and install</span>
+<span class="kw">git</span> clone https://github.com/paperclipai/paperclip
+<span class="kw">cd</span> paperclip && <span class="kw">pnpm</span> install
+
+<span class="cmt"># Step 2 — Interactive onboarding (sets up company + DB)</span>
+<span class="kw">pnpm</span> paperclip onboard
+
+<span class="cmt"># Step 3 — Start dashboard at localhost:3100</span>
+<span class="kw">pnpm</span> dev
+
+<span class="cmt"># Step 4 — Mobile access via Tailscale (install separately)</span>
+<span class="cmt"># tailscale.com/download → add your phone to the same network</span></div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-hd">Company Mission (paste into Paperclip onboarding)</div>
+    <div style="font-family:var(--fm);font-size:11px;color:#72C499;line-height:1.8;background:#000;padding:14px;border-radius:5px">
+      Ascension Capital Partners is a zero-capital, fee-only global alternatives advisory and capital arranging firm. Mission: close $500K ARR in Phase 0 by executing the $13.7BN+ mandated programme across 27 coded mandates in Energy Transition, Digital Infrastructure, Private Credit, Real Estate, O&G, and Critical Minerals across APAC, EMEA, and North America.
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ROADMAP ═══ -->
+<div class="pane" id="pane-roadmap">
+  <div class="ph"><div class="ph-label">Product</div><div class="ph-title">Build Roadmap</div><div class="ph-sub">Four phases from files to fully autonomous firm. You are at Phase 0 — deploy today.</div></div>
+  <div class="roadmap">
+    <div class="rm-phase current">
+      <div class="rm-num">PHASE 0 · NOW</div>
+      <div class="rm-title">Deploy & Go Live</div>
+      <div class="rm-weeks">Weeks 1–2</div>
+      <ul class="rm-items">
+        <li>Download 6 HTML files</li>
+        <li>Buy domain ($15)</li>
+        <li>Deploy to Vercel (free)</li>
+        <li>Wire DNS → subdomains</li>
+        <li>Wire Zapier webhook</li>
+        <li>Create 6 Google Forms</li>
+      </ul>
+      <div class="rm-gate">✓ Gate: Public site live · Contact form working</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-num">PHASE 1 · WEEK 2–4</div>
+      <div class="rm-title">Paperclip Orchestration</div>
+      <div class="rm-weeks">Weeks 2–4</div>
+      <ul class="rm-items">
+        <li>Install Paperclip locally</li>
+        <li>Onboard 7 agents</li>
+        <li>NemoClaw heartbeat live</li>
+        <li>Notion webhooks wired</li>
+        <li>8 Zapier zaps active</li>
+        <li>Approval gates built</li>
+      </ul>
+      <div class="rm-gate">✓ Gate: NemoClaw brief at 08:00 AEST auto</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-num">PHASE 2 · WEEKS 5–8</div>
+      <div class="rm-title">Production Infra</div>
+      <div class="rm-weeks">Weeks 5–8</div>
+      <ul class="rm-items">
+        <li>Paperclip → Vercel deploy</li>
+        <li>Supabase PostgreSQL</li>
+        <li>ops. subdomain live</li>
+        <li>Mobile via Tailscale</li>
+        <li>Budget alerts active</li>
+        <li>Onboard Margaret + Arjun</li>
+      </ul>
+      <div class="rm-gate">✓ Gate: Approve tasks from iPhone</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-num">PHASE 3 · MONTHS 3–12</div>
+      <div class="rm-title">Autonomous Firm</div>
+      <div class="rm-weeks">Months 3–12</div>
+      <ul class="rm-items">
+        <li>Persistent agent state</li>
+        <li>Autonomous outreach</li>
+        <li>LP report automation</li>
+        <li>Compliance monitoring</li>
+        <li>Sub-agent specialists</li>
+        <li>Clipmart ACP template</li>
+      </ul>
+      <div class="rm-gate">✓ Gate: JT &lt;2hr/day operational</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">The Single Priority Right Now</div>
+    <div style="font-size:16px;font-family:var(--fd);color:var(--tx);margin-bottom:8px;line-height:1.5">
+      Deploy the 5 HTML files to Vercel. Buy the domain. Point DNS. That's it.
+    </div>
+    <div style="font-size:12px;color:var(--mt);line-height:1.65">
+      Everything else — Paperclip, Zapier, Google Forms, agent onboarding — follows after the platform is live. 
+      The domain and Vercel deploy takes 90 minutes total and costs $15. 
+      Go to the Deploy Guide tab for the exact steps.
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn btn-gold" onclick="show('deploy',document.querySelector('.sb-i:nth-child(3)'))">Go to Deploy Guide →</button>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- Agent Modal -->
+<div class="modal-ov" id="agentModal">
+  <div class="modal">
+    <div class="modal-title" id="mAgentName">—</div>
+    <div class="modal-sub" id="mAgentRole">—</div>
+    <div style="font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dm);margin-bottom:8px">PRP Activation Prompt</div>
+    <div class="prp-out" id="mPRP">—</div>
+    <div class="modal-footer">
+      <button class="btn btn-gold" onclick="copyModalPRP()">Copy Prompt</button>
+      <button class="btn btn-outline" onclick="window.open('https://claude.ai/new','_blank')">Open Claude.ai →</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('agentModal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+
+<script>
+// ══════════════════════════════════════
+// ACP OPS COMMAND CENTRE
+// ══════════════════════════════════════
+
+const MASTER = `FIRM: Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd | ACN 674 649 417
+PRINCIPAL: Joshua Ting | Executive Managing Partner | joshuating53@outlook.com | +61 451 338 533
+MODEL: Zero-capital, fee-only alternatives advisory | $13.7BN+ mandated programme
+MANDATES: 27 coded mandates | 8 verticals | APAC + EMEA + NA
+BRAND: EB Garamond display | Inter body | Gold #C9A84C | Always "Ascension Capital Partners"
+TONE: Authoritative, precise, partner-to-partner. British English. No waffle.
+RULE: JT approval required before ANY external dispatch. Flag all uncertainty.
+COMPLIANCE: No engagement without KYC clearance. Non-negotiable.
+NOTION: https://notion.so/33ef40e3bc0781cdbae0dcaab5755a49`;
+
+const AGENTS = {
+  nemo:{label:'🧠 NemoClaw',name:'NemoClaw (NC-001)',role:'Chief AI Officer · Orchestrator · JT Proxy',prp:`${MASTER}
+
+You are NemoClaw (NC-001), Chief AI Officer of Ascension Capital Partners.
+Orchestrate all six OpenClaw specialist agents. Generate daily briefs for JT at:
+- 08:00 AEST: APAC Open Brief
+- 09:00 BST: EMEA Brief (flag to Samira Amydriss)
+- 18:00 EST: NA Close
+
+DAILY BRIEF FORMAT:
+## ACP Daily Brief — [Date] · APAC Open
+### P1 Actions Today
+### Pipeline Status (top 5 mandates — code, stage, last action, next action)
+### New Enquiries (from Website Enquiry Intake)
+### Agent Outputs Pending JT Review
+### Market Data (Brent crude, BBSW 3M, AUD/USD)
+### Fee Pipeline YTD estimate
+
+Begin: Generate today's APAC Daily Brief. Date: ${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`},
+  deal:{label:'📊 DealClaw',name:'DealClaw (DC-001)',role:'Deal Origination · Pipeline Intelligence · Outreach',prp:`${MASTER}
+
+You are DealClaw (DC-001), Deal Origination & Pipeline Intelligence agent.
+
+FUNCTIONS:
+1. NEW ENQUIRY TRIAGE — qualify, classify, recommend, draft mandate record
+   Output: qualification note + mandate fields + 3 questions for JT's first call
+2. PIPELINE SWEEP — P1/P2 mandates, stale alerts (>7 days no action), stage advancement
+3. OUTREACH — campaign cadence tracking, Touch 4+ escalation, next-touch drafts
+4. ALLIANCE — co-origination pipeline, ROFR mandate alerts
+
+NOTION DBs:
+- Deal Pipeline: a7ae02cf-3709-4ab8-bdf6-94db03009e98
+- Enquiry Intake: 67edd569-4d7d-4fab-85e1-000ee9136150
+- Outreach Pipeline: 9ec38447-e85c-4472-98d5-2d5e408dd4ee
+
+Ready. Paste enquiry details, pipeline question, or outreach task.`},
+  doc:{label:'📄 DocClaw',name:'DocClaw (DOC-001)',role:'Document Production · 140+ Templates · IC Packs',prp:`${MASTER}
+
+You are DocClaw (DOC-001), Document Production Engine.
+
+STANDARDS (non-negotiable):
+- EB Garamond display / Inter body
+- Gold spine left border 4-6px #C9A84C
+- Confidentiality footer every page
+- British English · "Ascension Capital Partners" never abbreviated
+- Legal entity footer: APEX Consulting Partners Pty Ltd | ACN 674 649 417
+- Version format: v[Major].[Minor]
+
+DOCUMENTS: CIM · Term Sheet · LOE · One-Pager · IC Pack · NDA · Board Pack · LP Report
+
+IC PACK CHECKLIST:
+□ Investment summary (1 page)
+□ Financial model outputs (DSCR, IRR, LTV, UFCF)
+□ Risk register (8 categories)
+□ KYC/AML clearance certificate
+□ Mandate background + sponsor profile
+□ Term sheet (indicative)
+□ Proposed fee schedule
+
+FLAG: Every output tagged JT Review Required before external dispatch.
+Ready. Specify: document type, mandate code, counterparty, key terms.`},
+  comp:{label:'✅ CompliClaw',name:'CompliClaw (CC-001)',role:'KYC/AML · Sanctions Screening · Compliance',prp:`${MASTER}
+
+You are CompliClaw (CC-001), Compliance, KYC/AML & Risk agent.
+ABSOLUTE RULE: No engagement without KYC clearance. Non-negotiable.
+
+KYC PROTOCOL (run for every new counterparty):
+1. Identity verification (name, DOB/reg, jurisdiction)
+2. Sanctions: OFAC SDN · UN Security Council · FATF · DFAT Australia · EU Consolidated
+3. PEP screening (domestic + foreign + close associates)
+4. Adverse media (Google: [name] + "fraud" "investigation" "sanction" "lawsuit")
+5. UBO trace to natural person (>25% threshold)
+6. Jurisdictional risk assessment
+
+HIGH RISK (automatic halt): Iran · North Korea · Myanmar · Syria · Belarus · Russia
+ENHANCED DD: UAE · Saudi Arabia · Nigeria · China VIEs
+
+OUTPUT: KYC Clearance Certificate OR KYC Rejection Notice
+ESCALATION: Sanctions match → immediate halt → JT + legal counsel.
+Ready. Provide: counterparty name, entity, jurisdiction, linked mandate.`},
+  fin:{label:'📈 FinClaw',name:'FinClaw (FC-001)',role:'DSCR · IRR · Fee Models · IC Analytics',prp:`${MASTER}
+
+You are FinClaw (FC-001), Financial Modelling & Analytics agent.
+
+DOMAIN (apply always):
+RBL: DSCR, Net Debt/EBITDA, boe/d, 1P/2P reserves, NPV10, ARO, SOFR pricing, borrowing base
+Project Finance: DSCR, LLCR, PLCR, DSRA, offtake, EPCM
+LBO: MOIC, IRR, entry/exit multiples, debt amortisation, cash sweep, PIK
+Private Credit: FCCR, interest coverage, OID, unitranche blended rate
+
+BENCHMARKS:
+DSCR: 1.25x floor | 1.50x target | 2.0x+ preferred
+Net Debt/EBITDA: 5.0x senior ceiling | 6.5x total
+IRR: 18-25% unlevered | 22-35% levered
+MOIC: 2.0x min | 3.0x+ preferred
+
+FEE SKUs: ACP-FEE-ARR · ACP-FEE-MOB · ACP-FEE-SUC · ACP-FEE-PLC · ACP-FEE-TL · ACP-FEE-EQY
+IC OUTPUT: Base / Upside / Downside / Stress · DSCR bridge · IRR waterfall · Sensitivity matrix
+
+Ready. Specify: mandate code, facility size, structure, required analytics.`},
+  com:{label:'📧 CommsClaw',name:'CommsClaw (COM-001)',role:'Email Drafting · Outreach Sequences · Gmail CLI',prp:`${MASTER}
+
+You are CommsClaw (COM-001), Communications & Outreach Engine.
+
+EMAIL STANDARDS:
+- British English always
+- Partner-to-partner register: authoritative, precise, peer-level
+- Subject: [ACP] [Mandate] · [Action Required/FYI]
+- Signature: Joshua Ting | Executive Managing Partner | Ascension Capital Partners | T: +61 451 338 533
+- Confidentiality footer on all external emails
+- NEVER self-dispatch — all external emails require JT approval
+
+TEMPLATES:
+TPL-001: Cold intro → lender/bank  TPL-002: Teaser dispatch
+TPL-003: CIM dispatch (post-NDA)   TPL-004: Meeting request
+TPL-005: Term sheet cover          TPL-006: LOE cover
+TPL-007: LP welcome                TPL-008: LP quarterly update
+TPL-009: Alliance intro            TPL-010: Follow-up + action items
+
+GMAIL CLI: gam user joshuating53@outlook.com draft message to "[to]" subject "[subj]" body "[body]"
+
+Ready. Specify: template type, recipient, mandate context, objective.`},
+  dat:{label:'🔭 DataClaw',name:'DataClaw (DAT-001)',role:'Market Intel · Lender Profiling · Deal Comps',prp:`${MASTER}
+
+You are DataClaw (DAT-001), Market Intelligence & Research agent.
+
+FUNCTIONS:
+1. LENDER PROFILE: ticket size · sector focus · key contacts · recent deals · appetite signals · pricing
+2. MARKET DATA: Brent · SOFR · BBSW 3M · SONIA · USD/AED · AUD/USD · IG/HY spreads
+3. SECTOR INTEL: Energy Transition · Digital Infra · O&G · Real Estate · Critical Minerals
+4. DEAL COMPS: precedent transactions · leverage multiples · pricing · structure
+5. COUNTERPARTY RESEARCH: pre-meeting brief · background · key people
+
+OUTPUTS: Always cite sources + data date. Flag data quality issues.
+Ready. Specify: research type (lender profile/market data/sector brief/comps) and target.`}
+};
+
+const PIPELINE = [
+  {code:'ACP-US-EI-001',name:'AI Power Infrastructure Fund',size:'$1.5BN',stage:'Structuring',emp:'JT',fee:'~$4.9M'},
+  {code:'ACP-GL-SN-001',name:'Global Structured Notes Platform',size:'$3.0BN',stage:'Syndication',emp:'SA',fee:'~$3.7M'},
+  {code:'ACP-UK-CE-002',name:'UK Clean Energy Infrastructure',size:'$956M',stage:'IC Prep',emp:'SA',fee:'~$2.6M'},
+  {code:'ACP-ME-SY-001',name:'MENA Syndicated Credit Facility',size:'$350M',stage:'LOE',emp:'SA',fee:'~$0.7M'},
+  {code:'ACP-AU-RB-001',name:'Australian RBL Facility',size:'$90M',stage:'Origination',emp:'JT',fee:'~$0.3M'},
+  {code:'ACP-US-EI-002',name:'US Data Centre Portfolio',size:'$2.1BN',stage:'Origination',emp:'JT',fee:'~$6.2M'},
+  {code:'ACP-ME-PF-001',name:'MENA Project Finance — Solar',size:'$180M',stage:'Origination',emp:'SA',fee:'~$0.5M'},
+];
+
+const TASKS = [
+  {id:'TSK-001',agent:'NemoClaw NC-001',name:'APAC Daily Brief — 11 Apr 2026',trig:'Daily Brief',p:'p1',st:'draft',review:true},
+  {id:'TSK-002',agent:'DealClaw DC-001',name:'Qualify New Enquiry — Digital Infra Singapore',trig:'New Enquiry',p:'p0',st:'review',review:true},
+  {id:'TSK-003',agent:'CompliClaw CC-001',name:'KYC Screen — Gran Tierra Energy Inc.',trig:'KYC Request',p:'p0',st:'approved',review:false},
+  {id:'TSK-004',agent:'DocClaw DOC-001',name:'Draft CIM — ACP-US-EI-001 AI Power',trig:'Document Request',p:'p1',st:'review',review:true},
+  {id:'TSK-005',agent:'FinClaw FC-001',name:'Fee Waterfall — ACP-UK-CE-002 $956M',trig:'Fee Model',p:'p2',st:'queued',review:true},
+  {id:'TSK-006',agent:'CommsClaw COM-001',name:'TPL-001 Draft — MUFG Cold Intro',trig:'Email Draft',p:'p2',st:'draft',review:true},
+];
+
+// ── Nav
+function show(id, el) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.sb-i').forEach(s => s.classList.remove('on'));
+  document.getElementById('pane-' + id).classList.add('on');
+  if (el) el.classList.add('on');
+}
+
+// ── Agents
+function openAgent(key) {
+  const a = AGENTS[key];
+  if (!a) return;
+  document.getElementById('mAgentName').textContent = a.name;
+  document.getElementById('mAgentRole').textContent = a.role;
+  document.getElementById('mPRP').textContent = a.prp;
+  document.getElementById('agentModal').classList.add('open');
+}
+function copyModalPRP() {
+  navigator.clipboard.writeText(document.getElementById('mPRP').textContent);
+  toast('PRP prompt copied ✓'); 
+}
+document.getElementById('agentModal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// ── PRP panel
+function buildPRPBtns() {
+  const c = document.getElementById('prpAgentBtns');
+  Object.entries(AGENTS).forEach(([k,a]) => {
+    const b = document.createElement('div');
+    b.className = 'prp-btn';
+    b.textContent = a.label;
+    b.onclick = () => {
+      document.querySelectorAll('.prp-btn').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      document.getElementById('prpTA').value = a.prp;
+    };
+    c.appendChild(b);
+  });
+}
+function copyPRP() {
+  const v = document.getElementById('prpTA').value;
+  if (!v || v.startsWith('Select')) return;
+  navigator.clipboard.writeText(v);
+  toast('PRP prompt copied ✓');
+}
+function logNewTask() {
+  const name = prompt('Task name:');
+  if (!name) return;
+  TASKS.unshift({id:'TSK-'+(TASKS.length+1).toString().padStart(3,'0'),agent:'Manual',name,trig:'Manual',p:'p2',st:'queued',review:true});
+  renderQ();
+  toast('Task logged to queue');
+}
+
+// ── Pipeline
+function renderPipeline() {
+  const stageBadge = s => {
+    const m = {Structuring:'b-blue',Syndication:'b-purple',LOE:'b-gold','IC Prep':'b-amber',Origination:'b-gray'};
+    return `<span class="badge ${m[s]||'b-gray'}">${s}</span>`;
+  };
+  document.getElementById('pipelineTable').innerHTML = PIPELINE.map(r => `
+    <tr>
+      <td class="td-code">${r.code}</td>
+      <td class="td-name">${r.name}</td>
+      <td>${r.size}</td>
+      <td>${stageBadge(r.stage)}</td>
+      <td>${r.emp}</td>
+      <td style="color:var(--gold-d);font-family:var(--fm);font-size:11px">${r.fee}</td>
+    </tr>
+  `).join('');
+}
+
+// ── Task queue
+function renderQ(filter) {
+  let tasks = TASKS;
+  if (filter && filter !== 'all') {
+    if (filter === 'review') tasks = tasks.filter(t => t.review && t.st !== 'approved');
+    else if (filter === 'queued') tasks = tasks.filter(t => t.st === 'queued');
+    else tasks = tasks.filter(t => t.agent.toLowerCase().includes(filter));
+  }
+  document.getElementById('qList').innerHTML = tasks.map(t => `
+    <div class="q-item ${t.p}">
+      <div>
+        <div class="qi-name">${t.name}</div>
+        <div class="qi-meta"><span>${t.agent}</span><span>${t.trig}</span>
+          <span class="badge ${t.st==='approved'?'b-green':t.st==='review'?'b-blue':t.st==='draft'?'b-gold':'b-gray'}">${t.st==='review'?'JT Review':t.st}</span>
+        </div>
+      </div>
+      ${t.review && t.st !== 'approved' ? `<div class="q-btns"><button class="qb ok" onclick="approveT('${t.id}')">Approve</button><button class="qb no" onclick="rejectT('${t.id}')">Reject</button></div>` : ''}
+    </div>
+  `).join('');
+}
+function filterQ(f, el) {
+  document.querySelectorAll('.qf').forEach(q => q.classList.remove('on'));
+  el.classList.add('on');
+  renderQ(f);
+}
+function approveT(id) {
+  const t = TASKS.find(x => x.id === id);
+  if (t) { t.st = 'approved'; t.review = false; renderQ(); toast('Task approved ✓'); }
+}
+function rejectT(id) {
+  const r = prompt('Rejection reason:');
+  const t = TASKS.find(x => x.id === id);
+  if (t && r) { t.st = 'queued'; renderQ(); toast('Task returned to queue'); }
+}
+
+// ── Toast
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ── Clock + timezone
+function tick() {
+  const now = new Date();
+  document.getElementById('liveTime').textContent =
+    now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  
+  const toTZ = tz => new Date(now.toLocaleString('en-US',{timeZone:tz}));
+  const fmt = d => d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}) + ' ' +
+    d.toLocaleDateString('en-AU',{weekday:'short'});
+  
+  const apac = toTZ('Australia/Sydney');
+  const emea = toTZ('Europe/London');
+  const na   = toTZ('America/New_York');
+  
+  document.getElementById('tz-apac-t').textContent = fmt(apac) + ' AEST';
+  document.getElementById('tz-emea-t').textContent = fmt(emea) + ' BST';
+  document.getElementById('tz-na-t').textContent   = fmt(na)   + ' EST';
+  
+  const aH = apac.getHours(), bH = emea.getHours(), eH = na.getHours();
+  const wd = d => [1,2,3,4,5].includes(d.getDay());
+  
+  const isAPAC = aH >= 8 && aH < 12 && wd(apac);
+  const isEMEA = bH >= 9 && bH < 13 && wd(emea);
+  const isNA   = eH >= 9 && eH < 18 && wd(na);
+  
+  const pill = document.getElementById('tzPill');
+  if (isAPAC)      { pill.textContent='🟢 APAC Active'; pill.className='tz-pill live-apac'; }
+  else if (isEMEA) { pill.textContent='🔵 EMEA Active'; pill.className='tz-pill live-emea'; }
+  else if (isNA)   { pill.textContent='🟠 NA Active';   pill.className='tz-pill live-na'; }
+  else             { pill.textContent='— Off Hours';     pill.className='tz-pill'; }
+  
+  document.getElementById('tz-apac').classList.toggle('active-win', isAPAC);
+  document.getElementById('tz-emea').classList.toggle('active-win', isEMEA);
+  document.getElementById('tz-na').classList.toggle('active-win', isNA);
+}
+
+// ── Init
+buildPRPBtns();
+renderPipeline();
+renderQ();
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>

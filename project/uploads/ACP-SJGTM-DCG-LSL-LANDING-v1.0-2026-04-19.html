@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACP × DCG × Lendsecure LLP — Strategic Joint GTM & Buy-Box Allocation</title>
+<meta name="description" content="Ascension Capital Partners — institutional joint buy-box alliance with DCG and Lendsecure LLP. Strictly confidential — qualified institutional counterparties only." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ======================================================================
+   ACP BRAND TOKENS — Strictly per /acp-brand-standards
+====================================================================== */
+:root {
+    /* Primary palette */
+    --acp-black:      #000000;
+    --acp-gold:       #C5A55A;
+    --acp-dark-gold:  #A68B3C;
+    --acp-white:      #FFFFFF;
+    --acp-charcoal:   #333333;
+    --acp-warm-grey:  #9B9B9B;
+    --acp-light-grey: #F5F5F5;
+    --acp-cream:      #FAF7F0;
+
+    /* Functional tokens */
+    --bg-primary:     var(--acp-black);
+    --bg-elevated:    #0A0A0A;
+    --bg-surface:     #141414;
+    --bg-hover:       #1F1F1F;
+    --bg-light:       #FAFAFA;
+    --bg-cream:       var(--acp-cream);
+
+    --text-primary:   var(--acp-white);
+    --text-secondary: rgba(255,255,255,0.78);
+    --text-muted:     rgba(255,255,255,0.54);
+    --text-dark:      var(--acp-charcoal);
+    --text-grey:      var(--acp-warm-grey);
+
+    --accent:         var(--acp-gold);
+    --accent-hover:   var(--acp-dark-gold);
+    --accent-glow:    rgba(197, 165, 90, 0.28);
+
+    /* Status — subtle, never rainbow */
+    --status-green:   #4E7C3A;
+    --status-amber:   var(--acp-gold);
+    --status-red:     #8B3A3A;
+
+    /* Typography stack */
+    --font-display:   'EB Garamond', Georgia, 'Times New Roman', serif;
+    --font-body:      'Inter', 'Calibri', Arial, sans-serif;
+}
+
+/* ======================================================================
+   BASE / RESET
+====================================================================== */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    min-height: 100vh;
+    font-weight: 400;
+}
+a { color: var(--accent); text-decoration: none; transition: color 160ms ease; }
+a:hover { color: var(--accent-hover); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--accent); color: var(--acp-black); }
+
+/* British English, institutional tone — no emojis in chrome */
+
+/* ======================================================================
+   LAYOUT
+====================================================================== */
+.container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.gold-spine {
+    position: relative;
+    padding-left: 22px;
+}
+.gold-spine::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--accent);
+}
+
+/* ======================================================================
+   HEADER / CLASSIFICATION BAR
+====================================================================== */
+.classification-bar {
+    background: var(--acp-black);
+    border-bottom: 1px solid rgba(197,165,90,0.28);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 10px 0;
+}
+.classification-bar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.classification-bar strong { color: var(--accent); font-weight: 600; }
+
+.site-header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+}
+.site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.brand-mark {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    color: var(--acp-black);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.02em;
+}
+.brand-wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+.brand-wordmark span { color: var(--accent); font-weight: 500; }
+.doc-ref {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ======================================================================
+   HERO
+====================================================================== */
+.hero {
+    background:
+        radial-gradient(circle at 80% 20%, rgba(197,165,90,0.10) 0%, transparent 55%),
+        linear-gradient(180deg, #000000 0%, #0B0B0B 100%);
+    padding: 88px 0 72px;
+    border-bottom: 1px solid rgba(197,165,90,0.18);
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    left: 32px; top: 60px; bottom: 60px;
+    width: 6px;
+    background: var(--accent);
+}
+.hero .container {
+    padding-left: 70px;
+}
+.hero-eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+.hero-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(36px, 5.5vw, 62px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    max-width: 960px;
+}
+.hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+}
+.hero-sub {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-top: 24px;
+    max-width: 820px;
+    line-height: 1.4;
+}
+.hero-parties {
+    display: flex;
+    gap: 18px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+}
+.party-chip {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 14px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(197,165,90,0.32);
+    min-width: 220px;
+}
+.party-chip .role {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+}
+.party-chip .name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.hero-cta-row {
+    display: flex;
+    gap: 14px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition: all 180ms ease;
+}
+.btn-primary {
+    background: var(--accent);
+    color: var(--acp-black);
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+    color: var(--acp-white);
+}
+.btn-ghost {
+    background: transparent;
+    border-color: rgba(197,165,90,0.55);
+    color: var(--accent);
+}
+.btn-ghost:hover {
+    background: rgba(197,165,90,0.12);
+    border-color: var(--accent);
+}
+
+/* ======================================================================
+   METRICS STRIP (under hero)
+====================================================================== */
+.metrics-strip {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 36px 0;
+}
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 32px;
+}
+.metric {
+    padding-left: 16px;
+    border-left: 3px solid var(--accent);
+}
+.metric .value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--accent);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+.metric .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+/* ======================================================================
+   TABS
+====================================================================== */
+.tabs-wrap {
+    background: var(--bg-primary);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: sticky;
+    top: 77px;
+    z-index: 90;
+}
+.tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+.tabs::-webkit-scrollbar { height: 4px; }
+.tabs::-webkit-scrollbar-thumb { background: var(--accent); }
+.tab {
+    flex: 0 0 auto;
+    padding: 18px 22px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    transition: all 160ms ease;
+    white-space: nowrap;
+}
+.tab:hover { color: var(--text-secondary); }
+.tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ======================================================================
+   SECTIONS
+====================================================================== */
+.panel {
+    display: none;
+    padding: 72px 0;
+    animation: fadeIn 320ms ease;
+}
+.panel.active { display: block; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(28px, 3.4vw, 40px);
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    line-height: 1.15;
+}
+.section-lede {
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    max-width: 820px;
+    margin-bottom: 48px;
+    font-style: italic;
+}
+.h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--text-primary);
+    margin: 36px 0 14px;
+}
+
+/* ======================================================================
+   CARDS / GRIDS
+====================================================================== */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+}
+.card {
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 28px;
+    transition: all 220ms ease;
+    position: relative;
+}
+.card:hover {
+    border-color: rgba(197,165,90,0.4);
+    box-shadow: 0 0 0 1px rgba(197,165,90,0.12), 0 12px 40px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+}
+.card.gold-spine {
+    padding-left: 28px;
+}
+.card .card-label {
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.card .card-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+.card p {
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    line-height: 1.6;
+}
+.card ul {
+    list-style: none;
+    margin-top: 10px;
+}
+.card ul li {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+}
+.card ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+/* ======================================================================
+   TABLES
+====================================================================== */
+.institutional-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 32px;
+    font-size: 13.5px;
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.institutional-table thead {
+    background: var(--acp-black);
+}
+.institutional-table thead th {
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--accent);
+}
+.institutional-table tbody td {
+    padding: 13px 16px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: top;
+}
+.institutional-table tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.015);
+}
+.institutional-table tbody tr:hover {
+    background: rgba(197,165,90,0.05);
+}
+.institutional-table .lead-col {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+.institutional-table .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+}
+.institutional-table .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(197,165,90,0.4);
+    color: var(--accent);
+}
+
+/* ======================================================================
+   STATUS INDICATORS
+====================================================================== */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 4px 10px;
+}
+.status::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+}
+.status.green { color: var(--acp-white); background: var(--status-green); }
+.status.green::before { background: var(--acp-white); }
+.status.amber { color: var(--acp-black); background: var(--accent); }
+.status.amber::before { background: var(--acp-black); }
+.status.red { color: var(--acp-white); background: var(--status-red); }
+.status.red::before { background: var(--acp-white); }
+.status.open { color: var(--text-muted); border: 1px solid var(--text-muted); }
+.status.open::before { background: var(--text-muted); }
+
+/* ======================================================================
+   TIMELINE
+====================================================================== */
+.timeline {
+    position: relative;
+    padding-left: 32px;
+    margin-top: 24px;
+}
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 10px; top: 10px; bottom: 10px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), rgba(197,165,90,0.2));
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    padding-left: 18px;
+}
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -28px; top: 4px;
+    width: 14px; height: 14px;
+    background: var(--accent);
+    border: 3px solid var(--bg-primary);
+    border-radius: 50%;
+}
+.timeline-week {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.timeline-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+.timeline-detail {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* ======================================================================
+   ROI CALCULATOR
+====================================================================== */
+.roi {
+    background: var(--bg-surface);
+    border: 1px solid rgba(197,165,90,0.28);
+    padding: 36px;
+    margin-top: 24px;
+}
+.roi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+@media (max-width: 720px) { .roi-grid { grid-template-columns: 1fr; } }
+.roi-inputs label {
+    display: block;
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 18px 0 8px;
+    font-weight: 500;
+}
+.roi-inputs input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: rgba(255,255,255,0.12);
+    outline: none;
+}
+.roi-inputs input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px; height: 18px;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--acp-black);
+}
+.roi-inputs input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--acp-black);
+    border-radius: 0;
+}
+.roi-val {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 4px;
+}
+.roi-val .live {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+.roi-val .note { font-size: 11px; color: var(--text-muted); }
+.roi-outputs {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    justify-content: center;
+}
+.roi-output {
+    padding: 20px 22px;
+    background: var(--acp-black);
+    border-left: 4px solid var(--accent);
+}
+.roi-output .k {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+.roi-output .v {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+}
+.roi-assumptions {
+    margin-top: 20px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ======================================================================
+   CTA BLOCK
+====================================================================== */
+.cta-block {
+    background:
+        linear-gradient(135deg, var(--acp-black) 0%, #141414 100%),
+        radial-gradient(circle at 20% 80%, rgba(197,165,90,0.15) 0%, transparent 50%);
+    border: 1px solid rgba(197,165,90,0.35);
+    padding: 56px 44px;
+    margin-top: 40px;
+    position: relative;
+}
+.cta-block::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--accent);
+}
+.cta-block h3 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+}
+.cta-block p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+.process-flow {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.process-step {
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(197,165,90,0.3);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.process-step.active {
+    background: var(--accent);
+    color: var(--acp-black);
+    border-color: var(--accent);
+}
+.process-step.arrow {
+    border: none;
+    background: none;
+    color: var(--accent);
+    padding: 10px 4px;
+}
+
+/* ======================================================================
+   FOOTER
+====================================================================== */
+.site-footer {
+    background: var(--acp-black);
+    border-top: 1px solid rgba(197,165,90,0.2);
+    padding: 48px 0 28px;
+    margin-top: 60px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 36px;
+}
+@media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.footer-address {
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    line-height: 1.7;
+}
+.footer-col h5 {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+.footer-col a, .footer-col span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    line-height: 1.55;
+}
+.disclaimer {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 24px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.6;
+}
+.disclaimer strong { color: var(--text-secondary); font-style: normal; letter-spacing: 0.1em; text-transform: uppercase; }
+.copyright-line {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ======================================================================
+   MOBILE
+====================================================================== */
+@media (max-width: 720px) {
+    .container { padding: 0 20px; }
+    .hero { padding: 60px 0 50px; }
+    .hero::before { left: 20px; top: 40px; bottom: 40px; }
+    .hero .container { padding-left: 48px; }
+    .panel { padding: 48px 0; }
+    .card { padding: 22px; }
+    .institutional-table { font-size: 12.5px; }
+    .institutional-table thead th, .institutional-table tbody td { padding: 10px 10px; }
+    .hero-cta-row .btn { flex: 1 0 auto; justify-content: center; }
+    .cta-block { padding: 36px 28px; }
+}
+
+/* Print */
+@media print {
+    body { background: white; color: black; }
+    .tabs-wrap, .hero-cta-row, .process-flow { display: none !important; }
+    .panel { display: block !important; page-break-before: always; padding: 28px 0; }
+    .card, .institutional-table, .hero, .cta-block { background: white !important; color: black !important; border-color: #ccc !important; }
+    * { color: black !important; background: white !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CLASSIFICATION BAR -->
+<div class="classification-bar">
+    <div class="container">
+        <span><strong>Strictly Confidential</strong> · Qualified Institutional Counterparties Only</span>
+        <span>Doc: ACP-SJGTM-DCG-LSL-v1.0-2026-04-19</span>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+    <div class="container">
+        <div class="brand">
+            <div class="brand-mark">A</div>
+            <div>
+                <div class="brand-wordmark">Ascension <span>Capital Partners</span></div>
+                <div class="doc-ref">Strategic Joint GTM · Buy-Box Allocation</div>
+            </div>
+        </div>
+        <div class="doc-ref">19 April 2026</div>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-eyebrow">The Alliance — Allocation Secured</div>
+        <h1 class="hero-title">A tri-party platform for <em>institutional capital deployment</em> at scale.</h1>
+        <p class="hero-sub">Ascension Capital Partners has secured a joint buy-box with DCG and Lendsecure LLP — consolidating origination, underwriting and distribution across a USD 5.8bn+ live mandate book spanning seven verticals and four regions.</p>
+
+        <div class="hero-parties">
+            <div class="party-chip">
+                <span class="role">Lead Arranger</span>
+                <span class="name">Ascension Capital Partners</span>
+            </div>
+            <div class="party-chip">
+                <span class="role">Principal Allocator · Distribution</span>
+                <span class="name">DCG</span>
+            </div>
+            <div class="party-chip">
+                <span class="role">Private Credit Co-Arranger</span>
+                <span class="name">Lendsecure LLP — Kirat</span>
+            </div>
+        </div>
+
+        <div class="hero-cta-row">
+            <a class="btn btn-primary" href="#next-steps">Initiate Access Discussion →</a>
+            <a class="btn btn-ghost" href="#alliance">Review the Alliance Thesis</a>
+        </div>
+    </div>
+</section>
+
+<!-- METRICS STRIP -->
+<section class="metrics-strip">
+    <div class="container">
+        <div class="metrics-grid">
+            <div class="metric">
+                <div class="value">USD 5.8bn+</div>
+                <div class="label">Programmatic Pipeline Access</div>
+            </div>
+            <div class="metric">
+                <div class="value">20+</div>
+                <div class="label">Named Live Mandates</div>
+            </div>
+            <div class="metric">
+                <div class="value">7</div>
+                <div class="label">Verticals Covered</div>
+            </div>
+            <div class="metric">
+                <div class="value">USD 0.75–1.0bn</div>
+                <div class="label">12-Month Funding-Line Capacity</div>
+            </div>
+            <div class="metric">
+                <div class="value">4</div>
+                <div class="label">Regions — APAC · EMEA · ME · Americas</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+    <div class="container">
+        <nav class="tabs" role="tablist">
+            <button class="tab active" data-tab="alliance" role="tab">01 · Alliance</button>
+            <button class="tab" data-tab="buybox" role="tab">02 · Buy-Box</button>
+            <button class="tab" data-tab="gtm" role="tab">03 · GTM Architecture</button>
+            <button class="tab" data-tab="economics" role="tab">04 · Economics</button>
+            <button class="tab" data-tab="pipeline" role="tab">05 · Pipeline</button>
+            <button class="tab" data-tab="funding" role="tab">06 · Funding Lines</button>
+            <button class="tab" data-tab="status" role="tab">07 · Status &amp; Critical Path</button>
+            <button class="tab" data-tab="next-steps" role="tab">08 · Next Steps</button>
+        </nav>
+    </div>
+</div>
+
+<main>
+
+<!-- PANEL 01: ALLIANCE -->
+<section id="alliance" class="panel active">
+    <div class="container">
+        <div class="section-eyebrow">01 · Alliance</div>
+        <h2 class="section-title">Why this alliance. Why now.</h2>
+        <p class="section-lede">The binding constraint on our platform is no longer origination. It is committed balance sheet and distribution velocity. This tri-party alliance converts a USD 5.8bn+ mandate book into a committed, scalable capital channel — operated from a single institutional governance framework.</p>
+
+        <div class="grid-3">
+            <div class="card gold-spine">
+                <div class="card-label">Ascension Capital Partners</div>
+                <div class="card-title">Origination &amp; Structuring</div>
+                <p>Proprietary mandate flow across digital infrastructure, clean energy, critical minerals, private credit and real assets. LMA/LSTA-aligned documentation capacity. Twelve-plus years of institutional execution, USD 10bn+ cumulative transactions.</p>
+                <ul>
+                    <li>Proprietary pipeline origination</li>
+                    <li>Term-sheet &amp; structural architecture</li>
+                    <li>IC-A gatekeeping &amp; buy-box enforcement</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">DCG</div>
+                <div class="card-title">Principal Allocation &amp; Distribution</div>
+                <p>Balance-sheet allocation capacity and LP / HNW distribution reach. Programmatic commit-and-soft-circle posture on anchor tranches. Principal ticket capability across credit and hybrid lanes.</p>
+                <ul>
+                    <li>Anchor commit / soft-circle capacity</li>
+                    <li>LP &amp; family-office distribution</li>
+                    <li>Principal ticket on select equity</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Lendsecure LLP — Kirat</div>
+                <div class="card-title">Private Credit Execution</div>
+                <p>Institutional-grade credit underwriting, covenant construction and documentation lift. LMA/LSTA credit-lane leadership with ELFA-compliant operating capacity. Bridge, unitranche and mezzanine documentation expertise.</p>
+                <ul>
+                    <li>Credit-lane lead &amp; agency role</li>
+                    <li>Covenant + documentation architecture</li>
+                    <li>Optional mezz participation on hybrids</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="h3">The Strategic Case — One Paragraph</h3>
+        <p style="color: var(--text-secondary); max-width: 880px; font-size: 15.5px; line-height: 1.7;">
+        Each party brings a structurally distinct, non-substitutable capability. ACP alone has pipeline without committed capital velocity. DCG alone has allocation without structured origination. Lendsecure alone has credit expertise without proprietary pipeline. The alliance resolves all three simultaneously — and does so under a single buy-box, a single governance protocol and a single economic framework. The platform is designed to be <em>programmatic, scalable and replicable</em>.
+        </p>
+    </div>
+</section>
+
+<!-- PANEL 02: BUY-BOX -->
+<section id="buybox" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">02 · Joint Buy-Box</div>
+        <h2 class="section-title">Allocation parameters — the screening gate.</h2>
+        <p class="section-lede">Any opportunity falling within-box proceeds directly to co-ordinated IC. Out-of-box opportunities require unanimous tri-party consent.</p>
+
+        <h3 class="h3">By Asset Class</h3>
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>Asset Class</th>
+                    <th>Instruments</th>
+                    <th>Ticket (USD)</th>
+                    <th>Tenor</th>
+                    <th>Target Return</th>
+                    <th>Lane Lead</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lead-col">Private Credit — Real Assets</td>
+                    <td>Senior secured / unitranche / RCF</td>
+                    <td class="num">25–100m</td>
+                    <td class="num">3–7y</td>
+                    <td class="num">11–13% gross</td>
+                    <td>Lendsecure + ACP</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Private Credit — Bridge / VD / CLN</td>
+                    <td>Bridge, venture debt, CLN</td>
+                    <td class="num">2–10m</td>
+                    <td class="num">12–24m</td>
+                    <td class="num">12–16% gross</td>
+                    <td>ACP + Lendsecure</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Digital Infrastructure</td>
+                    <td>Equity + facility stack</td>
+                    <td class="num">30–250m</td>
+                    <td class="num">5–10y</td>
+                    <td class="num">Mid-teens IRR</td>
+                    <td>ACP lead · DCG co</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Clean Energy &amp; CCU</td>
+                    <td>Equity PP + PF + Green Bond</td>
+                    <td class="num">5–100m</td>
+                    <td class="num">7–15y</td>
+                    <td class="num">High-teens IRR</td>
+                    <td>ACP lead · DCG co</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Critical Minerals / Offtake</td>
+                    <td>Offtake-backed PF / ECA-eligible</td>
+                    <td class="num">5–25m</td>
+                    <td class="num">3–7y</td>
+                    <td class="num">High-single ≥ 10%</td>
+                    <td>ACP lead</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Real Estate (Senior Living / Resi / Comm.)</td>
+                    <td>Senior / mezz / pref equity</td>
+                    <td class="num">10–127m</td>
+                    <td class="num">3–7y</td>
+                    <td class="num">8–12% yield</td>
+                    <td>ACP + DCG</td>
+                </tr>
+                <tr>
+                    <td class="lead-col">Structured Notes Programme</td>
+                    <td>Multi-tranche, series issuance</td>
+                    <td class="num">25–250m</td>
+                    <td class="num">1–5y</td>
+                    <td class="num">10–16% coupon</td>
+                    <td>DCG distribution</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="h3">By Region</h3>
+        <div class="grid-2">
+            <div class="card gold-spine">
+                <div class="card-label">APAC — USD 1.4–1.7bn</div>
+                <div class="card-title">Australia · Thailand · Indonesia · India</div>
+                <ul>
+                    <li>DT Cloud — 750MW AI-DC (APAC/UK)</li>
+                    <li>GTHERM — clean-energy circularity overlay</li>
+                    <li>SOM — strategic minerals offtake</li>
+                    <li>Goldmine [AU] — precious metals M&amp;A</li>
+                    <li>Thailand IDC — USD 1.0bn promissory programme</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Europe &amp; UK — USD 650m–1.1bn</div>
+                <div class="card-title">UK · EU · DACH · Iberia</div>
+                <ul>
+                    <li>Aventurine / Gaiadon — 3-facility CHP + CCU</li>
+                    <li>KWFT — USD 50m strategic capital raise</li>
+                    <li>CEMRE — green maritime / industrial demand</li>
+                    <li>FEMN — critical minerals (ECA-eligible)</li>
+                    <li>Spanish IDC Grid Bonds — EUR 22m</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Middle East — USD 1.3bn+</div>
+                <div class="card-title">GCC · DIFC · UAE</div>
+                <ul>
+                    <li>PRP — USD 830m senior debt facility (Dubai)</li>
+                    <li>Malika — USD 350m senior syndication</li>
+                    <li>Structured Notes — USD 3.0bn programme</li>
+                    <li>UAE senior living — 4-villa senior facility</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Americas — USD 2.2bn+</div>
+                <div class="card-title">US · LATAM</div>
+                <ul>
+                    <li>EDGM — 540MW AI power (LOE executed)</li>
+                    <li>OMNIS / Quantum Pleasants — power station</li>
+                    <li>INFRAKEY — 1.1GW brownfield DC parks</li>
+                    <li>KRS — gas midstream / PF</li>
+                    <li>NXE — uranium baseload fuel</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="h3">Out-of-Box — Consent Required</h3>
+        <p style="color: var(--text-secondary); font-size: 14.5px; line-height: 1.7;">
+        Tickets below USD 2m or above USD 250m single-tranche · non-OECD / FATF-non-compliant jurisdictions · unsecured venture equity pre-Series B · counterparties failing enhanced KYC (PEP, adverse media, beneficial-ownership opacity).
+        </p>
+    </div>
+</section>
+
+<!-- PANEL 03: GTM ARCHITECTURE -->
+<section id="gtm" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">03 · GTM Architecture</div>
+        <h2 class="section-title">Front-to-back operating model.</h2>
+        <p class="section-lede">A unified origination-to-close workflow with clear lane ownership. Every mandate is tagged to one of three execution lanes at intake; economics and governance follow the tag.</p>
+
+        <h3 class="h3">Stage Ownership (RACI)</h3>
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>ACP</th>
+                    <th>DCG</th>
+                    <th>Lendsecure LLP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="lead-col">Origination</td><td>Lead · proprietary flow</td><td>Co · allocator-sourced</td><td>Co · credit-sourced</td></tr>
+                <tr><td class="lead-col">Screening · IC-A</td><td>Lead · buy-box gate</td><td>Consent (in) · vote (out)</td><td>Consent (in) · vote (out)</td></tr>
+                <tr><td class="lead-col">Structuring</td><td>Lead · term sheet</td><td>Input · capital constraints</td><td>Lead (credit) · co (equity)</td></tr>
+                <tr><td class="lead-col">Underwriting</td><td>Co-ordinate · CP tracker</td><td>Allocate · soft-circle</td><td>Lead (credit) · docs</td></tr>
+                <tr><td class="lead-col">Documentation</td><td>LMA/LSTA · counsel instruction</td><td>Allocation letters</td><td>Credit docs · agency role</td></tr>
+                <tr><td class="lead-col">Syndication · Distribution</td><td>Co · anchor coverage</td><td>Lead · distribution</td><td>Co · credit placement</td></tr>
+                <tr><td class="lead-col">Post-close Monitoring</td><td>Lead · portfolio surveillance</td><td>Quarterly LP comms</td><td>Covenant compliance</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="h3">The Three Execution Lanes</h3>
+        <div class="grid-3">
+            <div class="card gold-spine">
+                <div class="card-label">Lane 1 — Credit</div>
+                <div class="card-title">Senior secured &amp; bridge</div>
+                <p>Senior secured, unitranche, bridge, RCF, CLN.</p>
+                <ul>
+                    <li><strong style="color:var(--text-primary);">Lendsecure</strong> — leads documentation</li>
+                    <li><strong style="color:var(--text-primary);">ACP</strong> — co-arranges, origination</li>
+                    <li><strong style="color:var(--text-primary);">DCG</strong> — allocates capital</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Lane 2 — Equity / Hybrid</div>
+                <div class="card-title">Pref equity &amp; convertibles</div>
+                <p>Pref equity, convertibles, project equity.</p>
+                <ul>
+                    <li><strong style="color:var(--text-primary);">ACP</strong> — leads structuring</li>
+                    <li><strong style="color:var(--text-primary);">DCG</strong> — principal ticket</li>
+                    <li><strong style="color:var(--text-primary);">Lendsecure</strong> — optional mezz</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Lane 3 — Capital Markets</div>
+                <div class="card-title">Green bonds &amp; notes</div>
+                <p>Green bonds, structured notes, syndicated facilities.</p>
+                <ul>
+                    <li><strong style="color:var(--text-primary);">ACP</strong> — arranges programme</li>
+                    <li><strong style="color:var(--text-primary);">DCG</strong> — distributes via LP base</li>
+                    <li><strong style="color:var(--text-primary);">Lendsecure</strong> — agency / trustee liaison</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="h3">Decisioning &amp; Escalation</h3>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-label">IC-A — Intake</div>
+                <p>ACP owner decision <strong style="color:var(--accent);">within 48 hours</strong> of teaser receipt. Buy-box gate is binary — pass / fail against Section 02 parameters.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">IC-B — Commit</div>
+                <p><strong style="color:var(--accent);">Unanimous</strong> across ACP / DCG / Lendsecure within 10 business days of full data pack.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">IC-C — Post-commit Amendment</div>
+                <p><strong style="color:var(--accent);">Majority</strong> consent, ACP casting vote on deadlocks.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">Principal Escalation</div>
+                <p>JT · DCG principal · Kirat escalation trigger on any covenant amendment, material CP waiver or allocation re-slicing above 20%.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PANEL 04: ECONOMICS -->
+<section id="economics" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">04 · Economics &amp; Fee Model</div>
+        <h2 class="section-title">Who earns what, and why.</h2>
+        <p class="section-lede">The joint economic architecture protects ACP's arranger economics, rewards DCG's principal allocation, and compensates Lendsecure for credit documentation lift. All fees invoiced on ACP paper; internal settlement by monthly reconciliation.</p>
+
+        <h3 class="h3">Credit Lane — Per-Mandate Fee Stack</h3>
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Fee Type</th>
+                    <th>Basis</th>
+                    <th>ACP</th>
+                    <th>DCG</th>
+                    <th>Lendsecure</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="num">ACP-FEE-MOB</td><td class="lead-col">Mobilisation</td><td>USD 50k–350k flat</td><td class="num">60%</td><td class="num">20%</td><td class="num">20%</td></tr>
+                <tr><td class="num">ACP-FEE-ARR</td><td class="lead-col">Arrangement</td><td>1.0–2.5% of facility</td><td class="num">50%</td><td class="num">30%</td><td class="num">20%</td></tr>
+                <tr><td class="num">ACP-FEE-SUC</td><td class="lead-col">Success</td><td>1.0–2.0% of drawn</td><td class="num">50%</td><td class="num">25%</td><td class="num">25%</td></tr>
+                <tr><td class="num">ACP-FEE-PLC</td><td class="lead-col">Placement</td><td>1.0–1.5% of allocated</td><td class="num">30%</td><td class="num">60%</td><td class="num">10%</td></tr>
+                <tr><td class="num">ACP-FEE-RET</td><td class="lead-col">Retainer</td><td>USD 25–75k / month</td><td class="num">100%</td><td class="num">—</td><td class="num">—</td></tr>
+                <tr><td class="num">ACP-FEE-TL</td><td class="lead-col">Tail (24 mo)</td><td>25–50% of arrangement</td><td class="num">50%</td><td class="num">30%</td><td class="num">20%</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="h3">Equity &amp; Hybrid Lane — Carry &amp; Promote</h3>
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Economic</th>
+                    <th>Basis</th>
+                    <th>Split (ACP / DCG / LSL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="num">ACP-FEE-EQY</td><td class="lead-col">Equity earnout</td><td>5–15% of sponsor equity</td><td class="num">60 / 30 / 10</td></tr>
+                <tr><td class="num">ACP-FEE-CSH</td><td class="lead-col">Cash strip</td><td>0.5–2.0% at refinance/exit</td><td class="num">50 / 40 / 10</td></tr>
+                <tr><td class="num">—</td><td class="lead-col">Promote (carry)</td><td>20% over 8% pref, 50/50 cat-up</td><td class="num">50 / 40 / 10</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="h3">Indicative Economic Model — 12 Months</h3>
+        <div class="roi">
+            <div class="roi-grid">
+                <div class="roi-inputs">
+                    <label>Capital Deployed (USD m)</label>
+                    <input type="range" id="cap" min="100" max="1000" step="50" value="500" />
+                    <div class="roi-val"><span class="live" id="capVal">USD 500m</span><span class="note">Range: 100m – 1.0bn</span></div>
+
+                    <label>Blended Arrangement Fee</label>
+                    <input type="range" id="arr" min="1.0" max="2.5" step="0.1" value="1.75" />
+                    <div class="roi-val"><span class="live" id="arrVal">1.75%</span><span class="note">LMA-standard band</span></div>
+
+                    <label>Success Fee</label>
+                    <input type="range" id="suc" min="1.0" max="2.0" step="0.1" value="1.5" />
+                    <div class="roi-val"><span class="live" id="sucVal">1.50%</span><span class="note">On drawn / allocated</span></div>
+                </div>
+                <div class="roi-outputs">
+                    <div class="roi-output">
+                        <div class="k">Gross Fee Pool (12 mo)</div>
+                        <div class="v" id="outPool">USD 16.25m</div>
+                    </div>
+                    <div class="roi-output">
+                        <div class="k">ACP Share (blended ≈ 50%)</div>
+                        <div class="v" id="outACP">USD 8.13m</div>
+                    </div>
+                    <div class="roi-output">
+                        <div class="k">DCG Share (blended ≈ 30%)</div>
+                        <div class="v" id="outDCG">USD 4.88m</div>
+                    </div>
+                    <div class="roi-output">
+                        <div class="k">Lendsecure Share (blended ≈ 20%)</div>
+                        <div class="v" id="outLSL">USD 3.25m</div>
+                    </div>
+                </div>
+            </div>
+            <p class="roi-assumptions">
+                Illustrative only. Gross fee pool = capital deployed × (arrangement % + success %). Blended split weighted across credit-lane SKUs (60/20/20 mob, 50/30/20 arr, 50/25/25 suc). Excludes retainer, tail, carry and equity earnout. All figures subject to executed engagement letters, side letters and IC approval. Not an offer or solicitation.
+            </p>
+        </div>
+
+        <h3 class="h3">Economic Guardrails — Non-Negotiable</h3>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-label">No cross-subsidy</div>
+                <p>Every mandate stands alone economically. No bundling, no blended pricing across unrelated transactions.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">MFN across alliance</div>
+                <p>No counterparty is offered better terms than ACP on the same mandate. Most-favoured-nation applies across all economics.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">24-month tail</div>
+                <p>Full success fee on any transaction with introduced parties for 24 months post-termination. Standard ACP tail protection.</p>
+            </div>
+            <div class="card">
+                <div class="card-label">10-day upstream settlement</div>
+                <p>Fee invoicing on ACP paper; upstream settlement to DCG and Lendsecure within 10 business days of receipt.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PANEL 05: PIPELINE -->
+<section id="pipeline" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">05 · Priority Pipeline</div>
+        <h2 class="section-title">Q2 2026 joint activation.</h2>
+        <p class="section-lede">The following near-term mandates are prioritised for immediate joint activation. Binding commitments require counterparty-level LOEs and IC-B sign-off per Section 03.</p>
+
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Mandate</th>
+                    <th>Lane</th>
+                    <th>Size (USD)</th>
+                    <th>Joint Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="num">01</td>
+                    <td class="lead-col">EDGM — 540MW AI Power (US)</td>
+                    <td>CLN + RCF + PPA</td>
+                    <td class="num">540m+</td>
+                    <td>ACP lead · DCG anchor · LSL credit co-arranger</td>
+                    <td><span class="status green">LOE Executed</span></td>
+                </tr>
+                <tr>
+                    <td class="num">02</td>
+                    <td class="lead-col">OMNIS / Quantum — Pleasants Power (US)</td>
+                    <td>Bridge + Green Bond</td>
+                    <td class="num">875–1,125m</td>
+                    <td>ACP arranger · LSL bridge · DCG bond distribution</td>
+                    <td><span class="status amber">IC Pack Delivered</span></td>
+                </tr>
+                <tr>
+                    <td class="num">03</td>
+                    <td class="lead-col">DT Cloud — 750MW AI-DC (APAC/UK)</td>
+                    <td>Senior + Equity + Carry</td>
+                    <td class="num">90m + 350MW</td>
+                    <td>ACP lead · DCG equity · LSL senior credit</td>
+                    <td><span class="status amber">In Progress</span></td>
+                </tr>
+                <tr>
+                    <td class="num">04</td>
+                    <td class="lead-col">KWFT — Strategic Capital Raise (UK)</td>
+                    <td>Equity / Warrant</td>
+                    <td class="num">50m</td>
+                    <td>ACP lead · DCG allocator · LSL optional mezz</td>
+                    <td><span class="status amber">LOE Drafted</span></td>
+                </tr>
+                <tr>
+                    <td class="num">05</td>
+                    <td class="lead-col">Malika — Senior Syndication (ME/Global)</td>
+                    <td>Senior Syndicated</td>
+                    <td class="num">350m</td>
+                    <td>ACP co-arranger · DCG distribution · LSL agency</td>
+                    <td><span class="status amber">Access Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td class="num">06</td>
+                    <td class="lead-col">Aventurine — CCU Programme (UK)</td>
+                    <td>Equity PP + PF</td>
+                    <td class="num">GBP 8.5m+</td>
+                    <td>ACP lead · DCG PP distribution</td>
+                    <td><span class="status open">Pipeline / Diligence</span></td>
+                </tr>
+                <tr>
+                    <td class="num">07</td>
+                    <td class="lead-col">Spanish IDC Grid Bonds (EU)</td>
+                    <td>Senior Notes (PP)</td>
+                    <td class="num">EUR 22m</td>
+                    <td>ACP arranger · LSL insurer placement</td>
+                    <td><span class="status open">Pipeline</span></td>
+                </tr>
+                <tr>
+                    <td class="num">08</td>
+                    <td class="lead-col">Q1 Bridge Book (9 tickets · AU/EU)</td>
+                    <td>Bridge / VD / CLN</td>
+                    <td class="num">38.5–40.5m</td>
+                    <td>ACP origination · LSL credit · DCG retail-wholesale</td>
+                    <td><span class="status amber">Pipeline — Active</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="h3">90-Day Sequenced Plan</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-week">Weeks 1 – 2</div>
+                <div class="timeline-title">Alliance stand-up</div>
+                <div class="timeline-detail">Execute tri-party MOU / alliance term sheet. Activate joint Notion workspace. Refresh KYC cross-share.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Weeks 3 – 4</div>
+                <div class="timeline-title">First commits</div>
+                <div class="timeline-detail">Close EDGM CLN documentation. Commit on OMNIS bridge. Circulate joint teaser v1.0 to DCG LP base under tiered NDA gating.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Weeks 5 – 8</div>
+                <div class="timeline-title">Soft-circle + IC-B</div>
+                <div class="timeline-detail">Soft-circle USD 75–125m across top-3 mandates (EDGM · OMNIS · DT Cloud). IC-B on KWFT &amp; Aventurine.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Weeks 9 – 12</div>
+                <div class="timeline-title">Binding close + warehouse activation</div>
+                <div class="timeline-detail">Binding commits across priority 3. Execute first tri-branded investor update. Initiate warehouse-facility discussions (Section 06).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PANEL 06: FUNDING LINES -->
+<section id="funding" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">06 · Funding-Line Activation</div>
+        <h2 class="section-title">Four parallel capital channels.</h2>
+        <p class="section-lede">The commercial rationale for the alliance is to convert the mandate book into committed, scalable capital channels — USD 0.75–1.0bn of programmatic capacity over the next 12 months.</p>
+
+        <div class="grid-2">
+            <div class="card gold-spine">
+                <div class="card-label">Line 1 · Credit</div>
+                <div class="card-title">Warehouse Facility</div>
+                <p><strong style="color:var(--accent);">USD 100–250m</strong> revolver · 3-year commitment · DSCR-tested borrowing base across eligible bridge / CLN / senior notes.</p>
+                <ul>
+                    <li>Lead: Lendsecure (credit structuring)</li>
+                    <li>Feed: ACP (origination)</li>
+                    <li>First-loss / junior: DCG</li>
+                    <li>Benefit: fund-and-sell, not fund-and-hold</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Line 2 · Capital Markets</div>
+                <div class="card-title">Programmatic Green Bond Shelf (ICMA)</div>
+                <p><strong style="color:var(--accent);">USD 150m</strong> programme · use-of-proceeds ring-fenced to DT Cloud + Aventurine CCU + GTHERM + H₂ offtake.</p>
+                <ul>
+                    <li>Arranger: ACP</li>
+                    <li>Distribution: DCG (retail / institutional)</li>
+                    <li>Trustee liaison: Lendsecure</li>
+                    <li>External SPO — CICERO / Sustainalytics, Q2 2026</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Line 3 · Institutional Distribution</div>
+                <div class="card-title">Structured Notes Programme</div>
+                <p><strong style="color:var(--accent);">USD 3.0bn</strong> multi-tranche programme via Malika partnership · series issuance for institutional distribution.</p>
+                <ul>
+                    <li>Distribution / allocation: DCG</li>
+                    <li>Structuring: ACP</li>
+                    <li>Secondary docs: Lendsecure</li>
+                    <li>First series USD 250m · target launch Q3 2026</li>
+                </ul>
+            </div>
+            <div class="card gold-spine">
+                <div class="card-label">Line 4 · Co-Invest Vehicle</div>
+                <div class="card-title">LP Side-Car Pool</div>
+                <p><strong style="color:var(--accent);">USD 250m</strong> deal-by-deal co-invest side-car · LP introduction led by DCG · GP carry 20 / 8 / cat-up.</p>
+                <ul>
+                    <li>Structure: Cayman SPC — Series cells per mandate</li>
+                    <li>Management: ACP name</li>
+                    <li>Documentation: ILPA-aligned LPA + side letters</li>
+                    <li>Target first close: H2 2026</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="h3">Expected 12-Month Outcomes</h3>
+        <table class="institutional-table">
+            <thead>
+                <tr>
+                    <th>Line</th>
+                    <th>Target Commitment</th>
+                    <th>First Drawdown</th>
+                    <th>Primary KPI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="lead-col">Warehouse (credit)</td><td class="num">USD 100–250m</td><td>Q3 2026</td><td>Deployed / committed ratio &gt; 70%</td></tr>
+                <tr><td class="lead-col">Green Bond Shelf</td><td class="num">USD 150m</td><td>Q4 2026</td><td>Weighted coupon ≤ SOFR + 350bps</td></tr>
+                <tr><td class="lead-col">Structured Notes (series 1)</td><td class="num">USD 250m</td><td>Q3 2026</td><td>Oversubscription ≥ 1.5×</td></tr>
+                <tr><td class="lead-col">LP Co-Invest Pool</td><td class="num">USD 250m</td><td>H2 2026</td><td>≥ 8 LP anchors · avg ticket ≥ USD 25m</td></tr>
+                <tr style="background: rgba(197,165,90,0.08);"><td class="lead-col" style="color:var(--accent);"><strong>Aggregate 12-month capacity</strong></td><td class="num" style="color:var(--accent);"><strong>USD 0.75–1.0bn</strong></td><td>—</td><td>Programmatic · rolling · scalable</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- PANEL 07: STATUS -->
+<section id="status" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">07 · Status Read · 19 April 2026</div>
+        <h2 class="section-title">Where we stand today.</h2>
+        <p class="section-lede">Live status across the workstream book. The binding constraint is no longer origination — it's committed balance sheet and distribution velocity.</p>
+
+        <h3 class="h3">Live Status</h3>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-label"><span class="status green">Green</span>&nbsp;&nbsp; Closed / LOE Executed</div>
+                <ul>
+                    <li>EDGM (US) — USD 540m+ programme active, documentation phase</li>
+                    <li>KWFT (UK) — LOE signed 11 Nov 2025, E&amp;W law / LCIA London</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-label"><span class="status amber">Amber</span>&nbsp;&nbsp; In Progress</div>
+                <ul>
+                    <li>Aventurine / Gaiadon — 3-facility LOE drafted, 5% pref equity total</li>
+                    <li>EDGM CLN / RCF docs — mid-negotiation</li>
+                    <li>OMNIS / Quantum — IC pack delivered, bridge close pending</li>
+                    <li>DT Cloud — senior credit facility, target close 30 Jun 2026</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-label"><span class="status red">Red</span>&nbsp;&nbsp; Tracker Gaps</div>
+                <ul>
+                    <li>Green Bond programme setup</li>
+                    <li>H₂ Offtake term sheet</li>
+                    <li>Critical minerals mandates (SOM / FEMN / ACE Cold)</li>
+                    <li>TerraFlow term sheet · PRP Dubai scoping · INFRAKEY structure</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-label"><span class="status open">Open</span>&nbsp;&nbsp; Alliance-Level Opens</div>
+                <ul>
+                    <li>DCG allocation consent — in-principle verbal; tri-party MOU priority T+14</li>
+                    <li>Lendsecure credit-lane LOE — Kirat intro complete, counsel review pending</li>
+                    <li>Joint KYC/AML cross-share pack — to finalise</li>
+                    <li>Joint Notion workspace with VDR mirrors — to launch</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="h3">Critical Path — Next 14 Days</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-week">Step 1</div>
+                <div class="timeline-title">Tri-party MOU execution</div>
+                <div class="timeline-detail">Execute alliance MOU between ACP, DCG and Lendsecure LLP.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Step 2</div>
+                <div class="timeline-title">KYC / AML cross-share</div>
+                <div class="timeline-detail">Finalise cross-share pack; pre-clearance on top-3 priority mandates.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Step 3</div>
+                <div class="timeline-title">Lendsecure credit-lane LOE</div>
+                <div class="timeline-detail">Kirat countersign on joint arranger mandate.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Step 4</div>
+                <div class="timeline-title">Joint operating infrastructure</div>
+                <div class="timeline-detail">Launch joint Notion workspace with VDR mirrors. Activate weekly ops cadence.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-week">Step 5</div>
+                <div class="timeline-title">First tri-branded teaser</div>
+                <div class="timeline-detail">Teaser v1.0 — EDGM · DT Cloud · OMNIS/Quantum package — to DCG LP base under tiered NDA.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PANEL 08: NEXT STEPS -->
+<section id="next-steps" class="panel">
+    <div class="container">
+        <div class="section-eyebrow">08 · Next Steps &amp; Contact</div>
+        <h2 class="section-title">How we activate from here.</h2>
+        <p class="section-lede">Access, diligence and allocation proceed on a structured five-stage process. Introductions are made and materials released under executed NDA and KYC clearance.</p>
+
+        <div class="process-flow">
+            <span class="process-step active">01 · Introductory Call</span>
+            <span class="process-step arrow">→</span>
+            <span class="process-step">02 · NDA</span>
+            <span class="process-step arrow">→</span>
+            <span class="process-step">03 · VDR Access</span>
+            <span class="process-step arrow">→</span>
+            <span class="process-step">04 · IC Presentation</span>
+            <span class="process-step arrow">→</span>
+            <span class="process-step">05 · Term Sheet Negotiation</span>
+        </div>
+
+        <div class="cta-block">
+            <h3>Request Access &amp; Initiate Discussion</h3>
+            <p>This landing page accompanies the full document <em>ACP-SJGTM-DCG-LSL-v1.0-2026-04-19</em>. To move to NDA and VDR access — or to discuss specific mandates within the joint buy-box — contact Joshua Ting directly. All engagement is under strict confidentiality and subject to KYC / AML clearance.</p>
+
+            <div style="display:flex; gap: 14px; flex-wrap: wrap;">
+                <a class="btn btn-primary" href="mailto:joshuating53@outlook.com?subject=ACP%20%C3%97%20DCG%20%C3%97%20Lendsecure%20%E2%80%94%20Joint%20GTM%20Discussion">Email JT Directly</a>
+                <a class="btn btn-ghost" href="tel:+61451338533">Call +61 451 338 533</a>
+            </div>
+        </div>
+
+        <h3 class="h3">Principal Contact</h3>
+        <table class="institutional-table" style="max-width: 720px;">
+            <tbody>
+                <tr><td class="lead-col" style="width: 35%;">Name</td><td>Joshua Ting</td></tr>
+                <tr><td class="lead-col">Title</td><td>Executive Managing Partner<br/>Global Head of Alternatives &amp; Private Markets</td></tr>
+                <tr><td class="lead-col">Entity</td><td>Ascension Capital Partners<br/>t/a APEX Consulting Partners Pty Ltd</td></tr>
+                <tr><td class="lead-col">ACN</td><td class="num">674 649 417</td></tr>
+                <tr><td class="lead-col">Mobile</td><td><a href="tel:+61451338533">+61 451 338 533</a></td></tr>
+                <tr><td class="lead-col">Email</td><td><a href="mailto:joshuating53@outlook.com">joshuating53@outlook.com</a></td></tr>
+                <tr><td class="lead-col">Governing Law</td><td>England &amp; Wales · LCIA Arbitration (London)</td></tr>
+                <tr><td class="lead-col">Documentation Standard</td><td>LMA / LSTA · ELFA · ICMA where labelled</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">Ascension Capital Partners</div>
+                <div class="footer-address">
+                    trading as APEX Consulting Partners Pty Ltd<br/>
+                    Suite 3, 1 Cary Street<br/>
+                    Drummoyne NSW 2047 Australia<br/>
+                    ACN 674 649 417
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Alliance</h5>
+                <span>Ascension Capital Partners</span>
+                <span>DCG — Principal Allocator</span>
+                <span>Lendsecure LLP — Credit Co-Arranger</span>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <a href="mailto:joshuating53@outlook.com">joshuating53@outlook.com</a>
+                <a href="tel:+61451338533">+61 451 338 533</a>
+                <span>WhatsApp: +61 420 583 996</span>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Disclaimer · </strong>
+            This document is confidential and intended solely for qualified institutional recipients. It does not constitute an offer, solicitation or recommendation to buy or sell any financial product. Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd does not represent or warrant that the information is accurate, complete or current, and, to the maximum extent permitted by law, accepts no liability for any loss or damage arising from its use. All mandate terms are subject to executed engagement letters, side letters, IC approval and KYC / AML clearance. LMA / LSTA standards apply to all credit documentation. Nothing herein constitutes legal, tax, accounting or financial product advice.
+        </div>
+
+        <div class="copyright-line">
+            <span>Ascension Capital Partners  ·  Strictly Confidential</span>
+            <span>Doc: ACP-SJGTM-DCG-LSL-v1.0-2026-04-19</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// =========================================================
+// TABS
+// =========================================================
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(target).classList.add('active');
+        window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 20, behavior: 'smooth' });
+    });
+});
+
+// Deep-linking via hash
+if (window.location.hash) {
+    const target = window.location.hash.replace('#','');
+    const t = document.querySelector(`.tab[data-tab="${target}"]`);
+    if (t) t.click();
+}
+
+// Hash-based scroll-to-tab for internal CTA links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const target = a.getAttribute('href').replace('#','');
+        const t = document.querySelector(`.tab[data-tab="${target}"]`);
+        if (t) {
+            e.preventDefault();
+            t.click();
+        }
+    });
+});
+
+// =========================================================
+// ROI CALCULATOR
+// =========================================================
+function fmtUSD(n) {
+    if (n >= 1000) return 'USD ' + (n/1000).toFixed(2) + 'bn';
+    return 'USD ' + n.toFixed(2) + 'm';
+}
+
+const capEl = document.getElementById('cap');
+const arrEl = document.getElementById('arr');
+const sucEl = document.getElementById('suc');
+const capVal = document.getElementById('capVal');
+const arrVal = document.getElementById('arrVal');
+const sucVal = document.getElementById('sucVal');
+const outPool = document.getElementById('outPool');
+const outACP = document.getElementById('outACP');
+const outDCG = document.getElementById('outDCG');
+const outLSL = document.getElementById('outLSL');
+
+function updateROI() {
+    const cap = parseFloat(capEl.value);
+    const arr = parseFloat(arrEl.value) / 100;
+    const suc = parseFloat(sucEl.value) / 100;
+
+    capVal.textContent = fmtUSD(cap);
+    arrVal.textContent = (arr * 100).toFixed(2) + '%';
+    sucVal.textContent = (suc * 100).toFixed(2) + '%';
+
+    const pool = cap * (arr + suc);
+    // Blended splits: arrangement 50/30/20, success 50/25/25 — weighted equally
+    const arrComponent = cap * arr;
+    const sucComponent = cap * suc;
+    const acpShare = (arrComponent * 0.50) + (sucComponent * 0.50);
+    const dcgShare = (arrComponent * 0.30) + (sucComponent * 0.25);
+    const lslShare = (arrComponent * 0.20) + (sucComponent * 0.25);
+
+    outPool.textContent = fmtUSD(pool);
+    outACP.textContent  = fmtUSD(acpShare);
+    outDCG.textContent  = fmtUSD(dcgShare);
+    outLSL.textContent  = fmtUSD(lslShare);
+}
+
+[capEl, arrEl, sucEl].forEach(el => el.addEventListener('input', updateROI));
+updateROI();
+</script>
+
+</body>
+</html>

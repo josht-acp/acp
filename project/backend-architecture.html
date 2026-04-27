@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1200"/>
+<title>Backend Architecture · LP Portal · ACP</title>
+<link rel="stylesheet" href="acp-tokens.css"/>
+<style>
+  html,body{margin:0;padding:0;background:var(--acp-midnight);color:var(--fg-1);font-family:var(--font-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;}
+  a{color:var(--acp-gold);text-decoration:none;border-bottom:1px dashed var(--acp-gold-border);}
+  a:hover{color:var(--acp-gold-light);border-color:var(--acp-gold);}
+  code{font-family:var(--font-mono);font-size:0.88em;background:var(--acp-charcoal);color:var(--acp-gold-light);padding:1px 6px;border-radius:2px;letter-spacing:0;}
+
+  .pv-banner{background:linear-gradient(90deg,rgba(201,168,76,0.12),rgba(201,168,76,0.02));border-bottom:1px solid var(--acp-gold-border);padding:10px 28px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--acp-gold);display:flex;justify-content:space-between;align-items:center;}
+  .pv-banner b{color:var(--acp-gold-light);font-weight:500;}
+
+  .doc{max-width:920px;margin:0 auto;padding:64px 48px 120px;}
+  .crumb{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--acp-gold-dark);margin-bottom:20px;}
+  .crumb b{color:var(--acp-gold);font-weight:500;}
+  h1.t{font-family:var(--font-display);font-weight:300;font-size:52px;line-height:1.2;color:var(--acp-white);margin:0 0 24px;letter-spacing:-0.01em;}
+  h1.t em{font-style:italic;background:var(--gold-gradient-fill);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:400;}
+  .sub{font-size:17px;color:var(--acp-silver);line-height:1.65;max-width:720px;font-family:var(--font-body);}
+  .meta{font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;margin-top:28px;padding-top:20px;border-top:1px solid var(--acp-gold-hair);display:flex;gap:32px;flex-wrap:wrap;}
+  .meta b{color:var(--acp-pearl);font-weight:500;}
+
+  section{margin-top:72px;}
+  h2{font-family:var(--font-display);font-weight:400;font-size:36px;color:var(--acp-white);margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--acp-gold-hair);position:relative;letter-spacing:-0.005em;line-height:1.2;}
+  h2::after{content:'';position:absolute;bottom:-1px;left:0;width:60px;height:2px;background:var(--gold-gradient-bar);}
+  h2 .num{font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;color:var(--acp-gold-dark);text-transform:uppercase;display:block;font-weight:500;margin-bottom:8px;}
+  h3{font-family:var(--font-display);font-weight:500;font-size:22px;color:var(--acp-pearl);margin:32px 0 14px;letter-spacing:-0.003em;}
+  h4{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;color:var(--acp-gold);text-transform:uppercase;margin:24px 0 10px;font-weight:500;}
+
+  p{margin:0 0 16px;color:var(--acp-pearl);}
+  p.lede{font-size:17px;color:var(--acp-pearl);line-height:1.65;}
+  ul, ol{padding-left:22px;margin:0 0 20px;color:var(--acp-pearl);}
+  li{margin-bottom:8px;line-height:1.65;}
+  li b{color:var(--acp-white);font-weight:500;}
+
+  /* Callouts / cards */
+  .rec{background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));border:1px solid var(--acp-gold-border);padding:24px 28px;margin:24px 0;position:relative;}
+  .rec-l{font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;color:var(--acp-gold);text-transform:uppercase;margin-bottom:8px;}
+  .rec-t{font-family:var(--font-display);font-size:22px;color:var(--acp-white);margin-bottom:10px;line-height:1.3;}
+  .rec-s{font-size:14px;color:var(--acp-pearl);line-height:1.65;}
+
+  .alert{background:rgba(245,158,11,0.05);border-left:3px solid var(--acp-warning);padding:18px 22px;margin:24px 0;font-size:14px;color:var(--acp-pearl);line-height:1.6;}
+  .alert b{color:var(--acp-warning);font-weight:500;}
+
+  /* Compare table */
+  .cmp{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13px;}
+  .cmp th{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--acp-gold-dark);font-weight:500;text-align:left;padding:10px 14px;border-bottom:1px solid var(--acp-gold-hair);background:rgba(201,168,76,0.03);}
+  .cmp td{padding:14px;border-bottom:1px solid rgba(201,168,76,0.05);vertical-align:top;color:var(--acp-pearl);}
+  .cmp td b{color:var(--acp-white);font-weight:500;}
+  .cmp tr.reco td{background:rgba(201,168,76,0.04);}
+  .cmp tr.reco td:first-child{border-left:3px solid var(--acp-gold);padding-left:11px;}
+  .cmp td .tick{color:var(--acp-success);}
+  .cmp td .cross{color:var(--acp-error);}
+  .cmp td .mono{font-family:var(--font-mono);font-size:11px;color:var(--acp-gold-light);letter-spacing:0.02em;}
+
+  /* Stack list */
+  .stack{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin:20px 0;}
+  .stack-row{background:var(--acp-navy);padding:18px 22px;display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:start;}
+  .stack-l{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;padding-top:2px;}
+  .stack-r{font-size:13px;color:var(--acp-pearl);line-height:1.55;}
+  .stack-r b{color:var(--acp-white);font-weight:500;display:block;margin-bottom:3px;}
+  .stack-r span{color:var(--acp-silver);font-size:12px;}
+
+  /* ASCII diagram */
+  pre.diag{background:var(--acp-charcoal);border:1px solid var(--acp-gold-hair);padding:24px 28px;font-family:var(--font-mono);font-size:11px;line-height:1.55;color:var(--acp-pearl);overflow-x:auto;letter-spacing:0.02em;border-left:3px solid var(--acp-gold);margin:24px 0;}
+  pre.diag .g{color:var(--acp-gold-light);}
+  pre.diag .m{color:var(--acp-silver);}
+  pre.diag .d{color:var(--acp-steel);}
+
+  /* Schema */
+  .schema{background:var(--acp-navy);border:1px solid var(--acp-gold-hair);padding:22px 26px;margin:18px 0;border-left:3px solid var(--acp-gold-dark);}
+  .schema-n{font-family:var(--font-mono);font-size:12px;color:var(--acp-gold-light);letter-spacing:0.05em;margin-bottom:10px;font-weight:500;}
+  .schema-f{font-family:var(--font-mono);font-size:11px;color:var(--acp-pearl);line-height:1.7;}
+  .schema-f .k{color:var(--acp-gold-dark);}
+  .schema-f .t{color:var(--acp-silver);}
+
+  /* Phase timeline */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin:20px 0;}
+  .phase{background:var(--acp-navy);padding:20px 22px;position:relative;}
+  .phase-n{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:8px;}
+  .phase-t{font-family:var(--font-display);font-size:19px;color:var(--acp-white);line-height:1.25;margin-bottom:10px;}
+  .phase-d{font-family:var(--font-mono);font-size:10px;color:var(--acp-gold-light);letter-spacing:0.08em;margin-bottom:10px;}
+  .phase-b{font-size:12px;color:var(--acp-silver);line-height:1.55;}
+
+  /* Cost table */
+  .cost{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;}
+  .cost th, .cost td{padding:10px 14px;border-bottom:1px solid rgba(201,168,76,0.06);}
+  .cost th{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;font-weight:500;text-align:left;}
+  .cost th.num, .cost td.num{text-align:right;font-family:var(--font-mono);color:var(--acp-white);}
+  .cost tr.total td{border-top:1px solid var(--acp-gold-border);border-bottom:none;font-weight:500;color:var(--acp-gold-light);padding-top:14px;}
+  .cost tr.total td.num{font-family:var(--font-display);font-size:18px;color:var(--acp-gold-light);}
+
+  .nav-head{position:sticky;top:0;z-index:10;background:rgba(10,14,26,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--acp-gold-hair);padding:14px 48px;display:flex;justify-content:space-between;align-items:center;}
+  .nav-head .brand{font-family:var(--font-display);font-size:14px;color:var(--acp-pearl);letter-spacing:0.04em;white-space:nowrap;}
+  .nav-head .brand b{color:var(--acp-gold);font-weight:400;font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;margin-left:12px;white-space:nowrap;}
+  .nav-head ul{display:flex;gap:20px;list-style:none;padding:0;margin:0;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;}
+  .nav-head a{color:var(--acp-silver);border:none;}
+  .nav-head a:hover{color:var(--acp-gold);}
+
+  .ft{margin-top:80px;padding-top:24px;border-top:1px solid var(--acp-gold-hair);font-family:var(--font-mono);font-size:10px;color:var(--acp-steel);letter-spacing:0.08em;display:flex;justify-content:space-between;}
+</style>
+</head>
+<body>
+
+<div class="pv-banner">
+  <div><b>Backend Architecture</b> · Decision doc · LP Portal · Partner draft</div>
+  <div>v0.1 · 22 Apr 2026</div>
+</div>
+
+<nav class="nav-head">
+  <div class="brand">Ascension Capital Partners <b>Arch Decision</b></div>
+  <ul>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#vps">VPS</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#auth">Auth</a></li>
+    <li><a href="#compliance">Compliance</a></li>
+    <li><a href="#rollout">Rollout</a></li>
+    <li><a href="#cost">Cost</a></li>
+  </ul>
+</nav>
+
+<div class="doc">
+  <div class="crumb">Phase 2 Readiness <b>·</b> Backend Architecture <b>·</b> LP Portal</div>
+  <h1 class="t">LP Portal — <em>backend architecture.</em></h1>
+  <p class="sub">Single-principal pragmatism. Institutional-grade posture. A self-hosted LP portal on a small VPS that a sole GP can operate credibly in front of Macquarie Pension Trust and the next ten LPs, and that scales cleanly to Fund II first close without a rebuild.</p>
+  <div class="meta">
+    <div>Version <b>0.1</b></div>
+    <div>Author <b>Principal · JT</b></div>
+    <div>Status <b>Draft · for partner review</b></div>
+    <div>Companion <b>lp-portal.html</b></div>
+  </div>
+
+  <!-- ─────── 1. EXECUTIVE SUMMARY ─────── -->
+  <section id="summary">
+    <h2><span class="num">§1 · Executive summary</span>Decision in one page.</h2>
+    <p class="lede">The portal ships on a single VPS in Sydney, Node + Postgres, behind Cloudflare. Magic-link auth, per-LP IP allowlists, document gating on the server, full audit log. A$40/month at launch, A$180–240/month through Fund II first close. No multi-region, no Kubernetes, no AWS console — because we don't need them and their operational weight costs more than their value at this scale.</p>
+
+    <div class="rec">
+      <div class="rec-l">Recommendation · build</div>
+      <div class="rec-t">Hetzner Cloud <code>CX32</code> · Sydney region · Node 20 + Fastify + Postgres 16 + S3-compatible object storage, fronted by Cloudflare.</div>
+      <div class="rec-s">Four vCPU, 8 GB RAM, 80 GB NVMe. Dedicated PostgreSQL instance on the same host at launch, lifted to a managed instance at Fund II close. Object storage via Hetzner Storage Box for documents; Cloudflare R2 as the fallback. Magic-link auth via Resend. IP allowlisting per LP account. Full audit log on every read and write.</div>
+    </div>
+
+    <h4>What this buys us</h4>
+    <ul>
+      <li><b>Credibility with MPT and institutional LPs</b> — self-hosted, sovereign-data (Sydney), auditable, in-house log of every document access.</li>
+      <li><b>Speed to first LP</b> — three weeks from decision to a gated production portal for one LP (MPT).</li>
+      <li><b>Clean scale path</b> — every choice on this stack has a documented upgrade to Fund II scale without rewriting the app.</li>
+      <li><b>Sub-A$3k/year infrastructure cost</b> through the first 15 LPs and A$200M AUM.</li>
+    </ul>
+
+    <h4>What this doesn't buy us</h4>
+    <ul>
+      <li>SOC2 Type II out of the box (we scope the 12-month roadmap to get there).</li>
+      <li>Nine-nines availability (we target 99.9% — one 4-hour maintenance window per quarter is acceptable for an LP portal).</li>
+      <li>A team of three engineers (we codify the runbook so one person can operate this).</li>
+    </ul>
+
+    <div class="alert"><b>Honesty caveat.</b> Standing up a <i>production</i> portal with live LP data is a real engineering track — 2–4 weeks to first LP, then ongoing care. This document is the brief for that track. The <code>lp-portal.html</code> file is a front-end mock against seed data; it is not wired to any of the services described below. When you say go, we spin up a new project with a different posture (deploy pipeline, secret management, staging, backup drills).</div>
+  </section>
+
+  <!-- ─────── 2. VPS CHOICE ─────── -->
+  <section id="vps">
+    <h2><span class="num">§2 · VPS</span>Where the portal runs.</h2>
+    <p>Three choices. All three give us a box in Sydney with NVMe and dedicated vCPU, which is what the portal actually needs. We pick on price per vCPU, BYO-ability of Postgres, and the vendor's posture toward institutional data.</p>
+
+    <table class="cmp">
+      <thead>
+        <tr><th>Provider</th><th>Plan</th><th>Specs</th><th>Region</th><th>A$/mo</th><th>Fit</th></tr>
+      </thead>
+      <tbody>
+        <tr class="reco">
+          <td><b>Hetzner Cloud</b> <span class="mono">(recommended)</span></td>
+          <td><code>CX32</code></td>
+          <td>4 vCPU · 8 GB · 80 GB NVMe · 20 TB egress</td>
+          <td>Sydney (via AU1)</td>
+          <td>~A$16</td>
+          <td><span class="tick">●</span> GDPR-aligned, EU posture, strong price/perf, clean API, snapshot + backup built in</td>
+        </tr>
+        <tr>
+          <td><b>Vultr</b></td>
+          <td>High Frequency <code>2C/4G</code></td>
+          <td>2 vCPU · 4 GB · 128 GB NVMe</td>
+          <td>Sydney</td>
+          <td>~A$40</td>
+          <td><span class="tick">●</span> Strong Sydney presence, higher clock speed, acceptable if Hetzner AU capacity tight</td>
+        </tr>
+        <tr>
+          <td><b>DigitalOcean</b></td>
+          <td>Premium AMD <code>s-4vcpu-8gb</code></td>
+          <td>4 vCPU · 8 GB · 160 GB NVMe</td>
+          <td>Sydney</td>
+          <td>~A$72</td>
+          <td><span class="cross">●</span> Pricey for what we get; great DX but no AU-specific advantage</td>
+        </tr>
+        <tr>
+          <td>AWS / GCP / Azure</td>
+          <td><code>t4g.large</code> + RDS</td>
+          <td>2 vCPU · 8 GB · managed</td>
+          <td>Sydney</td>
+          <td>A$180+</td>
+          <td><span class="cross">●</span> Over-indexed for scale we don't have. Revisit at Fund II A$500M AUM.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Why Hetzner over AWS</h4>
+    <p>At our scale — one Postgres instance, one app node, a few GB of documents — AWS charges a premium for elasticity we won't use. Hetzner's <code>CX32</code> runs the entire portal at 10–15% CPU and gives us headroom for 50+ concurrent LPs. We pay for the power we use, not the power we might one day use. When Fund II lands and we need HA, we migrate to AWS Sydney with the same Docker image and Postgres dump.</p>
+
+    <div class="alert"><b>Sovereignty check.</b> MPT mandate compliance requires LP data to stay in Australia. Hetzner operates an AU1 region in Sydney — we confirm the region on account provisioning and document it in the LP DDQ responses.</div>
+  </section>
+
+  <!-- ─────── 3. STACK ─────── -->
+  <section id="stack">
+    <h2><span class="num">§3 · Stack</span>What runs on the box.</h2>
+    <p>Chosen for boring, well-understood, one-operator friendly. Every piece has been in production somewhere for 10+ years. No frameworks that are three weeks old.</p>
+
+    <div class="stack">
+      <div class="stack-row"><div class="stack-l">Runtime</div><div class="stack-r"><b>Node.js 20 LTS</b><span>Boring, ubiquitous, huge ecosystem for auth/PDF/email primitives we need. Locked to LTS; automatic security patches via apt.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Framework</div><div class="stack-r"><b>Fastify 4</b><span>Lightweight, schema-first, built-in JSON Schema validation. Picks up where Express left off without the baggage. Handles our expected 20 req/s at 2% CPU.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Database</div><div class="stack-r"><b>PostgreSQL 16</b><span>Single source of truth. Full ACID. Row-level security for LP isolation. <code>pgcrypto</code> for PII at rest. <code>pg_audit</code> for compliance logging. Daily logical backup + WAL shipping to object storage.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Object storage</div><div class="stack-r"><b>Hetzner Storage Box</b> <span style="color:var(--acp-silver)">(primary)</span> <b>Cloudflare R2</b> <span style="color:var(--acp-silver)">(fallback)</span><span>Documents, call notices, signed PDFs. S3-compatible API. Encrypted at rest. Pre-signed URLs with 5-minute TTL for every download.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Edge / CDN</div><div class="stack-r"><b>Cloudflare (Free + R2)</b><span>TLS termination, DDoS, WAF, rate-limit, bot management. Origin-locked to Cloudflare IPs — portal is not reachable from the public internet directly.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Email</div><div class="stack-r"><b>Resend</b><span>Magic-link and transactional email. DKIM/SPF/DMARC pre-wired. A$0/month at our volume; clean API.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Frontend</div><div class="stack-r"><b>React 18 · same codebase as the mock</b><span>Served as a single static bundle from the Node process. The portal mock already defines the IA, tokens, and component language — we swap seed data for live API calls and ship.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Infra as code</div><div class="stack-r"><b>Docker Compose + GitHub Actions</b><span>One <code>docker-compose.yml</code> defines the box. GitHub Actions on main → build image → scp + compose up. No Kubernetes.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Observability</div><div class="stack-r"><b>Grafana Cloud free tier</b><span>Logs + metrics + uptime. A$0/month. Paged via Pushover to principal's phone.</span></div></div>
+      <div class="stack-row"><div class="stack-l">Secrets</div><div class="stack-r"><b>1Password Secrets Automation</b><span>No secrets in repo. No <code>.env.production</code> on disk. Pulled at container start from 1Password vault.</span></div></div>
+    </div>
+
+    <pre class="diag">
+<span class="g">┌──────────────────────── CLOUDFLARE ────────────────────────┐</span>
+<span class="g">│</span>   TLS · WAF · DDoS · rate-limit · bot · cache-bypass       <span class="g">│</span>
+<span class="g">│</span>   portal.ascensioncapitalpartners.com                      <span class="g">│</span>
+<span class="g">└───────────────────────────┬────────────────────────────────┘</span>
+                            <span class="d">│</span>  CF origin IPs only
+<span class="g">┌───────────────────────────▼────────────────────────────────┐</span>
+<span class="g">│</span>  <span class="g">HETZNER CLOUD · CX32 · AU1 SYDNEY</span>                        <span class="g">│</span>
+<span class="g">│</span>  ┌────────────────────────┐  ┌──────────────────────────┐ <span class="g">│</span>
+<span class="g">│</span>  │ <span class="g">portal-api</span> (Fastify)  │  │ <span class="g">postgres</span> 16           │ <span class="g">│</span>
+<span class="g">│</span>  │ Node 20 · :3000        │──│ local · pgcrypto·pgaudit │ <span class="g">│</span>
+<span class="g">│</span>  └────────────────────────┘  └──────────┬───────────────┘ <span class="g">│</span>
+<span class="g">│</span>                                         <span class="d">│</span> WAL ship         <span class="g">│</span>
+<span class="g">│</span>  ┌────────────────────────┐              <span class="d">│</span>                 <span class="g">│</span>
+<span class="g">│</span>  │ <span class="g">portal-web</span> (React)    │              <span class="d">│</span>                 <span class="g">│</span>
+<span class="g">│</span>  │ static bundle · served │              <span class="d">│</span>                 <span class="g">│</span>
+<span class="g">│</span>  │ from Fastify           │              <span class="d">│</span>                 <span class="g">│</span>
+<span class="g">│</span>  └────────────────────────┘              <span class="d">│</span>                 <span class="g">│</span>
+<span class="g">└─────────────────────────────────────────┼──────────────────┘</span>
+                                          <span class="d">│</span>
+<span class="g">┌─────────────────────────────────────────▼──────────────────┐</span>
+<span class="g">│</span>  <span class="g">OBJECT STORAGE</span> · Hetzner Storage Box · Cloudflare R2     <span class="g">│</span>
+<span class="g">│</span>  documents/ · backups/ · signed-pdfs/                      <span class="g">│</span>
+<span class="g">│</span>  encrypted at rest · pre-signed URLs · 5-min TTL           <span class="g">│</span>
+<span class="g">└────────────────────────────────────────────────────────────┘</span>
+                            <span class="d">│</span>
+<span class="g">┌───────────────────────────▼────────────────────────────────┐</span>
+<span class="g">│</span>  <span class="g">OUT-OF-BAND</span> · Resend (email) · Pushover (pager) ·         <span class="g">│</span>
+<span class="g">│</span>  Grafana Cloud (obs) · 1Password (secrets) · GH Actions    <span class="g">│</span>
+<span class="g">└────────────────────────────────────────────────────────────┘</span>
+    </pre>
+  </section>
+
+  <!-- ─────── 4. DATA MODEL ─────── -->
+  <section id="data">
+    <h2><span class="num">§4 · Data model</span>Nine tables. No more.</h2>
+    <p>Every LP-visible page in the mock maps to a read over these tables. We resist the urge to over-model. We also resist the urge to push fund accounting into this schema — the portal is a <b>read view</b>; source of truth remains Xero + the GP accounting system, synced nightly.</p>
+
+    <div class="schema">
+      <div class="schema-n">lp_account</div>
+      <div class="schema-f">
+        <span class="k">id</span> <span class="t">uuid pk</span> · <span class="k">name</span> <span class="t">text</span> · <span class="k">firm</span> <span class="t">text</span> · <span class="k">abn</span> <span class="t">text</span> · <span class="k">signatory_email</span> <span class="t">citext unique</span> · <span class="k">ip_allowlist</span> <span class="t">cidr[]</span> · <span class="k">mfa_required</span> <span class="t">bool</span> · <span class="k">created_at</span> <span class="t">timestamptz</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">lp_user</div>
+      <div class="schema-f">
+        <span class="k">id</span> <span class="t">uuid</span> · <span class="k">account_id</span> <span class="t">uuid fk</span> · <span class="k">email</span> <span class="t">citext</span> · <span class="k">display_name</span> · <span class="k">role</span> <span class="t">enum (signatory, viewer, operations)</span> · <span class="k">last_login_at</span> · <span class="k">last_ip</span> <span class="t">inet</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">fund</div>
+      <div class="schema-f">
+        <span class="k">id</span> · <span class="k">code</span> <span class="t">text (ACP-PCO-I)</span> · <span class="k">name</span> · <span class="k">vintage</span> <span class="t">int</span> · <span class="k">life_years</span> <span class="t">int</span> · <span class="k">currency</span> <span class="t">char(3)</span> · <span class="k">status</span> <span class="t">enum</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">commitment</div>
+      <div class="schema-f">
+        <span class="k">id</span> · <span class="k">account_id</span> <span class="t">fk</span> · <span class="k">fund_id</span> <span class="t">fk</span> · <span class="k">amount_cents</span> <span class="t">bigint</span> · <span class="k">signed_at</span> · <span class="k">lpa_version</span> <span class="t">text</span> · <span class="k">status</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">capital_call</div>
+      <div class="schema-f">
+        <span class="k">id</span> · <span class="k">fund_id</span> · <span class="k">ref</span> <span class="t">text (CC-006)</span> · <span class="k">issued_at</span> · <span class="k">due_at</span> · <span class="k">notional_pct</span> <span class="t">numeric</span> · <span class="k">notice_doc_id</span> <span class="t">fk</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">lp_capital_call_line</div>
+      <div class="schema-f">
+        <span class="k">call_id</span> · <span class="k">commitment_id</span> · <span class="k">amount_cents</span> · <span class="k">status</span> <span class="t">enum (pending, paid, overdue)</span> · <span class="k">paid_at</span> · <span class="k">bank_ref</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">valuation</div>
+      <div class="schema-f">
+        <span class="k">id</span> · <span class="k">fund_id</span> · <span class="k">as_of</span> <span class="t">date</span> · <span class="k">nav_cents</span> · <span class="k">gp_signed_by</span> · <span class="k">gp_signed_at</span> · <span class="k">source_doc_id</span> <span class="t">fk</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">document</div>
+      <div class="schema-f">
+        <span class="k">id</span> · <span class="k">storage_key</span> <span class="t">text</span> · <span class="k">sha256</span> · <span class="k">size_bytes</span> · <span class="k">mime</span> · <span class="k">title</span> · <span class="k">kind</span> <span class="t">enum (q_report, valuation_letter, call_notice, coinvest_memo, amma, lpa, other)</span> · <span class="k">visibility</span> <span class="t">jsonb (accounts, funds, roles)</span> · <span class="k">confidentiality</span> <span class="t">enum</span> · <span class="k">uploaded_by</span> · <span class="k">uploaded_at</span>
+      </div>
+    </div>
+    <div class="schema">
+      <div class="schema-n">audit_event</div>
+      <div class="schema-f">
+        <span class="k">id</span> <span class="t">bigint pk</span> · <span class="k">actor_user_id</span> · <span class="k">actor_ip</span> · <span class="k">account_id</span> · <span class="k">verb</span> <span class="t">text (login, doc.read, doc.download, call.view, msg.send…)</span> · <span class="k">target_kind</span> · <span class="k">target_id</span> · <span class="k">meta</span> <span class="t">jsonb</span> · <span class="k">at</span> <span class="t">timestamptz</span>
+      </div>
+    </div>
+
+    <h4>Row-level isolation</h4>
+    <p>Postgres RLS enforces that every read carries <code>current_setting('app.account_id')</code> and filters the row set. Application code sets this once per request after auth; a bug in a controller cannot leak an LP's data because the database rejects the read.</p>
+
+    <h4>Fund accounting sync</h4>
+    <p>The portal is not the book of record. A nightly worker pulls from <b>Xero</b> (AR, fee realisations) and <b>the GP accounting file</b> (valuations, call ledger) and upserts into Postgres. One-way. Portal cannot write fund figures back. This is the compliance story — the book of record never moves.</p>
+  </section>
+
+  <!-- ─────── 5. AUTH ─────── -->
+  <section id="auth">
+    <h2><span class="num">§5 · Auth</span>How LPs get in.</h2>
+
+    <h3>Magic-link, not passwords</h3>
+    <p>Institutional LPs log in five times a quarter. A password they'd forget and reset each time is worse than a magic link to their signing email. We pair the link with:</p>
+    <ul>
+      <li><b>Per-account IP allowlist</b> — MPT accesses the portal from one or two office ranges. We codify them at onboarding. Login attempts from outside those ranges require a secondary email confirmation from the managing partner on the LP side.</li>
+      <li><b>Optional MFA</b> — TOTP via Authy/1Password. Mandatory for operations-role users (those who can download documents in bulk).</li>
+      <li><b>Session binding to IP</b> — sessions invalidate on IP change, preventing token replay.</li>
+      <li><b>15-minute idle timeout · 8-hour hard timeout.</b></li>
+    </ul>
+
+    <h3>Login flow</h3>
+    <pre class="diag">
+  <span class="m">1.</span> LP enters email at portal.acp.com
+  <span class="m">2.</span> Server checks email → <span class="g">lp_user</span> row exists · account is active
+  <span class="m">3.</span> Server verifies request IP against <span class="g">account.ip_allowlist</span>
+        <span class="m">├─</span> in range  → continue
+        <span class="m">└─</span> out-of-range → log <span class="g">audit_event</span>, email GP, require secondary approval
+  <span class="m">4.</span> Server issues a 32-byte single-use token, stores hash, TTL 10 min
+  <span class="m">5.</span> Server sends magic link via Resend; only to the signing email on file
+  <span class="m">6.</span> LP clicks → server verifies token + IP still in range + TTL
+  <span class="m">7.</span> Server issues session JWT (15 min idle, 8 hr hard cap), HttpOnly SameSite=Strict cookie
+  <span class="m">8.</span> Every subsequent request sets <span class="g">app.account_id</span> in PG session → RLS enforced
+  <span class="m">9.</span> Every request → <span class="g">audit_event</span> with verb, target, IP, user-agent
+    </pre>
+
+    <h3>Document gating</h3>
+    <p>Documents never stream through Fastify. On request, server:</p>
+    <ol>
+      <li>Validates the user can see <code>document.id</code> under <code>visibility</code> (join against their commitments).</li>
+      <li>Writes a <code>doc.download</code> audit event including the target document SHA.</li>
+      <li>Mints a pre-signed URL to object storage with a 5-minute TTL and <code>Content-Disposition: attachment</code>.</li>
+      <li>Returns the URL. Client redirects. Storage serves bytes, logs a separate CF access log.</li>
+    </ol>
+    <p>Two independent logs (application audit + CF access) for the same event make document forensics credible to an LP auditor.</p>
+  </section>
+
+  <!-- ─────── 6. COMPLIANCE ─────── -->
+  <section id="compliance">
+    <h2><span class="num">§6 · Compliance posture</span>What we commit to on day one, and what comes later.</h2>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-n">Day 1 · MPT pilot</div>
+        <div class="phase-t">Auditable by design</div>
+        <div class="phase-d">Immediate</div>
+        <div class="phase-b">Every read and write logged. All PII encrypted at rest (<code>pgcrypto</code>). TLS 1.3 only. Daily backup tested via restore drill monthly. Privacy policy + terms published. Data Processing Agreement template ready for LP counsel.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">First close +3 mo</div>
+        <div class="phase-t">ISO 27001 Annex A aligned</div>
+        <div class="phase-d">Q3 2026</div>
+        <div class="phase-b">Control mapping to Annex A. Formal access review quarterly. Incident response playbook. Vendor security questionnaires on file for Hetzner, Cloudflare, Resend, 1Password, Grafana.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">Fund II +9 mo</div>
+        <div class="phase-t">SOC2 Type I</div>
+        <div class="phase-d">Q1 2027</div>
+        <div class="phase-b">Engage SOC2 auditor (Vanta / Drata for evidence automation). Point-in-time attestation. Sufficient for most institutional LP IT-DDQ responses.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">Fund II +18 mo</div>
+        <div class="phase-t">SOC2 Type II · AFSL</div>
+        <div class="phase-d">Q4 2027</div>
+        <div class="phase-b">Continuous-period attestation. Paired with AFSL authorisation per the Phase 3 roadmap. Portal becomes a marketable asset in its own right.</div>
+      </div>
+    </div>
+
+    <h4>Australian data sovereignty</h4>
+    <ul>
+      <li>All production data (Postgres, object storage, CF cache) provisioned in Sydney region.</li>
+      <li>Backups replicated to a second Sydney facility (Hetzner WAL-ship + Storage Box geo-redundant within AU).</li>
+      <li>No cross-border processing except <b>Resend</b> (US SMTP) — we document this in the DDQ and only send non-PII transactional email via it. Magic links include no PII in the URL.</li>
+    </ul>
+
+    <h4>Data retention</h4>
+    <ul>
+      <li>LP documents: retained for life-of-fund + 7 years.</li>
+      <li>Audit log: <b>immutable</b>, WORM-ed to object storage, 7-year retention.</li>
+      <li>LP user accounts: archived on LP exit, retained for 7 years, then purged.</li>
+    </ul>
+  </section>
+
+  <!-- ─────── 7. ROLLOUT ─────── -->
+  <section id="rollout">
+    <h2><span class="num">§7 · Rollout</span>From zero to live MPT access.</h2>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-n">Week 1</div>
+        <div class="phase-t">Infra up</div>
+        <div class="phase-d">Hetzner · CF · domain · CI</div>
+        <div class="phase-b">Provision VPS, DNS, certs, GH Actions. Postgres + object storage up. 1Password vault structured. Health check green.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">Week 2</div>
+        <div class="phase-t">Port the mock</div>
+        <div class="phase-d">React bundle + API</div>
+        <div class="phase-b">Move the <code>lp-portal.html</code> frontend onto the Fastify server. Swap seed data for API calls. Implement the nine tables, RLS policies, magic-link auth, audit log.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">Week 3</div>
+        <div class="phase-t">MPT onboarding</div>
+        <div class="phase-d">Pilot with one LP</div>
+        <div class="phase-b">Load MPT commitments, call history, docs. Seed user, allowlist their IP, send first magic link. Restore drill, audit-log export drill, DR runbook. Go live.</div>
+      </div>
+      <div class="phase">
+        <div class="phase-n">Weeks 4–8</div>
+        <div class="phase-t">Widen access</div>
+        <div class="phase-d">Next 3–5 LPs</div>
+        <div class="phase-b">Self-service onboarding flow. Portal messaging to GP. DDQ export. Distributions workflow. LP-facing Q4 soft close.</div>
+      </div>
+    </div>
+
+    <h4>The runbook</h4>
+    <p>Written into <code>ops/RUNBOOK.md</code> alongside the repo. Covers: deploy, rollback, restore-from-backup, rotate secrets, revoke LP access in under 60 seconds, handle a suspected breach. One document. Updated on every material change. Reviewed quarterly.</p>
+  </section>
+
+  <!-- ─────── 8. COST ─────── -->
+  <section id="cost">
+    <h2><span class="num">§8 · Cost</span>Annual, all-in.</h2>
+
+    <table class="cost">
+      <thead>
+        <tr><th>Line</th><th>Tier</th><th>Notes</th><th class="num">A$/mo</th><th class="num">A$/yr</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Hetzner Cloud CX32 (AU1)</td><td>4 vCPU · 8 GB</td><td>Primary app + Postgres</td><td class="num">16</td><td class="num">192</td></tr>
+        <tr><td>Hetzner Storage Box</td><td>1 TB</td><td>Documents + backups</td><td class="num">6</td><td class="num">72</td></tr>
+        <tr><td>Cloudflare</td><td>Free + R2</td><td>Edge, WAF, R2 ~50 GB</td><td class="num">2</td><td class="num">24</td></tr>
+        <tr><td>Resend</td><td>Free tier</td><td>100 emails/day ceiling</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>1Password Business</td><td>Existing seat</td><td>No marginal cost</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>Grafana Cloud</td><td>Free</td><td>Logs + metrics + uptime</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>Pushover</td><td>Paid once</td><td>One-time A$8</td><td class="num">&lt;1</td><td class="num">8</td></tr>
+        <tr><td>Domain (existing)</td><td>—</td><td>No marginal cost</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>SSL / TLS</td><td>Let's Encrypt · CF</td><td>Free</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr class="total"><td>Pilot through first close</td><td>Year 1</td><td>1–5 LPs</td><td class="num">~A$24</td><td class="num">~A$300</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Scale curve — what it looks like at Fund II first close</h4>
+    <table class="cost">
+      <thead>
+        <tr><th>Line</th><th>Tier</th><th>Notes</th><th class="num">A$/mo</th><th class="num">A$/yr</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Hetzner CCX23 (HA)</td><td>4 dedicated vCPU · 16 GB</td><td>Upgrade for dedicated cores</td><td class="num">48</td><td class="num">576</td></tr>
+        <tr><td>Managed Postgres (Neon AU / Crunchy)</td><td>4 vCPU · 16 GB · HA</td><td>Lift Postgres off the app box</td><td class="num">120</td><td class="num">1,440</td></tr>
+        <tr><td>Storage Box</td><td>5 TB</td><td>Document + backup growth</td><td class="num">18</td><td class="num">216</td></tr>
+        <tr><td>Cloudflare</td><td>Pro + R2 500 GB</td><td>Bot mgmt, mTLS, advanced WAF</td><td class="num">35</td><td class="num">420</td></tr>
+        <tr><td>Resend</td><td>Pro</td><td>Volume + dedicated IP</td><td class="num">32</td><td class="num">384</td></tr>
+        <tr><td>Grafana Cloud Pro</td><td>Paid</td><td>Retention + SLA</td><td class="num">40</td><td class="num">480</td></tr>
+        <tr><td>Vanta (SOC2)</td><td>Starter</td><td>From month 9</td><td class="num">400</td><td class="num">4,800</td></tr>
+        <tr class="total"><td>Post-first-close, pre-SOC2</td><td>Year 2</td><td>15–30 LPs · A$500M AUM</td><td class="num">~A$690</td><td class="num">~A$8,300</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:28px;color:var(--acp-silver);font-size:13px;">Infrastructure is <b style="color:var(--acp-pearl)">&lt;1% of projected revenue</b> at every phase. The cost we actually pay is attention: one hour a week of principal time to read audit logs, one hour a month to run DR drills, one quarter a year to review access. If that line budget slips, we hire operations (sequenced in Phase 2 HR-01) before we upgrade the hosting.</p>
+  </section>
+
+  <div class="ft">
+    <div>Backend Architecture · LP Portal · Draft v0.1 · 22 Apr 2026 · Partner-only · Confidential</div>
+    <div>APEX Consulting Partners Pty Ltd · ACN 674 649 417</div>
+  </div>
+</div>
+
+</body>
+</html>

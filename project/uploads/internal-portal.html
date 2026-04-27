@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internal — Ascension Capital Partners</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --gold:#C9A84C; --midnight:#0A0E1A; --navy:#111827; --charcoal:#1A2035;
+        --silver:#94A3B8; --pearl:#CBD5E1; --ivory:#F1F5F9; --error:#EF4444; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--midnight); color: var(--ivory); font-family:'DM Sans',sans-serif;
+       min-height:100vh; display:flex; align-items:center; justify-content:center;
+       -webkit-font-smoothing:antialiased; }
+.spine { position:fixed; top:0; left:0; right:0; height:3px;
+         background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent); }
+.gate { max-width:440px; width:100%; padding:40px; text-align:center; }
+.hex {
+  width:56px; height:56px; margin:0 auto 32px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--gold); position:relative;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(201,168,76,0.06);
+}
+.hex::after { content:''; width:0; height:0;
+  border-left:6px solid transparent; border-right:6px solid transparent;
+  border-bottom:9px solid var(--gold); }
+.eyebrow { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:500;
+           letter-spacing:0.24em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+h1 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:400;
+     margin-bottom:12px; letter-spacing:-0.01em; }
+p.lede { font-size:13.5px; color:var(--pearl); line-height:1.6; margin-bottom:32px; font-weight:300; }
+input {
+  width:100%; padding:14px 16px; background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08); color:var(--ivory); font-size:14px;
+  font-family:'JetBrains Mono',monospace; letter-spacing:0.08em; text-align:center;
+  border-radius:2px; transition:border-color 0.2s; margin-bottom:16px;
+}
+input:focus { outline:none; border-color:var(--gold); background:rgba(201,168,76,0.04); }
+button { width:100%; padding:14px; background:var(--gold); color:var(--midnight);
+  border:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;
+  transition:background 0.2s; border-radius:2px; }
+button:hover { background:#E2C97E; }
+button:disabled { opacity:0.5; cursor:wait; }
+.err { color:#FCA5A5; font-size:12px; margin-top:12px; min-height:16px; }
+.back { display:inline-block; margin-top:24px; font-size:12px; color:var(--silver);
+        text-decoration:none; letter-spacing:0.08em; }
+.back:hover { color:var(--gold); }
+footer { position:fixed; bottom:18px; left:0; right:0; text-align:center;
+  font-family:'JetBrains Mono',monospace; font-size:9.5px;
+  color:rgba(255,255,255,0.18); letter-spacing:0.12em; }
+</style>
+</head>
+<body>
+
+<div class="spine"></div>
+
+<div class="gate">
+  <div class="hex"></div>
+  <div class="eyebrow">Restricted · Internal</div>
+  <h1>Internal Portal</h1>
+  <p class="lede">Authorised personnel only. Enter access code to continue.</p>
+
+  <form id="gateForm">
+    <input type="password" id="pw" placeholder="ACCESS CODE" autocomplete="current-password" required>
+    <button type="submit" id="btn">Authenticate</button>
+    <div class="err" id="err"></div>
+  </form>
+
+  <a class="back" href="/">← Return to home</a>
+</div>
+
+<footer>ASCENSION CAPITAL PARTNERS · ACN 674 649 417 · CONFIDENTIAL</footer>
+
+<script>
+// Client-side gate (first barrier). Production must enforce server-side via Vercel password protection
+// or by moving /ops /docs /ir behind deployment protection.
+document.getElementById('gateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const pw = document.getElementById('pw').value;
+  const btn = document.getElementById('btn');
+  const err = document.getElementById('err');
+  err.textContent = '';
+  btn.disabled = true; btn.textContent = 'Checking…';
+  try {
+    const next = new URLSearchParams(location.search).get('next') || '';
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ code: pw, next })
+    });
+    const j = await r.json();
+    if (j.ok) {
+      // Server sets the HttpOnly cookie; we just follow its sanitised redirect.
+      sessionStorage.setItem('acp_internal', '1');
+      location.href = j.next || '/ops';
+    } else {
+      err.textContent = 'Invalid access code.';
+      btn.disabled = false; btn.textContent = 'Authenticate';
+    }
+  } catch (ex) {
+    err.textContent = 'Authentication service unavailable.';
+    btn.disabled = false; btn.textContent = 'Authenticate';
+  }
+});
+</script>
+
+</body>
+</html>

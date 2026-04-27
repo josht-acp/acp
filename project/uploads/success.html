@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Confirmed — Ascension Capital Partners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C5A55A; --black: #000; --charcoal: #333; --warm-grey: #9B9B9B; --cream: #FAF7F0; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); min-height: 100vh; display: flex; flex-direction: column; }
+    body::before { content:''; position:fixed; left:0; top:0; width:5px; height:100vh; background:var(--gold); z-index:100; }
+    header { background: var(--black); color: #fff; padding: 20px 48px 20px 64px; border-bottom: 1px solid var(--gold); }
+    header h1 { font-family: 'EB Garamond', serif; font-size: 20px; color: var(--gold); }
+    header p { font-size: 11px; color: var(--warm-grey); margin-top: 3px; }
+    main { flex:1; display:flex; align-items:center; justify-content:center; padding: 60px 24px; }
+    .card { background:#fff; border:1px solid #e5e5e5; border-radius:4px; padding:48px 52px; max-width:520px; width:100%; text-align:center; position:relative; }
+    .card::before { content:''; position:absolute; left:0; top:0; width:3px; height:100%; background:var(--gold); border-radius:4px 0 0 4px; }
+    .icon { width:64px; height:64px; background:#f0fdf4; border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 24px; }
+    .icon svg { width:32px; height:32px; }
+    h2 { font-family:'EB Garamond',serif; font-size:24px; font-weight:700; color:var(--black); margin-bottom:12px; }
+    p { font-size:14px; color:var(--charcoal); line-height:1.6; margin-bottom:8px; }
+    .ref { display:inline-block; margin-top:16px; background:var(--cream); border:1px solid #ddd; border-radius:3px; padding:10px 20px; font-size:12px; color:var(--warm-grey); }
+    .ref strong { display:block; font-size:14px; color:var(--black); margin-top:4px; }
+    .btn { display:inline-block; margin-top:28px; background:var(--gold); color:var(--black); padding:12px 28px; border-radius:3px; font-weight:600; font-size:14px; text-decoration:none; }
+    footer { border-top:1px solid #e5e5e5; padding:14px 64px; text-align:center; font-size:10px; color:var(--warm-grey); background:#fff; letter-spacing:0.04em; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>ASCENSION CAPITAL PARTNERS</h1>
+  <p>t/a APEX Consulting Partners Pty Ltd &nbsp;|&nbsp; ACN 674 649 417</p>
+</header>
+<main>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Payment Confirmed</h2>
+    <p>Your payment has been successfully processed and recorded in the ACP fee ledger.</p>
+    <p>A Stripe receipt will be sent to your email address automatically.</p>
+    <div class="ref" id="ref-box">
+      Mandate Reference
+      <strong id="mandate-display">—</strong>
+    </div>
+    <div id="status-detail" style="margin-top:16px; font-size:12px; color:var(--warm-grey);"></div>
+    <a href="/" class="btn">← Return to Portal</a>
+  </div>
+</main>
+<footer>Ascension Capital Partners &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; ACN 674 649 417</footer>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const mandate = params.get('mandate');
+  const sessionId = params.get('session_id');
+  if (mandate) document.getElementById('mandate-display').textContent = decodeURIComponent(mandate);
+  if (sessionId) {
+    fetch(`/api/status/${sessionId}`)
+      .then(r => r.json())
+      .then(d => {
+        const el = document.getElementById('status-detail');
+        if (d.amount_total) {
+          el.textContent = `$${d.amount_total.toLocaleString('en-US',{minimumFractionDigits:2})} USD · ${d.payment_status}`;
+        }
+      }).catch(()=>{});
+  }
+</script>
+</body>
+</html>

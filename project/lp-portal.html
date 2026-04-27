@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>LP Portal · Ascension Capital Partners</title>
+<link rel="stylesheet" href="acp-tokens.css"/>
+<style>
+  html,body{margin:0;padding:0;background:var(--acp-midnight);color:var(--fg-1);font-family:var(--font-body);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;cursor:pointer;background:none;border:none;color:inherit;padding:0;}
+
+  /* ── PREVIEW BANNER ── */
+  .pv-banner{background:linear-gradient(90deg,rgba(201,168,76,0.12),rgba(201,168,76,0.02));border-bottom:1px solid var(--acp-gold-border);padding:10px 28px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--acp-gold);display:flex;justify-content:space-between;align-items:center;}
+  .pv-banner b{color:var(--acp-gold-light);font-weight:500;}
+  .pv-banner span{color:var(--acp-steel);}
+
+  /* ── APP SHELL ── */
+  .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}
+
+  /* ── SIDEBAR ── */
+  .sb{background:var(--acp-navy);border-right:1px solid var(--acp-gold-hair);padding:24px 0 32px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+  .sb-brand{padding:0 24px 24px;border-bottom:1px solid var(--acp-gold-hair);margin-bottom:20px;}
+  .sb-mark{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .sb-hex{width:22px;height:22px;}
+  .sb-word{font-family:var(--font-display);font-size:15px;letter-spacing:0.06em;color:var(--acp-pearl);font-weight:500;}
+  .sb-sub{font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--acp-gold-dark);}
+
+  .sb-lp{display:flex;align-items:center;gap:12px;padding:16px 24px;margin-bottom:12px;border-bottom:1px solid var(--acp-gold-hair);}
+  .sb-lp-badge{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--acp-gold-dark),var(--acp-gold));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:14px;font-weight:500;color:#0A0E1A;letter-spacing:0.02em;}
+  .sb-lp-name{font-size:13px;color:var(--acp-white);font-weight:500;margin-bottom:2px;}
+  .sb-lp-role{font-size:11px;color:var(--acp-silver);line-height:1.3;}
+  .sb-lp-firm{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;margin-top:4px;}
+
+  .sb-group{padding:14px 24px 6px;font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--acp-gold-dark);}
+  .sb-link{display:flex;align-items:center;justify-content:space-between;padding:8px 24px;font-size:13px;color:var(--acp-silver);cursor:pointer;border-left:2px solid transparent;transition:all .12s ease;}
+  .sb-link:hover{color:var(--acp-pearl);background:rgba(201,168,76,0.04);}
+  .sb-link.on{color:var(--acp-white);background:rgba(201,168,76,0.08);border-left-color:var(--acp-gold);}
+  .sb-link .badge{background:var(--acp-gold);color:#0A0E1A;font-family:var(--font-mono);font-size:9px;font-weight:600;padding:1px 6px;border-radius:999px;min-width:18px;text-align:center;}
+
+  .sb-foot{margin-top:32px;padding:16px 24px;border-top:1px solid var(--acp-gold-hair);font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;color:var(--acp-steel);line-height:1.6;}
+
+  /* ── MAIN ── */
+  .main{padding:32px 48px 96px;max-width:1200px;}
+  .topbar{display:grid;grid-template-columns:1fr auto;align-items:flex-start;margin-bottom:32px;gap:32px;}
+  .crumb{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--acp-gold-dark);margin-bottom:10px;}
+  .crumb span{color:var(--acp-silver);}
+  h1.page-t{font-family:var(--font-display);font-weight:400;font-size:40px;line-height:1.3;color:var(--acp-white);margin:0 0 12px;letter-spacing:-0.005em;}
+  h1.page-t em{font-style:italic;background:var(--gold-gradient-fill);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:400;display:inline-block;}
+  .page-s{font-size:14px;color:var(--acp-silver);max-width:620px;line-height:1.6;}
+
+  .topbar-actions{display:flex;gap:8px;flex-shrink:0;padding-top:18px;}
+  .btn{padding:10px 18px;font-size:12px;font-weight:500;letter-spacing:0.03em;border-radius:2px;transition:all .15s ease;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;}
+  .btn-pri{background:var(--acp-gold);color:#0A0E1A;}
+  .btn-pri:hover{background:var(--acp-gold-light);}
+  .btn-sec{border:1px solid var(--acp-gold-border);color:var(--acp-pearl);}
+  .btn-sec:hover{border-color:var(--acp-gold);background:rgba(201,168,76,0.04);}
+  .btn-ghost{color:var(--acp-silver);padding:10px 10px;}
+  .btn-ghost:hover{color:var(--acp-gold);}
+
+  /* ── KPI STRIP ── */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin-bottom:32px;}
+  .kpi{background:var(--acp-navy);padding:20px 22px;position:relative;}
+  .kpi-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--acp-gold-dark);margin-bottom:10px;}
+  .kpi-v{font-family:var(--font-display);font-weight:400;font-size:32px;line-height:1;color:var(--acp-white);letter-spacing:-0.01em;}
+  .kpi-v small{font-size:16px;color:var(--acp-silver);margin-left:4px;letter-spacing:0;}
+  .kpi-s{font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;color:var(--acp-silver);margin-top:8px;}
+  .kpi-delta{position:absolute;top:20px;right:22px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;color:var(--acp-success);}
+  .kpi-delta.down{color:var(--acp-warning);}
+
+  /* ── GRID CARDS ── */
+  .grid-2{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:32px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin-bottom:32px;}
+  .card{background:var(--acp-navy);border:1px solid var(--acp-gold-hair);padding:24px;position:relative;}
+  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--acp-gold-hair);}
+  .card-t{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--acp-white);letter-spacing:0;}
+  .card-a{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--acp-gold-dark);cursor:pointer;}
+  .card-a:hover{color:var(--acp-gold-light);}
+
+  /* ── DEPLOYMENT BAR ── */
+  .deploy{margin:18px 0 24px;}
+  .deploy-track{height:20px;background:var(--acp-charcoal);border:1px solid var(--acp-gold-hair);display:flex;overflow:hidden;}
+  .deploy-seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;color:#0A0E1A;font-weight:600;}
+  .seg-called{background:linear-gradient(90deg,var(--acp-gold-dark),var(--acp-gold));}
+  .seg-reserved{background:rgba(201,168,76,0.22);color:var(--acp-gold-light);}
+  .seg-uncalled{background:var(--acp-slate);color:var(--acp-silver);}
+  .deploy-lgd{display:flex;gap:18px;margin-top:10px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;color:var(--acp-silver);}
+  .lgd-dot{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:middle;}
+
+  /* ── MULTIPLES (TVPI/DPI/RVPI) ── */
+  .mults{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding-top:8px;}
+  .mult-k{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:6px;}
+  .mult-v{font-family:var(--font-display);font-size:40px;font-weight:400;color:var(--acp-white);line-height:1;letter-spacing:-0.01em;}
+  .mult-v em{font-style:normal;font-size:18px;color:var(--acp-silver);margin-left:2px;}
+  .mult-n{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;color:var(--acp-steel);margin-top:8px;line-height:1.4;}
+
+  /* ── FUND ROW ── */
+  .fund{border:1px solid var(--acp-gold-hair);background:var(--acp-navy);padding:22px 24px;margin-bottom:1px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
+  .fund-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .fund-code{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;}
+  .fund-status{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;background:rgba(34,197,94,0.1);color:var(--acp-success);padding:2px 8px;border-radius:999px;border:1px solid rgba(34,197,94,0.2);text-transform:uppercase;}
+  .fund-name{font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--acp-white);line-height:1.25;letter-spacing:-0.005em;}
+  .fund-sub{font-family:var(--font-mono);font-size:10px;color:var(--acp-silver);letter-spacing:0.05em;margin-top:6px;}
+  .fund-stats{display:grid;grid-template-columns:repeat(4,auto);gap:28px;min-width:420px;}
+  .fund-stat{text-align:right;}
+  .fund-stat-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;margin-bottom:4px;}
+  .fund-stat-v{font-family:var(--font-display);font-size:19px;color:var(--acp-white);line-height:1;}
+  .fund-stat-v.gold{color:var(--acp-gold-light);}
+
+  .fund-bar{margin-top:14px;grid-column:1/-1;}
+  .fund-bar-track{height:4px;background:var(--acp-slate);display:flex;overflow:hidden;border-radius:2px;}
+  .fund-bar-called{background:var(--acp-gold);}
+  .fund-bar-reserved{background:rgba(201,168,76,0.3);}
+  .fund-bar-legend{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--font-mono);font-size:9px;color:var(--acp-silver);letter-spacing:0.06em;}
+
+  /* ── CALL HISTORY TABLE ── */
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--acp-gold-dark);font-weight:500;text-align:left;padding:10px 14px;border-bottom:1px solid var(--acp-gold-hair);}
+  .tbl td{padding:12px 14px;font-size:13px;color:var(--acp-pearl);border-bottom:1px solid rgba(201,168,76,0.04);}
+  .tbl tr:last-child td{border-bottom:none;}
+  .tbl tr:hover td{background:rgba(201,168,76,0.025);}
+  .tbl td.mono{font-family:var(--font-mono);font-size:11px;color:var(--acp-silver);letter-spacing:0.03em;}
+  .tbl td.num{text-align:right;font-family:var(--font-display);font-size:15px;color:var(--acp-white);}
+  .tbl td.pct{font-family:var(--font-mono);font-size:11px;color:var(--acp-gold-light);}
+
+  /* ── CO-INVEST CARD ── */
+  .ci{background:var(--acp-navy);border:1px solid var(--acp-gold-hair);padding:22px 24px;position:relative;}
+  .ci:hover{border-color:var(--acp-gold-border);}
+  .ci-h{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+  .ci-ico{width:48px;height:48px;border-radius:2px;background:linear-gradient(135deg,var(--acp-gold-dark),var(--acp-gold-light));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:500;font-size:15px;color:#0A0E1A;letter-spacing:0.03em;}
+  .ci-meta{flex:1;}
+  .ci-name{font-family:var(--font-display);font-size:17px;color:var(--acp-white);line-height:1.2;}
+  .ci-tags{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--acp-silver);text-transform:uppercase;margin-top:4px;}
+  .ci-tags b{color:var(--acp-gold-dark);font-weight:400;}
+  .ci-body{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--acp-gold-hair);margin-top:14px;}
+  .ci-stat-l{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--acp-gold-dark);text-transform:uppercase;}
+  .ci-stat-v{font-family:var(--font-display);font-size:15px;color:var(--acp-white);margin-top:2px;}
+  .ci-cta{position:absolute;top:22px;right:24px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;color:var(--acp-gold-light);text-transform:uppercase;}
+
+  /* ── DOC ROW ── */
+  .doc{display:grid;grid-template-columns:56px 1fr auto auto;gap:16px;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(201,168,76,0.06);}
+  .doc:last-child{border-bottom:none;}
+  .doc:hover{background:rgba(201,168,76,0.02);}
+  .doc-type{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:0.1em;text-align:center;padding:5px 0;background:rgba(201,168,76,0.1);color:var(--acp-gold);border:1px solid var(--acp-gold-border);}
+  .doc-name{font-size:13px;color:var(--acp-white);line-height:1.35;}
+  .doc-name .pill{display:inline-block;margin-left:8px;font-family:var(--font-mono);font-size:8px;letter-spacing:0.12em;padding:1px 6px;border-radius:2px;text-transform:uppercase;}
+  .doc-name .pill.signed{background:rgba(34,197,94,0.1);color:var(--acp-success);border:1px solid rgba(34,197,94,0.2);}
+  .doc-name .pill.conf{background:rgba(239,68,68,0.1);color:var(--acp-error);border:1px solid rgba(239,68,68,0.2);}
+  .doc-name .pill.exec{background:rgba(201,168,76,0.1);color:var(--acp-gold-light);border:1px solid var(--acp-gold-border);}
+  .doc-meta{font-family:var(--font-mono);font-size:10px;color:var(--acp-silver);letter-spacing:0.05em;text-align:right;}
+  .doc-size{font-family:var(--font-mono);font-size:10px;color:var(--acp-steel);min-width:60px;text-align:right;}
+
+  /* ── GP MSG ── */
+  .msg{background:var(--acp-navy);border:1px solid var(--acp-gold-hair);padding:18px 20px;margin-bottom:8px;}
+  .msg-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .msg-f{font-size:12px;color:var(--acp-white);font-weight:500;}
+  .msg-d{font-family:var(--font-mono);font-size:10px;color:var(--acp-steel);letter-spacing:0.05em;}
+  .msg-b{font-size:13px;color:var(--acp-pearl);line-height:1.55;}
+
+  /* ── VINTAGE CHART ── */
+  .chart{padding:24px 0 8px;}
+  .chart-rows{display:flex;flex-direction:column;gap:14px;}
+  .chart-row{display:grid;grid-template-columns:80px 1fr 90px;gap:16px;align-items:center;}
+  .chart-year{font-family:var(--font-mono);font-size:11px;color:var(--acp-silver);letter-spacing:0.05em;}
+  .chart-bar-wrap{position:relative;height:20px;background:rgba(201,168,76,0.04);}
+  .chart-bar{height:100%;background:linear-gradient(90deg,var(--acp-gold-dark),var(--acp-gold));}
+  .chart-bar.bench{background:var(--acp-slate);opacity:0.6;}
+  .chart-val{font-family:var(--font-display);font-size:15px;color:var(--acp-white);text-align:right;}
+  .chart-lgd{display:flex;gap:20px;margin-top:16px;padding-top:14px;border-top:1px solid var(--acp-gold-hair);font-family:var(--font-mono);font-size:10px;color:var(--acp-silver);letter-spacing:0.06em;}
+
+  /* ── QUICK ACTIONS ── */
+  .qa-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--acp-gold-hair);border:1px solid var(--acp-gold-hair);margin-bottom:32px;}
+  .qa{background:var(--acp-navy);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .15s;}
+  .qa:hover{background:var(--acp-charcoal);}
+  .qa-l{font-size:13px;color:var(--acp-pearl);}
+  .qa-l b{color:var(--acp-white);font-weight:500;display:block;margin-bottom:2px;}
+  .qa-l span{font-size:11px;color:var(--acp-silver);}
+  .qa-arr{color:var(--acp-gold);font-size:18px;}
+
+  /* ── FOOTER ── */
+  .ft{margin-top:48px;padding-top:20px;border-top:1px solid var(--acp-gold-hair);display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--acp-steel);letter-spacing:0.08em;}
+  .ft a{color:var(--acp-gold-dark);}
+  .ft a:hover{color:var(--acp-gold-light);}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="lp-portal-data.js?v=1"></script>
+<script type="text/babel" src="lp-portal-views.jsx?v=1"></script>
+<script type="text/babel">
+const { LP, FUNDS, CALLS, COINVEST, DOCS, MESSAGES, VINTAGES } = window;
+const { OverviewPage, FundPage, CashFlowsPage, DocsPage, CommsPage, PlaceholderPage } = window;
+
+const NAV = [
+  { group:'Overview',        items:[
+    {id:'dashboard', label:'Dashboard', cmp:'OverviewPage'},
+    {id:'statements', label:'Statements', cmp:'PlaceholderPage'},
+  ]},
+  { group:'Q1 Allocations',  items:[
+    {id:'holdings', label:'Fund Holdings', cmp:'FundPage'},
+    {id:'coinvest', label:'Co-Investments', cmp:'PlaceholderPage', badge:3},
+    {id:'pipeline', label:'Pipeline Access', cmp:'PlaceholderPage'},
+  ]},
+  { group:'Cash Flows',      items:[
+    {id:'calls', label:'Capital Calls', cmp:'CashFlowsPage', badge:1},
+    {id:'distros', label:'Distributions', cmp:'PlaceholderPage'},
+    {id:'wire', label:'Wire Instructions', cmp:'PlaceholderPage'},
+  ]},
+  { group:'Reporting',       items:[
+    {id:'quarterly', label:'Quarterly Reports', cmp:'PlaceholderPage'},
+    {id:'nav', label:'Valuations (NAV)', cmp:'PlaceholderPage'},
+    {id:'tax', label:'Tax (AMMA / K-1)', cmp:'PlaceholderPage'},
+  ]},
+  { group:'Documents & Comms', items:[
+    {id:'docs', label:'Data Room', cmp:'DocsPage'},
+    {id:'msgs', label:'GP Messages', cmp:'CommsPage', badge:2},
+    {id:'legal', label:'Legal (PPM / LPA)', cmp:'PlaceholderPage'},
+  ]},
+];
+
+const COMPONENTS = {OverviewPage, FundPage, CashFlowsPage, DocsPage, CommsPage, PlaceholderPage};
+
+function Hex(){return(
+  <svg className="sb-hex" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2 L22 7 L22 17 L12 22 L2 17 L2 7 Z" stroke="url(#gg)" strokeWidth="1.5" fill="rgba(201,168,76,0.04)"/>
+    <path d="M12 8 L16 10 L16 14 L12 16 L8 14 L8 10 Z" fill="url(#gg)"/>
+    <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#9A7B2E"/><stop offset="1" stopColor="#E2C97E"/></linearGradient></defs>
+  </svg>
+);}
+
+function Sidebar({active, onNav}){
+  return (
+    <aside className="sb">
+      <div className="sb-brand">
+        <div className="sb-mark"><Hex/><div className="sb-word">Ascension</div></div>
+        <div className="sb-sub">Investor Portal</div>
+      </div>
+      <div className="sb-lp">
+        <div className="sb-lp-badge">{LP.initials}</div>
+        <div>
+          <div className="sb-lp-name">{LP.name}</div>
+          <div className="sb-lp-role">{LP.role}</div>
+          <div className="sb-lp-firm">{LP.firm}</div>
+        </div>
+      </div>
+      {NAV.map((g,i)=>(
+        <div key={i}>
+          <div className="sb-group">{g.group}</div>
+          {g.items.map(it => (
+            <div key={it.id} className={'sb-link ' + (active===it.id?'on':'')} onClick={()=>onNav(it)}>
+              <span>{it.label}</span>
+              {it.badge && <span className="badge">{it.badge}</span>}
+            </div>
+          ))}
+        </div>
+      ))}
+      <div className="sb-foot">
+        Session · secured<br/>
+        Last login 22 Apr 2026 · 09:14 AEST<br/>
+        IP allowlist · MPT-SYD-01<br/><br/>
+        <a style={{color:'var(--acp-gold-dark)'}}>Log out</a>
+      </div>
+    </aside>
+  );
+}
+
+function App(){
+  const [active, setActive] = React.useState('dashboard');
+  const item = NAV.flatMap(g=>g.items).find(i=>i.id===active) || NAV[0].items[0];
+  const Cmp = COMPONENTS[item.cmp] || PlaceholderPage;
+  React.useEffect(()=>{
+    const saved = localStorage.getItem('lp-portal-nav');
+    if (saved) setActive(saved);
+  },[]);
+  const go = (it) => { setActive(it.id); localStorage.setItem('lp-portal-nav', it.id); window.scrollTo(0,0); };
+  return (
+    <>
+      <div className="pv-banner">
+        <div><b>LP Portal · Preview build</b> <span>· Simulated view from the perspective of {LP.firm} · No live data · GP planning only</span></div>
+        <div>v0.1 · <a href="eos-hub.html" style={{color:'var(--acp-gold-light)',textDecoration:'none'}}>↑ EOS Hub</a></div>
+      </div>
+      <div className="app">
+        <Sidebar active={active} onNav={go}/>
+        <main className="main">
+          <Cmp nav={item}/>
+          <div className="ft">
+            <div>Ascension Capital Partners · LP Portal · Preview Build · Confidential</div>
+            <div>APEX Consulting Partners Pty Ltd · ACN 674 649 417 · NSW</div>
+          </div>
+        </main>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

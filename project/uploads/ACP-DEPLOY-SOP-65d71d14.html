@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACP — 30-Minute Deploy SOP</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C5A55A;--ink:#060606;--s1:#0A0A0A;--s2:#111;--s3:#181818;--bd:rgba(255,255,255,0.07);--tx:#F0EDE6;--mt:rgba(240,237,230,0.55);--dm:rgba(240,237,230,0.28);--green:#3D9970;--amber:#C4873A;--red:#C0402A;--blue:#4A72C4;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ink);color:var(--tx);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;max-width:820px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-family:'EB Garamond',serif;font-size:36px;margin-bottom:6px;line-height:1.15;}
+.sub{font-size:13px;color:var(--mt);margin-bottom:40px;line-height:1.6;}
+.spine{width:3px;height:28px;background:var(--gold);display:inline-block;margin-right:12px;vertical-align:middle;border-radius:2px;}
+
+/* TIMER */
+.timer-bar{background:var(--s2);border:1px solid rgba(197,165,90,0.2);border-radius:8px;padding:16px 20px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;}
+.timer-label{font-size:11px;color:var(--dm);text-transform:uppercase;letter-spacing:0.12em;}
+.timer{font-family:'JetBrains Mono',monospace;font-size:28px;color:var(--gold);}
+.btn-timer{background:var(--gold);color:#000;border:none;border-radius:4px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.06em;}
+
+/* PHASES */
+.phase{margin-bottom:36px;}
+.phase-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bd);}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);background:rgba(197,165,90,0.1);border:1px solid rgba(197,165,90,0.2);padding:3px 10px;border-radius:99px;}
+.phase-title{font-family:'EB Garamond',serif;font-size:22px;}
+.phase-time{font-size:11px;color:var(--dm);margin-left:auto;font-family:'JetBrains Mono',monospace;}
+
+/* STEPS */
+.step{display:grid;grid-template-columns:36px 1fr;gap:14px;margin-bottom:14px;align-items:start;}
+.step-n{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0;}
+.step-n.todo{background:var(--s3);border:1px solid var(--bd);color:var(--dm);}
+.step-n.done{background:rgba(61,153,112,0.12);border:1px solid rgba(61,153,112,0.3);color:var(--green);cursor:pointer;}
+.step-n.now{background:rgba(197,165,90,0.12);border:1px solid rgba(197,165,90,0.3);color:var(--gold);}
+.step-body{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:14px 16px;}
+.step-title{font-size:13px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.step-desc{font-size:12px;color:var(--mt);line-height:1.7;margin-bottom:10px;}
+.step-body.active{border-color:rgba(197,165,90,0.3);}
+
+/* CODE */
+.code{background:#000;border-radius:5px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#72C499;line-height:1.8;margin:8px 0;position:relative;overflow-x:auto;}
+.code .cmt{color:rgba(255,255,255,0.25);}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--s3);border:1px solid var(--bd);color:var(--dm);border-radius:3px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:'Inter',sans-serif;}
+.copy-btn:hover{color:var(--gold);}
+
+/* BADGES */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:500;}
+.b-green{background:rgba(61,153,112,0.12);border:1px solid rgba(61,153,112,0.25);color:var(--green);}
+.b-amber{background:rgba(196,135,58,0.12);border:1px solid rgba(196,135,58,0.25);color:var(--amber);}
+.b-gold{background:rgba(197,165,90,0.1);border:1px solid rgba(197,165,90,0.2);color:var(--gold);}
+.b-blue{background:rgba(74,114,196,0.12);border:1px solid rgba(74,114,196,0.25);color:#7A9FD4;}
+
+/* FILES */
+.file-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0;}
+.file-item{background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mt);display:flex;align-items:center;gap:8px;}
+.file-item::before{content:'📄';font-size:12px;}
+.file-item.json::before{content:'⚙️';}
+
+/* DNS TABLE */
+.dns{width:100%;border-collapse:collapse;margin:8px 0;}
+.dns th{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dm);padding:8px 12px;text-align:left;border-bottom:1px solid var(--bd);}
+.dns td{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--mt);padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.03);}
+.dns tr:hover td{background:rgba(197,165,90,0.04);}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:6px;margin:8px 0;}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--s3);border-radius:4px;border:1px solid var(--bd);cursor:pointer;font-size:12px;color:var(--mt);transition:all 0.15s;}
+.check-item:hover{border-color:rgba(197,165,90,0.2);}
+.check-item.checked{color:var(--green);text-decoration:line-through;opacity:0.6;}
+.check-item input{width:14px;height:14px;accent-color:var(--green);cursor:pointer;}
+
+/* PROGRESS */
+.progress-bar{height:3px;background:var(--s3);border-radius:99px;margin-bottom:32px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--gold);border-radius:99px;transition:width 0.3s;}
+
+/* ALERT */
+.alert{background:rgba(197,165,90,0.06);border:1px solid rgba(197,165,90,0.2);border-radius:6px;padding:12px 16px;font-size:12px;color:var(--mt);line-height:1.65;margin:8px 0;}
+.alert strong{color:var(--gold);}
+
+/* FINAL */
+.final{background:rgba(61,153,112,0.06);border:1px solid rgba(61,153,112,0.2);border-radius:8px;padding:20px;text-align:center;margin-top:40px;}
+.final h2{font-family:'EB Garamond',serif;font-size:26px;color:var(--green);margin-bottom:8px;}
+.final p{font-size:12px;color:var(--mt);line-height:1.7;}
+.url-list{display:flex;flex-direction:column;gap:4px;margin:12px 0;}
+.url{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--s1);border:1px solid rgba(197,165,90,0.3);color:var(--gold);border-radius:6px;padding:10px 18px;font-size:12px;z-index:999;opacity:0;transform:translateY(10px);transition:all 0.2s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div style="display:flex;align-items:center;margin-bottom:8px">
+  <div class="spine"></div>
+  <div style="font-size:11px;color:var(--dm);letter-spacing:0.12em;text-transform:uppercase">Ascension Capital Partners · Deploy SOP</div>
+</div>
+<h1>30-Minute Website Launch</h1>
+<div class="sub">Chief AI Scientist briefing · Step-by-step · No shortcuts · Follow in order<br>
+Domain: <strong style="color:var(--gold)">ascensioncap.io</strong> · Platform: Vercel (free) · Files: 6 HTML files</div>
+
+<!-- Timer -->
+<div class="timer-bar">
+  <div>
+    <div class="timer-label">Elapsed Time</div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+  <div style="text-align:center">
+    <div class="timer-label" style="margin-bottom:4px">Progress</div>
+    <div style="font-size:13px;color:var(--mt)"><span id="doneCount">0</span> / 12 steps</div>
+  </div>
+  <button class="btn-timer" onclick="startTimer()" id="timerBtn">START TIMER</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<!-- PHASE 1 -->
+<div class="phase">
+  <div class="phase-hd">
+    <div class="phase-num">PHASE 1</div>
+    <div class="phase-title">Download the 6 Files</div>
+    <div class="phase-time">0–3 min</div>
+  </div>
+
+  <div class="step">
+    <div class="step-n now" onclick="markDone(this)">1</div>
+    <div class="step-body active">
+      <div class="step-title">Download all 6 files from Claude <span class="badge b-amber">Do this first</span></div>
+      <div class="step-desc">Go back to the Claude chat. You'll see 6 files listed. Click each one to download. Save them all to the same folder.</div>
+      <div class="file-list">
+        <div class="file-item">index.html</div>
+        <div class="file-item">ir.html</div>
+        <div class="file-item">docs.html</div>
+        <div class="file-item">portal.html</div>
+        <div class="file-item">ops.html</div>
+        <div class="file-item json">vercel.json</div>
+      </div>
+      <div class="alert"><strong>Important:</strong> Make sure all 6 are downloaded before moving on. Check your Downloads folder.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">2</div>
+    <div class="step-body">
+      <div class="step-title">Move files to acp-platform folder</div>
+      <div class="step-desc">Open Windows Explorer. Navigate to <code style="background:var(--s3);padding:1px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px">C:\Users\admin\acp-platform</code> — this folder already exists. Drag all 6 files into it.</div>
+      <div class="code"><span class="cmt"># Verify files are there — type in terminal:</span>
+dir C:\Users\admin\acp-platform</div>
+      <div class="step-desc" style="margin-top:8px">You should see all 6 files listed. If you do — tick this step and move on.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="phase">
+  <div class="phase-hd">
+    <div class="phase-num">PHASE 2</div>
+    <div class="phase-title">Deploy to Vercel</div>
+    <div class="phase-time">3–8 min</div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">3</div>
+    <div class="step-body">
+      <div class="step-title">Open terminal in the right folder</div>
+      <div class="step-desc">Open CMD or PowerShell. Type exactly:</div>
+      <div class="code" onclick="copyCode(this)"><span class="copy-btn">Copy</span>cd C:\Users\admin\acp-platform</div>
+      <div class="step-desc">You should see <code style="background:var(--s3);padding:1px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px">C:\Users\admin\acp-platform></code> in the terminal.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">4</div>
+    <div class="step-body">
+      <div class="step-title">Deploy to Vercel <span class="badge b-gold">The main command</span></div>
+      <div class="step-desc">Type this exactly:</div>
+      <div class="code" onclick="copyCode(this)"><span class="copy-btn">Copy</span>vercel --prod</div>
+      <div class="step-desc">When it asks questions, answer:</div>
+      <div class="code"><span class="cmt"># Set up and deploy?</span>  → press Y then Enter
+<span class="cmt"># Which scope?</span>          → pick ASCENSION ENERGIES
+<span class="cmt"># Link to existing?</span>     → press N then Enter
+<span class="cmt"># Project name?</span>         → type: acp-website  then Enter
+<span class="cmt"># Which directory?</span>      → press Enter (use current)
+<span class="cmt"># Override settings?</span>    → press N then Enter</div>
+      <div class="alert"><strong>Wait ~30 seconds.</strong> You'll see a Production URL like <strong>https://acp-website-xxx.vercel.app</strong> — copy that URL, you'll need it.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">5</div>
+    <div class="step-body">
+      <div class="step-title">Test your live URL</div>
+      <div class="step-desc">Open the Vercel URL in your browser. You should see the ACP website with the mountain background and gold branding. If it looks right — tick this and move on.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase">
+  <div class="phase-hd">
+    <div class="phase-num">PHASE 3</div>
+    <div class="phase-title">Buy Domain on Namecheap</div>
+    <div class="phase-time">8–13 min</div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">6</div>
+    <div class="step-body">
+      <div class="step-title">Buy ascensioncap.io on Namecheap</div>
+      <div class="step-desc">Go to namecheap.com. Search <strong style="color:var(--tx)">ascensioncap.io</strong>. Add to cart. Remove everything else from cart. Apply promo code:</div>
+      <div class="code" onclick="copyCode(this)"><span class="copy-btn">Copy</span>NEWCOM679</div>
+      <div class="step-desc">Checkout. ~A$49. Done.</div>
+      <div class="alert"><strong>Do not add:</strong> Web Hosting, WordPress, Business Email, SSL, VPN, Premium DNS. You don't need any of them. Vercel handles SSL for free.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase">
+  <div class="phase-hd">
+    <div class="phase-num">PHASE 4</div>
+    <div class="phase-title">Connect Domain to Vercel</div>
+    <div class="phase-time">13–20 min</div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">7</div>
+    <div class="step-body">
+      <div class="step-title">Add domain in Vercel dashboard</div>
+      <div class="step-desc">Go to vercel.com → your project (acp-website) → Settings → Domains. Add each of these one at a time:</div>
+      <div class="code">ascensioncap.io
+ir.ascensioncap.io
+docs.ascensioncap.io
+portal.ascensioncap.io
+ops.ascensioncap.io</div>
+      <div class="step-desc">Vercel will show you the DNS records needed. Keep this tab open.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">8</div>
+    <div class="step-body">
+      <div class="step-title">Set DNS records in Namecheap</div>
+      <div class="step-desc">Go to Namecheap → Domain List → ascensioncap.io → Manage → Advanced DNS. Add these records:</div>
+      <table class="dns">
+        <thead><tr><th>Type</th><th>Host</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>@</td><td>76.76.21.21</td></tr>
+          <tr><td>CNAME</td><td>www</td><td>cname.vercel-dns.com</td></tr>
+          <tr><td>CNAME</td><td>ir</td><td>cname.vercel-dns.com</td></tr>
+          <tr><td>CNAME</td><td>docs</td><td>cname.vercel-dns.com</td></tr>
+          <tr><td>CNAME</td><td>portal</td><td>cname.vercel-dns.com</td></tr>
+          <tr><td>CNAME</td><td>ops</td><td>cname.vercel-dns.com</td></tr>
+        </tbody>
+      </table>
+      <div class="step-desc" style="margin-top:8px">Click the green checkmark to save each record.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">9</div>
+    <div class="step-body">
+      <div class="step-title">Wait for DNS propagation <span class="badge b-blue">~15–30 min</span></div>
+      <div class="step-desc">DNS takes 15–30 minutes to propagate. Vercel will show a green checkmark next to each domain when it's ready. You can check status at:</div>
+      <div class="code">https://vercel.com/ascensioncapitalpartners/acp-website/settings/domains</div>
+      <div class="alert"><strong>While you wait:</strong> Add a payment card to Vercel so the free tier doesn't expire in 2 days. Go to Vercel → Settings → Billing → Add card. You won't be charged — the Hobby plan is free.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="phase">
+  <div class="phase-hd">
+    <div class="phase-num">PHASE 5</div>
+    <div class="phase-title">Verify Everything Works</div>
+    <div class="phase-time">20–30 min</div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">10</div>
+    <div class="step-body">
+      <div class="step-title">Test all 5 URLs</div>
+      <div class="step-desc">Once DNS is green in Vercel, open each URL and confirm it loads:</div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"> ascensioncap.io — public website with contact form</label>
+        <label class="check-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"> ir.ascensioncap.io — LP Portal (login: ACP-LP-DEMO-001 / demo2026)</label>
+        <label class="check-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"> docs.ascensioncap.io — Client Data Rooms</label>
+        <label class="check-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"> portal.ascensioncap.io — Template OS</label>
+        <label class="check-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"> ops.ascensioncap.io — Command Centre + Shadow Cloud</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">11</div>
+    <div class="step-body">
+      <div class="step-title">Add Vercel billing card</div>
+      <div class="step-desc">Vercel → Settings → Billing → Add payment method. Free tier stays free — this just prevents the trial from expiring. No charges unless you upgrade.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n todo" onclick="markDone(this)">12</div>
+    <div class="step-body">
+      <div class="step-title">Platform is live ✓</div>
+      <div class="step-desc">You're done. All 5 properties are live. Screenshot the ops.ascensioncap.io dashboard and save it — that's your command centre.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT'S NEXT -->
+<div style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:20px;margin-bottom:24px;">
+  <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dm);margin-bottom:14px">After Deploy — This Week</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="background:var(--s3);border-radius:5px;padding:12px;font-size:12px;color:var(--mt);">
+      <div style="color:var(--tx);font-weight:600;margin-bottom:4px">Wire Contact Form</div>
+      Zapier → Webhooks → catch hook URL → paste into index.html → redeploy. 1 hour.
+    </div>
+    <div style="background:var(--s3);border-radius:5px;padding:12px;font-size:12px;color:var(--mt);">
+      <div style="color:var(--tx);font-weight:600;margin-bottom:4px">Google Workspace Email</div>
+      Google Workspace $8/mo → jt@ascensioncap.io. Professional email. 30 min.
+    </div>
+    <div style="background:var(--s3);border-radius:5px;padding:12px;font-size:12px;color:var(--mt);">
+      <div style="color:var(--tx);font-weight:600;margin-bottom:4px">Install Paperclip</div>
+      git clone paperclipai/paperclip → pnpm install → pnpm paperclip onboard. Week 2.
+    </div>
+    <div style="background:var(--s3);border-radius:5px;padding:12px;font-size:12px;color:var(--mt);">
+      <div style="color:var(--tx);font-weight:600;margin-bottom:4px">Create 6 Google Forms</div>
+      Mandate intake, contact intake, interaction log, doc request, KYC, weekly update. Week 2.
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="final" id="finalBlock" style="display:none">
+  <h2>🎉 Platform Live</h2>
+  <p>Ascension Capital Partners is now live on the internet.<br>All 5 properties deployed. Shadow Cloud agents ready.</p>
+  <div class="url-list">
+    <div class="url">ascensioncap.io</div>
+    <div class="url">ir.ascensioncap.io</div>
+    <div class="url">docs.ascensioncap.io</div>
+    <div class="url">portal.ascensioncap.io</div>
+    <div class="url">ops.ascensioncap.io</div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied ✓</div>
+
+<script>
+let timerInterval, seconds = 0, started = false;
+let doneSteps = 0;
+
+function startTimer() {
+  if (started) return;
+  started = true;
+  document.getElementById('timerBtn').textContent = 'RUNNING';
+  document.getElementById('timerBtn').style.background = '#3D9970';
+  timerInterval = setInterval(() => {
+    seconds++;
+    const m = String(Math.floor(seconds/60)).padStart(2,'0');
+    const s = String(seconds%60).padStart(2,'0');
+    document.getElementById('timer').textContent = m + ':' + s;
+  }, 1000);
+}
+
+function markDone(el) {
+  if (el.classList.contains('done')) return;
+  el.classList.remove('todo','now');
+  el.classList.add('done');
+  el.textContent = '✓';
+  el.parentElement.querySelector('.step-body').style.borderColor = 'rgba(61,153,112,0.25)';
+  el.parentElement.querySelector('.step-body').style.background = 'rgba(61,153,112,0.03)';
+  doneSteps++;
+  document.getElementById('doneCount').textContent = doneSteps;
+  document.getElementById('progressFill').style.width = (doneSteps/12*100) + '%';
+  if (!started) startTimer();
+  if (doneSteps >= 12) {
+    document.getElementById('finalBlock').style.display = 'block';
+    document.getElementById('finalBlock').scrollIntoView({behavior:'smooth'});
+    clearInterval(timerInterval);
+    document.getElementById('timerBtn').textContent = 'DONE ✓';
+  }
+  // Activate next step
+  const steps = document.querySelectorAll('.step-n');
+  steps.forEach((s,i) => {
+    if (s.classList.contains('todo') && !s.classList.contains('done')) {
+      s.classList.remove('todo');
+      s.classList.add('now');
+      s.parentElement.querySelector('.step-body').classList.add('active');
+      return false;
+    }
+  });
+}
+
+function copyCode(el) {
+  const code = el.querySelector('.copy-btn') ? el.innerText.replace('Copy','').trim() : el.innerText.trim();
+  navigator.clipboard.writeText(code).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  });
+}
+</script>
+</body>
+</html>

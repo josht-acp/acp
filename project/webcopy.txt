@@ -1,0 +1,188 @@
+INTERNAL  ·  WEB PRODUCTION
+ACP-WEBCOPY-v1.0-2026-04-19
+WEBSITE COPY SYSTEM
+Homepage · About · Verticals · Contact
+With SEO Briefs and Page Specifications  ·  Ready for Web Build
+Ascension Capital Partners  ·  19 April 2026
+USE NOTES
+Every page copy-block is production-ready. Insert verbatim or lightly edit only.
+SEO briefs at the top of each page. Meta descriptions capped at 155 chars.
+Microcopy (buttons, forms, error states) at the end of the document.
+British English. No emojis. Partner-to-partner tone throughout.
+Recommended domain: ascensioncapital.partners OR ascensioncapital.com.au (confirm availability).
+PAGE 01  ·  HOMEPAGE
+SEO Brief
+Title tag: Ascension Capital Partners — Institutional Alternatives, Principal-Led, Global
+Meta description: Institutional principal-led global alternatives advisor across energy transition, digital infrastructure, private credit and critical minerals.
+Primary keywords: institutional alternatives, principal-led M&amp;A advisory, energy transition financing, digital infrastructure capital, critical minerals project finance
+H1 count: 1. Schema: Organization, ProfessionalService.
+Hero Section
+Eyebrow
+INSTITUTIONAL  ·  PRINCIPAL-LED  ·  GLOBAL
+H1
+Capital arranged for the transition economy.
+Sub-hero
+Ascension Capital Partners is an institutional principal-led global alternatives M&amp;A advisory and capital arranging platform. We originate, structure and syndicate institutional capital for sustainable real assets and transition infrastructure — partner-grade, fee-only, LMA / LSTA / ICMA standards on every mandate.
+Primary CTA
+Button: Request Institutional Access  →
+Secondary CTA
+Link: Read the Q1 2026 Market Letter
+Section 2 — Numbers
+Panel of 5 metrics (reuses firm-deck 'By the Numbers' copy):
+USD 10bn+ — cumulative transactions led across UK, US, Australia, Middle East and Europe
+USD 5.8bn+ — live institutional mandate programme across 20+ named assets
+7 verticals with proprietary origination
+4 regions, institutional counterparties only
+12+ years institutional track record in private credit, project finance and infrastructure
+Section 3 — Verticals (Card Grid)
+Seven cards, each linking to sector page:
+Energy Transition
+Digital Infrastructure
+Private Credit
+Critical Minerals
+Impact Real Assets
+Capital Markets (Green Bonds · Structured Notes)
+Strategic Capital / Diversified
+Section 4 — What We Do in Three Lines
+Three-column block, each with a vertical gold accent.
+Origination Originate — Proprietary mandates with mid-teens IRR potential or 11–16% gross credit yield.
+Structuring Structure — LMA/LSTA/ICMA/ILPA market-standard documentation. No off-market asymmetric risk transfer.
+Distribution Distribute — Qualified institutional capital: family offices, credit funds, DFIs, sovereign-adjacent, ECA-backed lenders.
+Section 5 — Thought Leadership (Latest)
+Three-card grid linking to: latest Market Letter, latest sector perspective, latest deal anatomy.
+Section 6 — Contact CTA
+H2
+Partner-to-partner conversations.
+Body
+All engagement begins with a direct call. We do not publish fees or allocation terms. We do not respond to inbound capital-raise requests without a personal introduction or executed NDA. If that fits your process, we'd like to talk.
+Button: Initiate Contact  →
+PAGE 02  ·  ABOUT
+SEO Brief
+Title: About — Ascension Capital Partners · Institutional Alternatives Advisory
+Meta: Principal-led institutional alternatives platform. Twelve-plus years of institutional experience, USD 10bn+ cumulative transactions, global coverage.
+H1
+An institutional platform built for the transition economy.
+Body
+Ascension Capital Partners operates as a principal-led, fee-only, zero-capital institutional alternatives advisor. Our mandate is narrow and deliberate: originate, structure and syndicate institutional capital for sustainable real assets and transition infrastructure across APAC, EMEA, the Middle East and the Americas.
+We operate with the discipline of an institutional investor, the documentation standards of a tier-1 investment bank, and the agility of a partnership. Every mandate is structured to LMA / LSTA credit standards, ICMA bond principles where labelled, and IFC Performance Standards where sovereign-adjacent. Every counterparty is qualified institutional. Every engagement is principal-led.
+The firm was founded on the view that the binding constraint in institutional alternatives has moved from origination to execution velocity, and that a focused, principal-led platform operating at market-standard documentation grade can compete with — and often outpace — capital-first advisors operating across a broader footprint.
+What We Are Not
+Not a fund manager. We do not manage pooled capital.
+Not a retail platform. We transact exclusively with qualified institutional counterparties.
+Not a generalist. We lead with impact, transition and real assets.
+Leadership
+Joshua Ting, Executive Managing Partner and Global Head of Alternatives &amp; Private Markets, leads origination, structuring and distribution across the platform. Twelve-plus years of institutional experience and USD 10bn+ cumulative transactions led across UK, US, Australia, Middle East and Europe.
+Entity &amp; Regulatory
+Ascension Capital Partners trades as APEX Consulting Partners Pty Ltd (ACN 674 649 417). Registered in New South Wales, Australia. Governing law applied to mandate documentation is principally England &amp; Wales with arbitration under the rules of the London Court of International Arbitration.
+PAGE  ·  ENERGY TRANSITION
+SEO Brief
+Title: Energy Transition — Ascension Capital Partners
+Meta: Institutional capital deployed across grid-connected clean energy, storage and decarbonisation infrastructure with long-dated contracted cashflows. Senior 
+H1
+Energy Transition · institutional capital, institutionally papered.
+Body
+Institutional capital deployed across grid-connected clean energy, storage and decarbonisation infrastructure with long-dated contracted cashflows. Senior secured, mezzanine and equity across solar, wind, BESS, geothermal, CHP and CCU. Ticket size USD 5m – USD 200m.
+What We Screen For
+[Criterion 1 specific to this vertical]
+[Criterion 2]
+[Criterion 3]
+How to Engage
+Initiate contact directly. We respond within 48 hours on qualified enquiries.
+PAGE  ·  DIGITAL INFRASTRUCTURE
+SEO Brief
+Title: Digital Infrastructure — Ascension Capital Partners
+Meta: Capital formation for AI-ready data centre and cloud infrastructure. Equity, senior debt and ABL facilities for greenfield, brownfield-conversion and modul
+H1
+Digital Infrastructure · institutional capital, institutionally papered.
+Body
+Capital formation for AI-ready data centre and cloud infrastructure. Equity, senior debt and ABL facilities for greenfield, brownfield-conversion and modular DC platforms. Ticket size USD 20m – USD 1bn+. Power-first underwriting, interconnect certainty, tenant-agnostic optionality, real-asset security.
+What We Screen For
+[Criterion 1 specific to this vertical]
+[Criterion 2]
+[Criterion 3]
+How to Engage
+Initiate contact directly. We respond within 48 hours on qualified enquiries.
+PAGE  ·  PRIVATE CREDIT
+SEO Brief
+Title: Private Credit — Ascension Capital Partners
+Meta: Institutional private credit with first-lien security across renewables, energy, digital infrastructure and real assets. LMA/LSTA-standard documentation. B
+H1
+Private Credit · institutional capital, institutionally papered.
+Body
+Institutional private credit with first-lien security across renewables, energy, digital infrastructure and real assets. LMA/LSTA-standard documentation. Bridge, unitranche and senior facility expertise. Ticket size USD 2m (bridge) – USD 250m (senior co-lead anchor). Target gross yield 11–16%.
+What We Screen For
+[Criterion 1 specific to this vertical]
+[Criterion 2]
+[Criterion 3]
+How to Engage
+Initiate contact directly. We respond within 48 hours on qualified enquiries.
+PAGE  ·  CRITICAL MINERALS
+SEO Brief
+Title: Critical Minerals — Ascension Capital Partners
+Meta: Offtake-backed project finance for transition minerals — nickel, cobalt, copper, lithium, rare earths. ECA-eligible, DFI-alignable, IFC Performance Standar
+H1
+Critical Minerals · institutional capital, institutionally papered.
+Body
+Offtake-backed project finance for transition minerals — nickel, cobalt, copper, lithium, rare earths. ECA-eligible, DFI-alignable, IFC Performance Standards governance from day one. Ticket size USD 5–25m. Contracted offtake, enhanced ESG overlay, multi-party governance.
+What We Screen For
+[Criterion 1 specific to this vertical]
+[Criterion 2]
+[Criterion 3]
+How to Engage
+Initiate contact directly. We respond within 48 hours on qualified enquiries.
+PAGE  ·  IMPACT REAL ASSETS
+SEO Brief
+Title: Impact Real Assets — Ascension Capital Partners
+Meta: Principal-aligned capital into real assets where financial returns and measurable impact compound. Senior living, agri-sustainability, social infrastructur
+H1
+Impact Real Assets · institutional capital, institutionally papered.
+Body
+Principal-aligned capital into real assets where financial returns and measurable impact compound. Senior living, agri-sustainability, social infrastructure, regenerative and circular economy. Ticket size USD 5–200m. Senior debt, mezzanine, pref equity, green bonds, structured notes.
+What We Screen For
+[Criterion 1 specific to this vertical]
+[Criterion 2]
+[Criterion 3]
+How to Engage
+Initiate contact directly. We respond within 48 hours on qualified enquiries.
+PAGE 08  ·  CONTACT
+SEO Brief
+Title: Contact — Ascension Capital Partners
+Meta: Initiate institutional conversation. Principal-to-principal engagement, NDA-gated, qualified institutional counterparties only.
+H1
+Let's talk.
+Body
+We respond to every qualified institutional enquiry within 48 hours. If you are a sponsor seeking capital, an allocator seeking mandates, or a strategic partner seeking alliance — reach out.
+Form Fields
+Name (required)
+Firm (required)
+Role (required)
+Email (required · validated institutional domains only)
+Phone (optional)
+Engagement type: [Sponsor / Allocator / Strategic Partner / Other]
+Short message (required · 140–500 chars)
+Confidentiality acknowledgement (required checkbox)
+Direct Contact (below form)
+Joshua Ting  ·  Executive Managing Partner
+M:  +61 451 338 533
+E:  joshuating53@outlook.com
+Ascension Capital Partners  ·  t/a APEX Consulting Partners Pty Ltd  ·  ACN 674 649 417
+Suite 3, 1 Cary Street  ·  Drummoyne NSW 2047  ·  Australia
+MICROCOPY LIBRARY
+Buttons / CTAs
+Primary: Request Institutional Access  →
+Secondary: Read the Market Letter
+Tertiary: Subscribe to The Ascension Note
+Contact: Initiate Contact  →
+NDA-gated: Request VDR Access
+Thought leadership: Read the Memo  →
+Empty States / Errors
+Form not submitted: "The enquiry didn't reach us. Please try again, or email directly."
+Email validation: "We respond to institutional email addresses only. Please use your firm domain."
+Success: "Received. We respond to qualified institutional enquiries within 48 hours."
+404: "This page has moved. Return to the homepage or contact us directly."
+Cookie / Legal
+Cookie banner: "This site uses essential cookies only. No tracking, no advertising. See our privacy notice."
+Privacy link footer: "Confidentiality · Privacy · Regulatory"
+Footer
+Ascension Capital Partners  ·  trading as APEX Consulting Partners Pty Ltd  ·  ACN 674 649 417  ·  Suite 3, 1 Cary Street, Drummoyne NSW 2047 Australia
+Nothing on this website constitutes an offer, solicitation or recommendation to buy or sell any financial product. Materials available on request to qualified institutional counterparties only, under executed NDA and KYC/AML clearance.

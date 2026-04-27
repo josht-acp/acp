@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /client-portal
+
+Disallow: /portal
+Disallow: /portal/
+Disallow: /internal-portal
+Disallow: /internal
+Disallow: /ops
+Disallow: /ops/
+Disallow: /ir
+Disallow: /ir/
+Disallow: /docs
+Disallow: /docs/
+Disallow: /api/
+
+Sitemap: https://www.ascensioncapitalpartner.com/sitemap.xml

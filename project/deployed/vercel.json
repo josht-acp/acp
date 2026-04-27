@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/portal", "dest": "/portal.html" },
+    { "src": "/portal/(.*)", "dest": "/portal.html" },
+    { "src": "/ir", "dest": "/ir.html" },
+    { "src": "/ir/(.*)", "dest": "/ir.html" },
+    { "src": "/docs", "dest": "/docs.html" },
+    { "src": "/docs/(.*)", "dest": "/docs.html" },
+    { "src": "/ops", "dest": "/ops.html" },
+    { "src": "/ops/(.*)", "dest": "/ops.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    }
+  ]
+}

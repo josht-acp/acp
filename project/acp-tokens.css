@@ -1,0 +1,224 @@
+/* ════════════════════════════════════════════════════════════════
+   ASCENSION CAPITAL PARTNERS — Design System Tokens
+   Colours · Typography · Semantic Variables
+   Source of truth: SKILL-v2 / Enterprise Brand Suite v1.0
+   ──────────────────────────────────────────────────────────────── */
+
+/* Google Fonts (nearest matches used as fallbacks — swap for licensed files when available) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  /* ──── COLOUR · FOUNDATION DARKS ──── */
+  --acp-midnight:   #0A0E1A;   /* primary dark bg */
+  --acp-navy:       #111827;   /* card bg, secondary panels */
+  --acp-charcoal:   #1A2035;   /* elevated surfaces, slide bg */
+  --acp-slate:      #2D3548;   /* tertiary panels, borders */
+
+  /* ──── COLOUR · NEUTRALS / TEXT ──── */
+  --acp-steel:      #4A5568;   /* de-emphasised text */
+  --acp-silver:     #94A3B8;   /* body text on dark */
+  --acp-pearl:      #CBD5E1;   /* primary body on dark */
+  --acp-ivory:      #F1F5F9;   /* light-mode bg */
+  --acp-white:      #FAFBFC;   /* heading text on dark */
+
+  /* ──── COLOUR · PRIMARY GOLD ──── */
+  --acp-gold:        #C9A84C;   /* canonical accent */
+  --acp-gold-light:  #E2C97E;   /* gradient endpoint, hover */
+  --acp-gold-dark:   #9A7B2E;   /* labels, secondary accent */
+  --acp-gold-muted:  rgba(201,168,76,0.12);
+  --acp-gold-border: rgba(201,168,76,0.15);
+  --acp-gold-hair:   rgba(201,168,76,0.08);
+
+  /* ──── COLOUR · SEMANTIC ──── */
+  --acp-success:   #22C55E;
+  --acp-warning:   #F59E0B;
+  --acp-error:     #EF4444;
+  --acp-teal:      #2DD4BF;   /* sparing chart accent */
+
+  /* ──── COLOUR · WEB-LEGACY TOKENS (deployed marketing/apps) ──── */
+  --acp-web-ink:         #080808;
+  --acp-web-charcoal:    #161616;
+  --acp-web-text:        #F0EDE6;
+  --acp-web-muted:       rgba(240,237,230,0.52);
+  --acp-web-dim:         rgba(240,237,230,0.28);
+  --acp-web-gold:        #C5A55A;
+  --acp-web-gold-bright: #D4B870;
+  --acp-web-gold-dim:    #9B7E3E;
+  --acp-web-border:      rgba(255,255,255,0.06);
+  --acp-web-success:     #4A9E72;
+  --acp-web-warn:        #C4873A;
+  --acp-web-danger:      #C4503A;
+
+  /* ──── SEMANTIC FG / BG ALIASES (dark-first default) ──── */
+  --bg:            var(--acp-midnight);
+  --bg-elev-1:     var(--acp-navy);
+  --bg-elev-2:     var(--acp-charcoal);
+  --bg-elev-3:     var(--acp-slate);
+  --fg:            var(--acp-white);
+  --fg-1:          var(--acp-pearl);
+  --fg-2:          var(--acp-silver);
+  --fg-3:          var(--acp-steel);
+  --fg-accent:     var(--acp-gold);
+  --border:        var(--acp-gold-hair);
+  --border-strong: var(--acp-gold-border);
+
+  /* ──── TYPOGRAPHY · FAMILIES ──── */
+  --font-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-body:    'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* ──── TYPOGRAPHY · SIZE SCALE ──── */
+  --fs-hero:   clamp(42px, 5.5vw, 72px);
+  --fs-h1:     36px;
+  --fs-h2:     28px;
+  --fs-h3:     20px;
+  --fs-h4:     16px;
+  --fs-body:   15px;
+  --fs-body-lg: 18px;
+  --fs-small:  13px;
+  --fs-micro:  11px;
+  --fs-mono-sm: 10px;
+  --fs-mono-xs: 9px;
+
+  /* ──── TYPOGRAPHY · WEIGHTS ──── */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ──── TYPOGRAPHY · LINE HEIGHT / TRACKING ──── */
+  --lh-tight: 1.1;
+  --lh-snug: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+  --lh-loose: 1.8;
+
+  --ls-tight:   -0.01em;
+  --ls-normal:  0;
+  --ls-wide:    0.04em;
+  --ls-wider:   0.08em;
+  --ls-widest:  0.18em;
+  --ls-mono:    0.1em;
+
+  /* ──── SPACING SCALE (4-based) ──── */
+  --sp-0:  0;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+
+  /* ──── RADII ──── */
+  --r-xs: 2px;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --r-xl: 12px;
+  --r-2xl: 16px;
+  --r-pill: 999px;
+
+  /* ──── ELEVATION (subtle, dark-optimised) ──── */
+  --sh-1: 0 1px 2px rgba(0,0,0,0.30);
+  --sh-2: 0 4px 14px rgba(0,0,0,0.35);
+  --sh-3: 0 8px 32px rgba(0,0,0,0.45);
+  --sh-gold-glow: 0 0 32px rgba(201,168,76,0.12);
+  --sh-gold-hover: 0 8px 40px rgba(201,168,76,0.06);
+
+  /* ──── MOTION ──── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.18s;
+  --dur-base: 0.3s;
+  --dur-slow: 0.6s;
+
+  /* ──── GOLD SPINE (signature element) ──── */
+  --gold-spine-width: 3px;
+  --gold-gradient-bar: linear-gradient(90deg, var(--acp-gold-dark), var(--acp-gold), var(--acp-gold-light), var(--acp-gold), var(--acp-gold-dark));
+  --gold-gradient-fill: linear-gradient(135deg, var(--acp-gold-dark) 0%, var(--acp-gold) 50%, var(--acp-gold-light) 100%);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SEMANTIC ELEMENT STYLES
+   ──────────────────────────────────────────────────────────────── */
+
+.acp-hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-tight);
+  letter-spacing: 0.02em;
+  color: var(--fg);
+}
+
+.acp-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.02em;
+  color: var(--fg);
+}
+
+.acp-h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-snug);
+  color: var(--fg);
+}
+
+.acp-h3 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--fg);
+}
+
+.acp-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-1);
+}
+
+.acp-body-sm {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-loose);
+  color: var(--fg-2);
+}
+
+.acp-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--acp-gold);
+}
+
+.acp-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-mono);
+  color: var(--fg-3);
+}
+
+.acp-gold-text {
+  background: linear-gradient(135deg, var(--acp-gold), var(--acp-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Data Rooms — Ascension Capital Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-dim:#9A7B2E;--gold-pale:rgba(201,168,76,0.08);--gold-bd:rgba(201,168,76,0.22);
+  --ink:#0A0E1A;--s1:#111827;--s2:#1A2035;--s3:#1A2035;--s4:#2D3548;
+  --border:rgba(255,255,255,0.07);--text:#CBD5E1;--muted:rgba(203,213,225,0.5);--dim:rgba(203,213,225,0.28);
+  --success:#4A9E72;--warn:#C4873A;--danger:#C4503A;
+  --font-d:'Cormorant Garamond', 'EB Garamond', Georgia, serif;--font-b:'Inter',sans-serif;--font-m:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:13px;}
+body{background:var(--ink);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;min-height:100vh;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--s2);}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+
+/* ── NDA GATE ── */
+.nda-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:24px;}
+.nda-mountain{position:absolute;inset:0;background-image:url('assets/everest-peak-clean.png');background-size:cover;background-position:center 20%;opacity:0.08;}
+.nda-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,8,8,0.97) 0%,rgba(8,8,8,0.90) 100%);}
+.nda-card{position:relative;z-index:2;width:100%;max-width:560px;background:var(--s1);border:1px solid var(--gold-bd);border-top:3px solid var(--gold);border-radius:10px;overflow:hidden;}
+.nda-header{padding:36px 44px 24px;border-bottom:1px solid var(--border);}
+.nda-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.spine-bar{width:4px;height:22px;background:var(--gold);border-radius:2px;}
+.brand-name{font-family:var(--font-d);font-size:16px;color:var(--text);}
+.nda-title{font-family:var(--font-d);font-size:24px;color:var(--text);margin-bottom:6px;}
+.nda-sub{font-size:10.5px;letter-spacing:0.09em;text-transform:uppercase;color:var(--gold-dim);}
+.nda-body{padding:24px 44px 36px;}
+.nda-text{font-size:12.5px;font-weight:300;color:var(--muted);line-height:1.75;margin-bottom:20px;}
+.nda-text strong{color:var(--text);font-weight:500;}
+.form-field{margin-bottom:16px;}
+.form-label{display:block;font-size:10px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.form-input{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:10px 14px;color:var(--text);font-family:var(--font-b);font-size:13px;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--gold-dim);}
+.nda-check{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:6px;margin-bottom:20px;cursor:pointer;}
+.nda-check input[type=checkbox]{width:16px;height:16px;margin-top:1px;flex-shrink:0;accent-color:var(--gold);}
+.nda-check-text{font-size:12px;font-weight:300;color:var(--muted);line-height:1.6;}
+.btn-accept{width:100%;background:var(--gold);color:#000;border:none;border-radius:5px;padding:13px;font-size:12px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+.btn-accept:hover{background:#E2C97E;}
+.nda-error{background:rgba(196,80,58,0.12);border:1px solid rgba(196,80,58,0.3);border-radius:5px;padding:10px 14px;font-size:12px;color:#E07060;margin-bottom:14px;display:none;}
+.nda-footer{padding:12px 44px;border-top:1px solid var(--border);background:rgba(0,0,0,0.3);}
+.nda-footer p{font-size:10px;color:var(--dim);text-align:center;line-height:1.6;}
+
+/* ── DATA ROOM SHELL ── */
+.data-room{display:none;min-height:100vh;flex-direction:column;}
+.data-room.active{display:flex;}
+
+.dr-nav{height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.dr-brand{display:flex;align-items:center;gap:12px;}
+.dr-spine{width:3px;height:20px;background:var(--gold);border-radius:2px;}
+.dr-firm{font-family:var(--font-d);font-size:15.5px;color:var(--text);}
+.dr-mandate-badge{font-size:10px;padding:3px 10px;background:var(--gold-pale);border:1px solid var(--gold-bd);color:var(--gold-dim);border-radius:99px;letter-spacing:0.06em;}
+.dr-nav-right{display:flex;align-items:center;gap:16px;}
+.dr-user{font-size:11.5px;color:var(--muted);}
+.dr-user strong{color:var(--text);}
+.btn-dr-logout{font-size:11px;padding:5px 12px;background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:4px;cursor:pointer;transition:all 0.2s;}
+.btn-dr-logout:hover{border-color:var(--gold-bd);color:var(--muted);}
+
+.dr-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 62px);}
+
+/* sidebar */
+.dr-sidebar{background:var(--s1);border-right:1px solid var(--border);padding:24px 0;display:flex;flex-direction:column;}
+.dr-room-selector{padding:0 18px 20px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.drs-label{font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.room-chip{padding:9px 14px;background:var(--s2);border:1px solid var(--gold-bd);border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.room-chip:hover{background:var(--gold-pale);}
+.room-code{font-family:var(--font-m);font-size:10.5px;color:var(--gold-dim);}
+.room-name{font-size:12.5px;color:var(--text);margin-top:2px;}
+.dr-nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);padding:0 18px;margin-bottom:8px;}
+.dr-nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;font-size:12.5px;color:var(--muted);border-left:3px solid transparent;transition:all 0.18s;}
+.dr-nav-item:hover{color:var(--text);background:var(--gold-pale);}
+.dr-nav-item.active{color:var(--gold);border-left-color:var(--gold);background:var(--gold-pale);}
+.dr-icon{width:16px;text-align:center;flex-shrink:0;}
+
+/* main */
+.dr-main{padding:36px 40px;overflow-y:auto;}
+.dr-pane{display:none;}
+.dr-pane.active{display:block;}
+
+/* overview */
+.dr-hero{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:32px 36px;margin-bottom:28px;border-left:4px solid var(--gold);}
+.dr-mandate-code{font-family:var(--font-m);font-size:11px;color:var(--gold-dim);letter-spacing:0.08em;margin-bottom:8px;}
+.dr-mandate-name{font-family:var(--font-d);font-size:28px;color:var(--text);margin-bottom:10px;}
+.dr-mandate-desc{font-size:13.5px;font-weight:300;color:var(--muted);line-height:1.7;max-width:680px;}
+.dr-meta-row{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px;}
+.dr-meta{font-size:11px;}
+.dr-meta-k{color:var(--dim);margin-bottom:2px;}
+.dr-meta-v{font-family:var(--font-m);font-size:11.5px;color:var(--text);}
+.dr-meta-v.gold{color:var(--gold);}
+
+.milestone-track{background:var(--s2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:28px;}
+.mt-header{padding:14px 20px;border-bottom:1px solid var(--gold-bd);}
+.mt-title{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);}
+.mt-item{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.mt-item:last-child{border-bottom:none;}
+.mt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.mt-dot.done{background:var(--success);}
+.mt-dot.active{background:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.2);}
+.mt-dot.pending{background:var(--s4);border:1px solid var(--border);}
+.mt-body{flex:1;}
+.mt-name{font-size:12.5px;color:var(--text);margin-bottom:2px;}
+.mt-detail{font-size:11px;color:var(--dim);}
+.mt-date{font-family:var(--font-m);font-size:10.5px;color:var(--dim);}
+
+/* documents */
+.doc-category{margin-bottom:28px;}
+.doc-cat-title{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gold-bd);}
+.doc-row{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--s2);border:1px solid var(--border);border-radius:7px;margin-bottom:8px;cursor:pointer;transition:border-color 0.18s;}
+.doc-row:hover{border-color:var(--gold-bd);}
+.doc-type-icon{width:34px;height:34px;background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.doc-info{flex:1;}
+.doc-title{font-size:13px;color:var(--text);font-weight:500;margin-bottom:2px;}
+.doc-sub{font-size:11px;color:var(--dim);}
+.doc-version{font-family:var(--font-m);font-size:10px;color:var(--gold-dim);padding:2px 6px;background:var(--gold-pale);border-radius:3px;}
+.doc-restricted{font-size:10px;padding:3px 8px;background:rgba(196,80,58,0.1);border:1px solid rgba(196,80,58,0.25);color:#C4503A;border-radius:3px;}
+.btn-dr-dl{font-size:11px;padding:6px 14px;background:transparent;border:1px solid var(--gold-bd);color:var(--gold-dim);border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s;}
+.btn-dr-dl:hover{background:var(--gold-pale);color:var(--gold);}
+
+/* activity log */
+.activity-row{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);}
+.activity-row:last-child{border-bottom:none;}
+.act-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-dim);flex-shrink:0;margin-top:4px;}
+.act-body{flex:1;font-size:12px;color:var(--muted);}
+.act-time{font-family:var(--font-m);font-size:10px;color:var(--dim);white-space:nowrap;}
+
+/* messages */
+.dr-msg-compose{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:18px;}
+.dr-msg-input{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--text);font-family:var(--font-b);font-size:12.5px;resize:vertical;min-height:70px;outline:none;}
+.dr-msg-input:focus{border-color:var(--gold-dim);}
+.dr-msg-list{display:flex;flex-direction:column;gap:10px;}
+.dr-msg-bubble{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.dr-msg-bubble.from-acp{border-left:3px solid var(--gold);}
+.dr-msg-from{font-size:11px;font-weight:600;color:var(--gold-dim);margin-bottom:4px;}
+.dr-msg-body{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.dr-msg-time{font-size:10px;color:var(--dim);margin-top:5px;font-family:var(--font-m);}
+</style>
+</head>
+<body>
+
+<!-- ══ NDA GATE ══ -->
+<div class="nda-gate" id="ndaGate">
+  <div class="nda-mountain"></div>
+  <div class="nda-overlay"></div>
+  <div class="nda-card">
+    <div class="nda-header">
+      <div class="nda-brand"><div class="spine-bar"></div><div class="brand-name">Ascension Capital Partners</div></div>
+      <div class="nda-title">Client Data Rooms</div>
+      <div class="nda-sub">Restricted · Authorised Counterparties Only</div>
+    </div>
+    <div class="nda-body">
+      <div class="nda-text">
+        This platform provides access to <strong>confidential deal documentation</strong> for authorised counterparties of Ascension Capital Partners. All documents are subject to NDA/NCND and are <strong>watermarked with your identity</strong> upon download.
+      </div>
+      <div class="nda-error" id="ndaError">Invalid access code or credentials.</div>
+      <div class="form-field">
+        <label class="form-label">Data Room Access Code</label>
+        <input class="form-input" id="drCode" type="text" placeholder="ACP-DR-XXXX-XXXX" autocomplete="off" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Your Full Name</label>
+        <input class="form-input" id="drName" type="text" placeholder="First Last" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Organisation</label>
+        <input class="form-input" id="drOrg" type="text" placeholder="Institution Name" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="drPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')drLogin()" />
+      </div>
+      <div class="nda-check" onclick="document.getElementById('ndaAck').checked=!document.getElementById('ndaAck').checked">
+        <input type="checkbox" id="ndaAck" />
+        <div class="nda-check-text">I confirm I am an authorised recipient. I agree the information in this data room is strictly confidential, subject to the executed NDA/NCND, and may not be disclosed, reproduced, or distributed without prior written consent of Ascension Capital Partners.</div>
+      </div>
+      <button class="btn-accept" onclick="drLogin()">Access Data Room →</button>
+    </div>
+    <div class="nda-footer"><p>All access is logged. Documents are watermarked.<br>Ascension Capital Partners t/a APEX Consulting Partners Pty Ltd · ACN 674 649 417</p></div>
+  </div>
+</div>
+
+<!-- ══ DATA ROOM ══ -->
+<div class="data-room" id="dataRoom">
+
+  <nav class="dr-nav">
+    <div class="dr-brand">
+      <div class="dr-spine"></div>
+      <div class="dr-firm">Ascension Capital Partners</div>
+      <span class="dr-mandate-badge" id="drMandateBadge">Data Room</span>
+    </div>
+    <div class="dr-nav-right">
+      <div class="dr-user">Logged in as: <strong id="drUserDisplay">—</strong></div>
+      <button class="btn-dr-logout" onclick="drLogout()">Exit</button>
+    </div>
+  </nav>
+
+  <div class="dr-layout">
+    <!-- Sidebar -->
+    <aside class="dr-sidebar">
+      <div class="dr-room-selector">
+        <div class="drs-label">Active Data Room</div>
+        <div class="room-chip" id="roomChip">
+          <div class="room-code" id="roomCodeDisplay">—</div>
+          <div class="room-name" id="roomNameDisplay">—</div>
+        </div>
+      </div>
+      <div class="dr-nav-label">Navigation</div>
+      <div class="dr-nav-item active" onclick="showDrPane('overview',this)"><span class="dr-icon">◈</span> Deal Overview</div>
+      <div class="dr-nav-item" onclick="showDrPane('documents',this)"><span class="dr-icon">◻</span> Document Index</div>
+      <div class="dr-nav-item" onclick="showDrPane('milestones',this)"><span class="dr-icon">◻</span> Milestones</div>
+      <div class="dr-nav-item" onclick="showDrPane('activity',this)"><span class="dr-icon">◻</span> Activity Log</div>
+      <div class="dr-nav-item" onclick="showDrPane('messages',this)"><span class="dr-icon">◻</span> Messages</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="dr-main">
+
+      <!-- Overview -->
+      <div class="dr-pane active" id="drpane-overview">
+        <div class="dr-hero">
+          <div class="dr-mandate-code" id="overviewCode">—</div>
+          <div class="dr-mandate-name" id="overviewName">—</div>
+          <div class="dr-mandate-desc" id="overviewDesc">—</div>
+          <div class="dr-meta-row" id="overviewMeta"></div>
+        </div>
+        <div id="overviewStats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px"></div>
+      </div>
+
+      <!-- Documents -->
+      <div class="dr-pane" id="drpane-documents">
+        <div style="margin-bottom:24px">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px">Document Index</div>
+          <div style="font-family:var(--font-d);font-size:26px;color:var(--text);margin-bottom:6px">Data Room Documents</div>
+          <div style="font-size:13px;font-weight:300;color:var(--muted)">All documents are watermarked with your name and organisation on download.</div>
+        </div>
+        <div id="drDocCategories"></div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="dr-pane" id="drpane-milestones">
+        <div style="margin-bottom:24px">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px">Transaction Progress</div>
+          <div style="font-family:var(--font-d);font-size:26px;color:var(--text)">Milestone Tracker</div>
+        </div>
+        <div class="milestone-track">
+          <div class="mt-header"><div class="mt-title">Stage-Gate Progress</div></div>
+          <div id="drMilestones"></div>
+        </div>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="dr-pane" id="drpane-activity">
+        <div style="margin-bottom:24px">
+          <div style="font-family:var(--font-d);font-size:26px;color:var(--text);margin-bottom:6px">Activity Log</div>
+          <div style="font-size:13px;font-weight:300;color:var(--muted)">All data room access events are logged and timestamped.</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px 22px;">
+          <div id="activityLog"></div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="dr-pane" id="drpane-messages">
+        <div style="margin-bottom:24px">
+          <div style="font-family:var(--font-d);font-size:26px;color:var(--text);margin-bottom:6px">Deal Team Messages</div>
+          <div style="font-size:13px;font-weight:300;color:var(--muted)">Secure communications with the Ascension Capital Partners deal team.</div>
+        </div>
+        <div class="dr-msg-compose">
+          <div class="form-label" style="margin-bottom:8px">Message to ACP Deal Team</div>
+          <textarea class="dr-msg-input" id="drMsgText" placeholder="Type your message…"></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:10px">
+            <button style="background:var(--gold);color:#000;border:none;border-radius:4px;padding:8px 18px;font-size:11.5px;font-weight:600;cursor:pointer;" onclick="sendDrMsg()">Send →</button>
+          </div>
+        </div>
+        <div class="dr-msg-list" id="drMsgList">
+          <div class="dr-msg-bubble from-acp">
+            <div class="dr-msg-from">Joshua Ting · Executive Managing Partner</div>
+            <div class="dr-msg-body">Welcome to the data room. All deal documentation is available in the Document Index. Please review the CIM and financial model in the first instance. Do not hesitate to contact me directly with any queries.</div>
+            <div class="dr-msg-time">11 April 2026 · 09:00 AEST</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const DATA_ROOMS = {
+  'ACP-DR-GTE-001': {
+    code:'ACP-DR-GTE-001', name:'Project Lighthouse — Gran Tierra Energy',
+    pass:'lighthouse2026',
+    desc:'Reserve-Based Lending facility for Gran Tierra Energy Inc. Colombia/Peru upstream O&G assets. SOFR+5.00%, 3-year tenor, $75M facility with US$48M initial borrowing base.',
+    meta:[
+      {k:'Facility Size',v:'US$75.0M',gold:true},{k:'Structure',v:'Reserve-Based Lending'},{k:'Pricing',v:'SOFR + 5.00%'},{k:'Tenor',v:'36 Months'},
+      {k:'Borrowing Base',v:'US$48.0M (initial)',gold:true},{k:'1P NPV10',v:'US$220M'},{k:'OID',v:'2.00%'},{k:'Role',v:'Sole Mandated Arranger'},
+    ],
+    stats:[
+      {n:'US$75M',l:'Facility Size'},{n:'US$220M',l:'1P NPV10'},{n:'1.25x',l:'DSCR Floor'},{n:'SOFR+500',l:'Pricing'},
+    ],
+    docs:[
+      {cat:'Transaction Overview',items:[
+        {name:'Confidential Information Memorandum',version:'v2.1',restricted:false},
+        {name:'Investment Thesis — Project Lighthouse',version:'v1.0',restricted:false},
+        {name:'Programme Mandate Pitchbook',version:'v2.0',restricted:false},
+      ]},
+      {cat:'Legal & Structural',items:[
+        {name:'Letter of Engagement',version:'Executed',restricted:false},
+        {name:'Term Sheet — RBL Facility',version:'v1.2',restricted:false},
+        {name:'NDA / NCND Agreement',version:'Executed',restricted:true},
+      ]},
+      {cat:'Financial Analysis',items:[
+        {name:'RBL Financial Model — Base / Stress',version:'v3.0',restricted:false},
+        {name:'1P/2P Reserve Report (NSAI)',version:'H2 2025',restricted:false},
+        {name:'Production Forecast — Colombia/Peru',version:'Q1 2026',restricted:false},
+        {name:'DSCR Analysis & Sensitivity',version:'v2.0',restricted:false},
+      ]},
+      {cat:'Diligence',items:[
+        {name:'KYC/AML Clearance Certificate',version:'April 2026',restricted:true},
+        {name:'Legal Due Diligence Report',version:'Draft',restricted:true},
+        {name:'ITA Technical Report',version:'Q4 2025',restricted:false},
+      ]},
+    ],
+    milestones:[
+      {n:'Mandate Origination',d:'Jan 2026',status:'done'},
+      {n:'LOE Execution',d:'Feb 2026',status:'done'},
+      {n:'KYC/AML Clearance',d:'Mar 2026',status:'done'},
+      {n:'CIM Production',d:'Mar 2026',status:'done'},
+      {n:'Lender Engagement',d:'Apr 2026',status:'active'},
+      {n:'Term Sheet Negotiation',d:'May 2026',status:'pending'},
+      {n:'Credit Approval',d:'May 2026',status:'pending'},
+      {n:'Documentation',d:'Jun 2026',status:'pending'},
+      {n:'Financial Close',d:'Jun 2026',status:'pending'},
+    ],
+    activity:[
+      {t:'11 Apr 2026 09:14',a:'Data room accessed · Project Lighthouse'},
+      {t:'09 Apr 2026 14:22',a:'CIM v2.1 uploaded · Deal team'},
+      {t:'07 Apr 2026 11:05',a:'Term sheet v1.2 uploaded · JT'},
+      {t:'02 Apr 2026 16:38',a:'KYC clearance certificate issued'},
+      {t:'28 Mar 2026 09:00',a:'Data room created · ACP-DR-GTE-001'},
+    ]
+  },
+  'ACP-DR-DTL-001': {
+    code:'ACP-DR-DTL-001', name:'Project DTL — Divergent Trade Ltd',
+    pass:'dtl2026',
+    desc:'Senior secured bridge financing for Divergent Trade Ltd. Bifurcated Tranche A/B structure. 36-month tenor. SOFR+6.50%. First-ranking security over receivables.',
+    meta:[
+      {k:'Facility Size',v:'US$13.8M',gold:true},{k:'Structure',v:'Bifurcated Bridge (TrA/TrB)'},{k:'Pricing',v:'SOFR + 6.50%'},{k:'Tenor',v:'36 Months'},
+      {k:'Security',v:'1st Ranking Charge',gold:true},{k:'DSRA',v:'3 months debt service'},{k:'OID',v:'3.00%'},{k:'Role',v:'Sole Mandated Arranger'},
+    ],
+    stats:[
+      {n:'US$13.8M',l:'Facility Size'},{n:'TrA/TrB',l:'Structure'},{n:'SOFR+650',l:'Pricing'},{n:'1st Ranking',l:'Security'},
+    ],
+    docs:[
+      {cat:'Transaction Overview',items:[
+        {name:'Deal Summary — Project DTL',version:'v1.0',restricted:false},
+        {name:'Lender Presentation',version:'v1.1',restricted:false},
+      ]},
+      {cat:'Legal & Structural',items:[
+        {name:'Letter of Engagement',version:'Executed',restricted:false},
+        {name:'Term Sheet — Bifurcated Bridge',version:'v1.0',restricted:false},
+        {name:'NDA / NCND Agreement',version:'Executed',restricted:true},
+      ]},
+      {cat:'Financial Analysis',items:[
+        {name:'Credit Analysis Model',version:'v2.0',restricted:false},
+        {name:'DSCR Sensitivity Analysis',version:'v1.0',restricted:false},
+        {name:'Cash Flow Projections',version:'Q1 2026',restricted:false},
+      ]},
+    ],
+    milestones:[
+      {n:'Mandate Origination',d:'Feb 2026',status:'done'},
+      {n:'LOE Execution',d:'Feb 2026',status:'done'},
+      {n:'KYC/AML Clearance',d:'Mar 2026',status:'done'},
+      {n:'Term Sheet Issued',d:'Mar 2026',status:'done'},
+      {n:'Lender Engagement',d:'Apr 2026',status:'active'},
+      {n:'Documentation',d:'May 2026',status:'pending'},
+      {n:'Financial Close',d:'May 2026',status:'pending'},
+    ],
+    activity:[
+      {t:'11 Apr 2026 09:20',a:'Data room accessed · Project DTL'},
+      {t:'10 Apr 2026 15:00',a:'Term sheet v1.0 uploaded · JT'},
+      {t:'05 Apr 2026 10:00',a:'KYC clearance issued'},
+      {t:'01 Mar 2026 09:00',a:'Data room created · ACP-DR-DTL-001'},
+    ]
+  },
+  'ACP-DR-DEMO-001': {
+    code:'ACP-DR-DEMO-001', name:'Project Demo — Sample Data Room',
+    pass:'demo2026',
+    desc:'Sample data room for demonstration purposes. Shows full data room functionality including document index, milestones, activity log, and secure messaging.',
+    meta:[
+      {k:'Facility Size',v:'US$50M',gold:true},{k:'Structure',v:'Senior Secured'},{k:'Pricing',v:'SOFR + 4.50%'},{k:'Tenor',v:'36 Months'},
+    ],
+    stats:[{n:'US$50M',l:'Deal Size'},{n:'Demo',l:'Status'},{n:'SOFR+450',l:'Pricing'},{n:'4',l:'Documents'}],
+    docs:[
+      {cat:'Sample Documents',items:[
+        {name:'Sample CIM',version:'v1.0',restricted:false},
+        {name:'Sample Financial Model',version:'v1.0',restricted:false},
+        {name:'Sample Term Sheet',version:'v1.0',restricted:false},
+        {name:'Sample Legal Agreement',version:'v1.0',restricted:true},
+      ]},
+    ],
+    milestones:[
+      {n:'Mandate Origination',d:'Apr 2026',status:'done'},
+      {n:'LOE Execution',d:'Apr 2026',status:'active'},
+      {n:'Lender Engagement',d:'May 2026',status:'pending'},
+      {n:'Financial Close',d:'Jun 2026',status:'pending'},
+    ],
+    activity:[{t:'11 Apr 2026 09:00',a:'Demo data room accessed'}]
+  }
+};
+
+let currentDR = null, currentUser = '';
+
+function drLogin() {
+  const code = document.getElementById('drCode').value.trim().toUpperCase();
+  const name = document.getElementById('drName').value.trim();
+  const org  = document.getElementById('drOrg').value.trim();
+  const pass = document.getElementById('drPass').value.trim();
+  const ack  = document.getElementById('ndaAck').checked;
+  const err  = document.getElementById('ndaError');
+
+  const room = DATA_ROOMS[code];
+  if (!room || pass.toLowerCase() !== room.pass || !ack) {
+    err.textContent = !ack ? 'Please acknowledge the NDA terms.' : 'Invalid access code or password.';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  currentDR = room;
+  currentUser = name + ' · ' + org;
+
+  // Log access
+  room.activity.unshift({t: new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}) + ' ' + new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}), a:'Data room accessed by ' + name + ' · ' + org});
+
+  loadDR(room);
+  document.getElementById('ndaGate').style.display = 'none';
+  document.getElementById('dataRoom').classList.add('active');
+}
+
+function drLogout() {
+  currentDR = null;
+  document.getElementById('ndaGate').style.display = 'flex';
+  document.getElementById('dataRoom').classList.remove('active');
+  document.getElementById('drPass').value = '';
+  document.getElementById('ndaAck').checked = false;
+}
+
+function loadDR(room) {
+  document.getElementById('drMandateBadge').textContent = room.code;
+  document.getElementById('drUserDisplay').textContent = currentUser;
+  document.getElementById('roomCodeDisplay').textContent = room.code;
+  document.getElementById('roomNameDisplay').textContent = room.name;
+  document.getElementById('overviewCode').textContent = room.code;
+  document.getElementById('overviewName').textContent = room.name;
+  document.getElementById('overviewDesc').textContent = room.desc;
+
+  document.getElementById('overviewMeta').innerHTML = room.meta.map(m =>
+    `<div class="dr-meta"><div class="dr-meta-k">${m.k}</div><div class="dr-meta-v ${m.gold?'gold':''}">${m.v}</div></div>`
+  ).join('');
+
+  document.getElementById('overviewStats').innerHTML = room.stats.map(s =>
+    `<div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:18px;border-left:3px solid var(--gold)"><div style="font-family:var(--font-d);font-size:26px;color:var(--gold);line-height:1;margin-bottom:4px">${s.n}</div><div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em">${s.l}</div></div>`
+  ).join('');
+
+  // Docs
+  document.getElementById('drDocCategories').innerHTML = room.docs.map(cat => `
+    <div class="doc-category">
+      <div class="doc-cat-title">${cat.cat}</div>
+      ${cat.items.map(doc => `
+        <div class="doc-row" onclick="drViewDoc('${doc.name}')">
+          <div class="doc-type-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#C9A84C" stroke-width="1.2"/><line x1="5" y1="5" x2="11" y2="5" stroke="#C9A84C" stroke-width="1"/><line x1="5" y1="8" x2="11" y2="8" stroke="#C9A84C" stroke-width="1"/><line x1="5" y1="11" x2="8" y2="11" stroke="#C9A84C" stroke-width="1"/></svg></div>
+          <div class="doc-info">
+            <div class="doc-title">${doc.name}</div>
+            <div class="doc-sub">Ascension Capital Partners · ${doc.version} · Confidential</div>
+          </div>
+          <span class="doc-version">${doc.version}</span>
+          ${doc.restricted ? '<span class="doc-restricted">NDA Required</span>' : ''}
+          <button class="btn-dr-dl" onclick="event.stopPropagation();drDownload('${doc.name}')">Download</button>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  // Milestones
+  document.getElementById('drMilestones').innerHTML = room.milestones.map(m => `
+    <div class="mt-item">
+      <div class="mt-dot ${m.status}"></div>
+      <div class="mt-body">
+        <div class="mt-name">${m.n}</div>
+        <div class="mt-detail">${m.status === 'done' ? 'Complete' : m.status === 'active' ? 'In Progress' : 'Pending'}</div>
+      </div>
+      <div class="mt-date">${m.d}</div>
+    </div>
+  `).join('');
+
+  // Activity
+  document.getElementById('activityLog').innerHTML = room.activity.map(a => `
+    <div class="activity-row">
+      <div class="act-dot"></div>
+      <div class="act-body">${a.a}</div>
+      <div class="act-time">${a.t}</div>
+    </div>
+  `).join('');
+}
+
+function showDrPane(id, el) {
+  document.querySelectorAll('.dr-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dr-nav-item').forEach(s => {s.classList.remove('active');s.querySelector('.dr-icon').textContent='◻';});
+  document.getElementById('drpane-' + id).classList.add('active');
+  el.classList.add('active');
+  el.querySelector('.dr-icon').textContent='◈';
+}
+
+function drViewDoc(name) { alert('Document: ' + name + '\n\nIn the live environment, this opens a watermarked PDF viewer with your name and organisation embedded on every page.\n\nAll document access is logged with timestamp, IP, and user identity.'); }
+
+function drDownload(name) {
+  if (currentDR) currentDR.activity.unshift({t: new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}), a:'Downloaded: ' + name + ' · ' + currentUser});
+  alert('Document: ' + name + '\n\nIn production, this downloads a PDF watermarked with:\n• Your name: ' + currentUser + '\n• Access timestamp: ' + new Date().toISOString() + '\n• Document ID and ACP tracking reference.\n\nAll downloads are logged.');
+}
+
+function sendDrMsg() {
+  const txt = document.getElementById('drMsgText').value.trim();
+  if (!txt) return;
+  const now = new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}) + ' AEST';
+  const list = document.getElementById('drMsgList');
+  const el = document.createElement('div');
+  el.className = 'dr-msg-bubble';
+  el.innerHTML = `<div class="dr-msg-from">${currentUser}</div><div class="dr-msg-body">${txt}</div><div class="dr-msg-time">${now}</div>`;
+  list.insertBefore(el, list.firstChild);
+  document.getElementById('drMsgText').value = '';
+  setTimeout(() => {
+    const r = document.createElement('div');
+    r.className = 'dr-msg-bubble from-acp';
+    r.innerHTML = `<div class="dr-msg-from">Ascension Capital Partners · Deal Team</div><div class="dr-msg-body">Message received. A member of the deal team will respond within one business day.</div><div class="dr-msg-time">${now}</div>`;
+    list.insertBefore(r, list.firstChild);
+  }, 1000);
+}
+
+console.log('Demo credentials:\nACP-DR-GTE-001 / lighthouse2026\nACP-DR-DTL-001 / dtl2026\nACP-DR-DEMO-001 / demo2026');
+</script>
+</body>
+</html>

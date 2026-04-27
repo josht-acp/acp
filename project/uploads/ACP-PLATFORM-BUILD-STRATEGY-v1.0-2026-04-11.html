@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ACP Platform Build Strategy — Chief AI Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C5A55A;--gold-dk:#A68B3C;--black:#0d0d0d;--white:#fff;
+  --charcoal:#333;--warm-grey:#9B9B9B;--light-grey:#F5F5F5;--cream:#FAF7F0;
+  --bg:#0d0d0d;--surface:#1a1a1a;--surface2:#222;--border:#2e2e2e;
+  --text:#e8e8e0;--text-sec:#9B9B9B;--text-ter:#666;
+  --green:#1D9E75;--purple:#534AB7;--coral:#D85A30;
+}
+body{font-family:'Inter',Calibri,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+body::before{content:'';position:fixed;left:0;top:0;width:5px;height:100vh;background:var(--gold);z-index:100}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+header{background:#000;border-bottom:1px solid var(--gold);padding:20px 48px 20px 64px;display:flex;align-items:flex-start;justify-content:space-between}
+.hdr-brand h1{font-family:'EB Garamond',Georgia,serif;font-size:20px;color:var(--gold);font-weight:700;letter-spacing:.03em}
+.hdr-brand p{font-size:11px;color:var(--text-sec);margin-top:3px}
+.hdr-right{text-align:right;font-size:11px;color:var(--text-sec)}
+.badge-cae{display:inline-block;background:var(--gold);color:#000;font-size:9px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:.1em;margin-bottom:4px}
+
+/* ─── LAYOUT ──────────────────────────────────────────── */
+main{padding:40px 48px 60px 64px;max-width:1200px;margin:0 auto}
+
+/* ─── CHIEF BAR ───────────────────────────────────────── */
+.chief-bar{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:4px;padding:1rem 1.25rem;margin-bottom:1.75rem;display:flex;align-items:flex-start;gap:16px}
+.chief-dot{width:40px;height:40px;border-radius:50%;background:var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;letter-spacing:.05em}
+.chief-text h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+.chief-text p{font-size:12px;color:var(--text-sec);line-height:1.65}
+
+/* ─── TABS ────────────────────────────────────────────── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{font-size:12px;font-weight:500;padding:8px 18px;cursor:pointer;color:var(--text-sec);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:nowrap;user-select:none}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:hover:not(.active){color:var(--text)}
+.panel{display:none}.panel.active{display:block}
+
+.section-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-ter);margin:0 0 12px}
+
+/* ─── METHODOLOGY ─────────────────────────────────────── */
+.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:1.5rem}
+.method-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.9rem 1rem}
+.method-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.method-list{list-style:none;font-size:11px;color:var(--text-sec);display:flex;flex-direction:column;gap:4px;line-height:1.55}
+.method-list li::before{content:"→ ";color:var(--gold)}
+
+/* ─── PHASE CARDS ─────────────────────────────────────── */
+.phase-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.phase-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.85rem}
+.phase-card.hl{border-color:var(--gold)}
+.ph-num{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.ph-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.ph-weeks{font-size:10px;color:var(--text-ter);margin-bottom:8px}
+.ph-gate{font-size:10px;color:var(--text-sec);padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-bottom:8px}
+.ph-list{list-style:none;font-size:11px;color:var(--text-sec);display:flex;flex-direction:column;gap:3px}
+.ph-list li::before{content:"→ ";color:var(--gold)}
+
+/* ─── PLATFORM GRID ───────────────────────────────────── */
+.plat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.plat-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.85rem;cursor:pointer;transition:border-color .15s}
+.plat-card:hover,.plat-card.sel{border-color:var(--gold)}
+.plat-num{font-size:9px;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-bottom:3px}
+.plat-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.plat-sub{font-size:11px;color:var(--text-ter);margin-bottom:8px}
+.plat-tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:10px;padding:2px 7px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--text-sec)}
+.detail-panel{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:4px;padding:1rem;margin-bottom:1.25rem;display:none}
+.detail-panel.open{display:block}
+.detail-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.detail-sub{font-size:11px;color:var(--text-ter);margin-bottom:10px}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.detail-col h4{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-ter);margin-bottom:6px}
+.detail-col ul{list-style:none;font-size:11px;color:var(--text-sec);display:flex;flex-direction:column;gap:3px;line-height:1.55}
+.detail-col ul li::before{content:"▪ ";color:var(--gold)}
+
+/* ─── TIMELINE ────────────────────────────────────────── */
+.tl-wrap{margin-bottom:1.5rem;overflow-x:auto}
+.tl-header{display:grid;grid-template-columns:120px repeat(8,1fr);gap:0;margin-bottom:6px;min-width:700px}
+.tl-wk{font-size:9px;color:var(--text-ter);text-align:center;letter-spacing:.05em}
+.tl-row{display:grid;grid-template-columns:120px repeat(8,1fr);gap:0;align-items:center;margin-bottom:5px;min-width:700px}
+.tl-label{font-size:11px;color:var(--text-sec);padding-right:8px;line-height:1.3}
+.tl-bar-wrap{position:relative;height:24px;display:flex;align-items:center;border-left:1px solid var(--border)}
+.tl-bar{height:16px;border-radius:3px;display:flex;align-items:center;padding:0 8px;font-size:9px;font-weight:600;letter-spacing:.03em;white-space:nowrap;overflow:hidden;width:100%}
+.bar-f{background:#C5A55A22;border:1px solid var(--gold);color:var(--gold)}
+.bar-i{background:#1D9E7522;border:1px solid #1D9E75;color:#1D9E75}
+.bar-p{background:#534AB722;border:1px solid #534AB7;color:#a09be0}
+.bar-w{background:#D85A3022;border:1px solid #D85A30;color:#D85A30}
+.bar-q{background:#66666622;border:1px solid #666;color:var(--text-sec)}
+
+/* ─── MANDATE CARDS ───────────────────────────────────── */
+.mandate-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem}
+.mandate-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.65rem}
+.mc-phase{font-size:9px;font-weight:700;color:var(--gold);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em}
+.mc-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.mc-body{font-size:11px;color:var(--text-sec);line-height:1.5}
+
+/* ─── SPRINTS ─────────────────────────────────────────── */
+.sprint-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.sprint-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.75rem}
+.sprint-title{font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px}
+.epic{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--text-sec);margin-bottom:5px;line-height:1.5}
+.epic-dot{width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.pts{font-size:9px;color:var(--text-ter);margin-left:auto;flex-shrink:0;padding-left:8px}
+.sprint-footer{font-size:10px;color:var(--text-ter);margin-top:8px;padding-top:6px;border-top:1px solid var(--border)}
+
+/* ─── TECH STACK ──────────────────────────────────────── */
+.stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem}
+.stack-item{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.65rem .75rem}
+.stack-cat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.stack-tech{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.stack-why{font-size:10px;color:var(--text-sec);line-height:1.45}
+.decision-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.decision-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:.85rem}
+.decision-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px}
+.criterion{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)}
+.criterion:last-child{border-bottom:none}
+.c-label{color:var(--text-sec)}.c-val{color:var(--text);font-weight:500}
+.bar-mini{height:3px;border-radius:2px;background:var(--gold);margin-top:3px}
+
+/* ─── OWNERSHIP TABLE ─────────────────────────────────── */
+.otable{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:1.5rem}
+.otable th{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-ter);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.otable td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text-sec);vertical-align:top}
+.otable tr:last-child td{border-bottom:none}
+.obadge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--text-sec);margin-right:3px}
+.rag-g{color:#1D9E75;font-weight:600}.rag-a{color:#BA7517;font-weight:600}.rag-r{color:#A32D2D;font-weight:600}
+
+/* ─── RISK TABLE ──────────────────────────────────────── */
+.rtable{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:1.5rem}
+.rtable th{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-ter);padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.rtable td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text-sec);vertical-align:top;line-height:1.5}
+.rtable tr:last-child td{border-bottom:none}
+.pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px}
+.pill-h{background:#A32D2D22;color:#ff6b6b;border:1px solid #A32D2D44}
+.pill-m{background:#BA751722;color:#f5a623;border:1px solid #BA751744}
+.pill-l{background:#1D9E7522;color:#1D9E75;border:1px solid #1D9E7544}
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+footer{border-top:1px solid var(--border);padding:16px 64px;text-align:center;font-size:10px;color:var(--text-ter);letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-brand">
+    <h1>ASCENSION CAPITAL PARTNERS</h1>
+    <p>t/a APEX Consulting Partners Pty Ltd &nbsp;|&nbsp; ACN 674 649 417</p>
+  </div>
+  <div class="hdr-right">
+    <div class="badge-cae">CHIEF AI ENGINEER</div><br/>
+    Platform Build Strategy v1.0<br/>
+    April 2026 &nbsp;|&nbsp; Confidential
+  </div>
+</header>
+
+<main>
+
+<div class="chief-bar">
+  <div class="chief-dot">CAE</div>
+  <div class="chief-text">
+    <h3>ACP Integrated Platform Build — Strategic Directive</h3>
+    <p>Four integrated platforms: Public Website · Client/LP Portal · Internal WorkHub/CRM/Wiki · Executive Reporting. Methodology: waterfall phase gates for sequencing, agile sprints for delivery inside each phase. $34B+ pipeline · $410M fee potential · 9 active mandates · 32 workstreams · 140+ templates. Everything existing gets consolidated — not rebuilt.</p>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('methodology',this)">Methodology</div>
+  <div class="tab" onclick="showTab('platforms',this)">4 Platforms</div>
+  <div class="tab" onclick="showTab('roadmap',this)">Roadmap</div>
+  <div class="tab" onclick="showTab('sprints',this)">Sprints</div>
+  <div class="tab" onclick="showTab('stack',this)">Tech Stack</div>
+  <div class="tab" onclick="showTab('ownership',this)">Ownership</div>
+  <div class="tab" onclick="showTab('risks',this)">Risks</div>
+</div>
+
+<!-- METHODOLOGY -->
+<div id="methodology" class="panel active">
+  <p class="section-label">Strategic Framework — Waterfall + Agile Hybrid</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <div class="method-title"><div class="dot" style="background:var(--gold)"></div>Waterfall: phase gates (macro)</div>
+      <ul class="method-list">
+        <li>Each phase has a hard entry criterion and a hard exit deliverable</li>
+        <li>No phase begins until prior gate is formally cleared</li>
+        <li>Gates prevent expensive rework — architecture locks before build</li>
+        <li>Sequence: Discovery → Architecture → Foundation → Build → QA/UAT → Launch → Scale</li>
+        <li>Matches ACP PMO model: Workstream → Epic → Story → Task</li>
+        <li>Irreversible decisions (DB schema, auth model, domain) made at Architecture gate only</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <div class="method-title"><div class="dot" style="background:var(--green)"></div>Agile: sprint delivery (micro)</div>
+      <ul class="method-list">
+        <li>2-week sprints inside each waterfall phase</li>
+        <li>Daily async standup via Notion task update (solo execution)</li>
+        <li>Sprint backlog pulled from prioritised epic story map</li>
+        <li>Story points: Fibonacci (1, 2, 3, 5, 8) — max 21 pts/sprint</li>
+        <li>Velocity tracked sprint-over-sprint to forecast phase completion</li>
+        <li>Retrospective every sprint: one thing to stop, one to start</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <div class="method-title"><div class="dot" style="background:var(--gold)"></div>Build sequence logic</div>
+      <ul class="method-list">
+        <li>Internal first, external second — faster feedback, lower risk</li>
+        <li>Shared infrastructure built once (auth, DB, API, design system)</li>
+        <li>Executive Reporting unlocked first — highest internal ROI</li>
+        <li>WorkHub/CRM second — team enablement before client exposure</li>
+        <li>LP Portal third — revenue-facing, requires auth from Phase 1</li>
+        <li>Public Website last — marketing, not revenue-blocking</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <div class="method-title"><div class="dot" style="background:var(--green)"></div>Consolidation principle</div>
+      <ul class="method-list">
+        <li>Everything existing gets integrated, not rebuilt</li>
+        <li>Stripe Portal → embedded in LP Portal fee section</li>
+        <li>Google Forms Blueprint → migrated to WorkHub intake engine</li>
+        <li>Notion Execution OS → synced via API, not replaced</li>
+        <li>ACP Template OS (140+ templates) → powering Document Generator</li>
+        <li>Deck Library → embedded in LP Portal document rooms</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-label">Waterfall Phase Gates</p>
+  <div class="phase-row">
+    <div class="phase-card hl">
+      <div class="ph-num">Phase 0</div>
+      <div class="ph-title">Discovery</div>
+      <div class="ph-weeks">Week 1</div>
+      <div class="ph-gate">Gate: signed-off architecture brief</div>
+      <ul class="ph-list">
+        <li>Audit all existing assets</li>
+        <li>Define user personas per platform</li>
+        <li>Map data flows + integrations</li>
+        <li>Set non-negotiables (auth, compliance)</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="ph-num">Phase 1</div>
+      <div class="ph-title">Foundation</div>
+      <div class="ph-weeks">Weeks 2–4</div>
+      <div class="ph-gate">Gate: shared infra deployed</div>
+      <ul class="ph-list">
+        <li>Auth layer (Supabase + SSO)</li>
+        <li>DB schema locked + migrated</li>
+        <li>API gateway + Notion sync</li>
+        <li>ACP design system coded</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="ph-num">Phase 2</div>
+      <div class="ph-title">Internal Build</div>
+      <div class="ph-weeks">Weeks 5–8</div>
+      <div class="ph-gate">Gate: internal UAT passed</div>
+      <ul class="ph-list">
+        <li>Executive Reporting live</li>
+        <li>WorkHub + CRM deployed</li>
+        <li>Wiki + template engine</li>
+        <li>Stripe Portal integrated</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="ph-num">Phase 3</div>
+      <div class="ph-title">External Build</div>
+      <div class="ph-weeks">Weeks 9–14</div>
+      <div class="ph-gate">Gate: security audit passed</div>
+      <ul class="ph-list">
+        <li>LP Portal with deal rooms</li>
+        <li>Public Website live</li>
+        <li>DocuSign + payments</li>
+        <li>Pentest + OWASP review</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div id="platforms" class="panel">
+  <p class="section-label">Four Integrated Platforms — Click to expand</p>
+  <div class="plat-grid">
+    <div class="plat-card" id="pc0" onclick="togglePlat(0)">
+      <div class="plat-num">Platform 01 · Public</div>
+      <div class="plat-title">Public Website</div>
+      <div class="plat-sub">ascensionenergies.com · Institutional marketing</div>
+      <div class="plat-tags"><span class="tag">Next.js</span><span class="tag">Vercel</span><span class="tag">Cloudflare</span><span class="tag">Sanity CMS</span><span class="tag">Week 11+</span></div>
+    </div>
+    <div class="plat-card" id="pc1" onclick="togglePlat(1)">
+      <div class="plat-num">Platform 02 · Client-facing</div>
+      <div class="plat-title">Client / LP Portal</div>
+      <div class="plat-sub">Authenticated · Deal rooms · Fee billing · Reporting</div>
+      <div class="plat-tags"><span class="tag">Supabase Auth</span><span class="tag">Stripe</span><span class="tag">DocuSign</span><span class="tag">Week 9+</span></div>
+    </div>
+    <div class="plat-card" id="pc2" onclick="togglePlat(2)">
+      <div class="plat-num">Platform 03 · Internal</div>
+      <div class="plat-title">WorkHub + CRM + Wiki</div>
+      <div class="plat-sub">Deal OS · Investor CRM · SOPs · Document engine</div>
+      <div class="plat-tags"><span class="tag">Notion API</span><span class="tag">Google Workspace</span><span class="tag">Stripe</span><span class="tag">Week 5+</span></div>
+    </div>
+    <div class="plat-card" id="pc3" onclick="togglePlat(3)">
+      <div class="plat-num">Platform 04 · Executive</div>
+      <div class="plat-title">Executive Reporting</div>
+      <div class="plat-sub">Bloomberg-style · $34B pipeline · RAG tracking · Fee ledger</div>
+      <div class="plat-tags"><span class="tag">Recharts</span><span class="tag">Notion API</span><span class="tag">Stripe API</span><span class="tag">Week 5+</span></div>
+    </div>
+  </div>
+
+  <div class="detail-panel" id="dp0">
+    <div class="detail-title">01 — Public Website: ascensionenergies.com</div>
+    <div class="detail-sub">Marketing-grade institutional website. SEO-optimised. CMS-driven. No auth. Build last — not revenue-blocking.</div>
+    <div class="detail-grid">
+      <div class="detail-col"><h4>Pages</h4><ul><li>Home — positioning + mandates</li><li>About + team</li><li>Capabilities (7 divisions)</li><li>Mandates (public-safe summaries)</li><li>Thought leadership / Insights</li><li>Contact + mandate intake CTA</li></ul></div>
+      <div class="detail-col"><h4>Features</h4><ul><li>Sanity CMS for non-dev content updates</li><li>DocSend-style document gate</li><li>SEO meta + structured data</li><li>Mobile-first responsive</li><li>ACP black/gold design system</li><li>Cloudflare DDoS + WAF</li></ul></div>
+      <div class="detail-col"><h4>Integrations</h4><ul><li>→ LP Portal (login CTA)</li><li>→ Notion (public mandate snippets)</li><li>→ Mailchimp / ConvertKit</li><li>→ Google Analytics 4</li><li>Deck library gated downloads</li><li>LinkedIn content feed embed</li></ul></div>
+    </div>
+  </div>
+  <div class="detail-panel" id="dp1">
+    <div class="detail-title">02 — Client / LP Portal</div>
+    <div class="detail-sub">Authenticated per-mandate deal rooms. Fee billing via Stripe portal. Document signing via DocuSign. Quarterly reporting auto-generated.</div>
+    <div class="detail-grid">
+      <div class="detail-col"><h4>Core modules</h4><ul><li>Secure login (Supabase + MFA)</li><li>Deal room per mandate</li><li>NDA-gated document library</li><li>Fee billing (existing Stripe portal)</li><li>DocuSign signature flow</li><li>KYC/AML status tracker</li></ul></div>
+      <div class="detail-col"><h4>Deal room contents</h4><ul><li>Information Memorandum (auto-gen)</li><li>Term sheets + LOE</li><li>Financial models (view-only)</li><li>Investor updates (quarterly)</li><li>Covenant monitoring reports</li><li>Closing checklist with status</li></ul></div>
+      <div class="detail-col"><h4>Access control</h4><ul><li>Role-based: LP / Co-investor / Advisor / Admin</li><li>Deal-scoped permissions</li><li>Watermark on sensitive docs</li><li>Audit log of all document views</li><li>IP allowlist per counterparty</li><li>Session timeout + re-auth</li></ul></div>
+    </div>
+  </div>
+  <div class="detail-panel" id="dp2">
+    <div class="detail-title">03 — Internal WorkHub + CRM + Wiki</div>
+    <div class="detail-sub">Consolidates Notion Execution OS + Google Forms Blueprint + ACP Template OS. Team of 4: JT, Jasmine, Samira, Simon.</div>
+    <div class="detail-grid">
+      <div class="detail-col"><h4>WorkHub</h4><ul><li>7-pipeline kanban</li><li>New Mandate Intake (7-tab form)</li><li>Document generator (140+ templates)</li><li>Sprint board + task tracking</li><li>Outreach sequence manager</li><li>Calendar + meeting OS</li></ul></div>
+      <div class="detail-col"><h4>CRM</h4><ul><li>Investor register (500+ LPs)</li><li>Counterparty profiles + KYC</li><li>Engagement history + touchpoints</li><li>AML/KYC compliance tracker</li><li>Introduction register (tail fee)</li><li>Conflict check log</li></ul></div>
+      <div class="detail-col"><h4>Wiki</h4><ul><li>7-division SOP library</li><li>Deal playbooks per sector</li><li>Template library (Canva + Gamma + DOCX)</li><li>Onboarding guides</li><li>Compliance reference</li><li>Fee taxonomy + SKU registry</li></ul></div>
+    </div>
+  </div>
+  <div class="detail-panel" id="dp3">
+    <div class="detail-title">04 — Executive Reporting Dashboard</div>
+    <div class="detail-sub">Bloomberg Terminal-style. Live data from Notion (deals), Stripe (fees), Google Sheets (operations). 9 mandates · $34B+ pipeline · $410M fee potential.</div>
+    <div class="detail-grid">
+      <div class="detail-col"><h4>Deal metrics</h4><ul><li>$34B+ pipeline by mandate + stage</li><li>$410M fee potential waterfall</li><li>9-mandate RAG status</li><li>Closing event tracker</li><li>Blocker register with owner</li><li>Deal velocity (days in stage)</li></ul></div>
+      <div class="detail-col"><h4>Fee + revenue</h4><ul><li>Fee ledger (live Stripe pull)</li><li>Collected vs pipeline vs expected</li><li>SKU breakdown by type</li><li>Invoice aging (AR metrics)</li><li>Cash flow 90-day forecast</li><li>Equity earnout tracker</li></ul></div>
+      <div class="detail-col"><h4>Compliance + ops</h4><ul><li>KYC renewal pipeline</li><li>AML status per counterparty</li><li>Covenant monitoring</li><li>Weekly priorities board</li><li>PMO RAG tracker (7 workstreams)</li><li>Template utilisation audit</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div id="roadmap" class="panel">
+  <p class="section-label">16-Week Delivery Timeline</p>
+  <div class="tl-wrap">
+    <div class="tl-header">
+      <div></div>
+      <div class="tl-wk">WK 1–2</div><div class="tl-wk">WK 3–4</div><div class="tl-wk">WK 5–6</div>
+      <div class="tl-wk">WK 7–8</div><div class="tl-wk">WK 9–10</div><div class="tl-wk">WK 11–12</div>
+      <div class="tl-wk">WK 13–14</div><div class="tl-wk">WK 15–16</div>
+    </div>
+    <div class="tl-row"><div class="tl-label">Foundation infra</div>
+      <div class="tl-bar-wrap" style="grid-column:2/4"><div class="tl-bar bar-f">Auth · DB · API · Design system</div></div>
+      <div style="grid-column:4/10"></div></div>
+    <div class="tl-row"><div class="tl-label">Exec reporting</div>
+      <div style="grid-column:2/4"></div>
+      <div class="tl-bar-wrap" style="grid-column:4/6"><div class="tl-bar bar-i">Dashboard v1</div></div>
+      <div class="tl-bar-wrap" style="grid-column:6/7"><div class="tl-bar bar-i">v2 live</div></div>
+      <div style="grid-column:7/10"></div></div>
+    <div class="tl-row"><div class="tl-label">WorkHub + CRM</div>
+      <div style="grid-column:2/4"></div>
+      <div class="tl-bar-wrap" style="grid-column:4/8"><div class="tl-bar bar-i">WorkHub · CRM · Wiki · Intake form</div></div>
+      <div style="grid-column:8/10"></div></div>
+    <div class="tl-row"><div class="tl-label">Stripe integration</div>
+      <div class="tl-bar-wrap" style="grid-column:2/3"><div class="tl-bar bar-f">✓ Built</div></div>
+      <div class="tl-bar-wrap" style="grid-column:3/5"><div class="tl-bar bar-i">Embed in WorkHub</div></div>
+      <div style="grid-column:5/10"></div></div>
+    <div class="tl-row"><div class="tl-label">LP Portal</div>
+      <div style="grid-column:2/6"></div>
+      <div class="tl-bar-wrap" style="grid-column:6/9"><div class="tl-bar bar-p">Deal rooms · Auth · Reporting · DocuSign</div></div>
+      <div style="grid-column:9/10"></div></div>
+    <div class="tl-row"><div class="tl-label">Public website</div>
+      <div style="grid-column:2/7"></div>
+      <div class="tl-bar-wrap" style="grid-column:7/10"><div class="tl-bar bar-w">Design → Build → Launch</div></div></div>
+    <div class="tl-row"><div class="tl-label">QA · Security · UAT</div>
+      <div style="grid-column:2/8"></div>
+      <div class="tl-bar-wrap" style="grid-column:8/10"><div class="tl-bar bar-q">Pentest · OWASP · UAT</div></div></div>
+  </div>
+
+  <p class="section-label">Live mandates mapped to build phases</p>
+  <div class="mandate-row">
+    <div class="mandate-card"><div class="mc-phase">Phase 1 beneficiary</div><div class="mc-title">EdgeMode/EDGM</div><div class="mc-body">540MW · Financial close Jul 26 · Deal room + payment portal live by W8</div></div>
+    <div class="mandate-card"><div class="mc-phase">Phase 2 beneficiary</div><div class="mc-title">Barnwell Canada</div><div class="mc-body">CAD $365M · 12 closing events · Lender outreach via WorkHub CRM W6+</div></div>
+    <div class="mandate-card"><div class="mc-phase">Phase 3 beneficiary</div><div class="mc-title">Bennu / Gran Tierra / INARU</div><div class="mc-body">LP Portal deal rooms + DCM/ECM placement tools for institutional LPs W9+</div></div>
+  </div>
+</div>
+
+<!-- SPRINTS -->
+<div id="sprints" class="panel">
+  <p class="section-label">Sprint Backlog — Phase 1 &amp; 2 (Weeks 1–8)</p>
+  <div class="sprint-grid">
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 1 — W1–2 · Foundation</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--gold)"></div><span>Supabase project init + auth config</span><span class="pts">5pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--gold)"></div><span>PostgreSQL schema (mandates, fees, investors, docs)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--gold)"></div><span>Next.js 14 monorepo scaffold</span><span class="pts">3pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--gold)"></div><span>ACP design system (tokens, components)</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: infra deployed to Vercel</div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 2 — W3–4 · API + Integrations</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Notion API sync (9 mandates → DB)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Stripe API bridge (9 SKUs → fee module)</span><span class="pts">5pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Google Sheets webhook receiver</span><span class="pts">3pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>REST API gateway + role middleware</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: data flowing end-to-end</div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 3 — W5–6 · Exec Dashboard</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Pipeline overview (9 mandates, RAG, $34B+)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Fee ledger module (Stripe live pull)</span><span class="pts">5pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>KYC renewal + compliance alerts</span><span class="pts">3pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--green)"></div><span>Blocker register + PMO RAG view</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: JT UAT sign-off</div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 4 — W7–8 · WorkHub core</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>7-pipeline kanban (mandate/execution/PMO…)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Mandate Intake form (7-tab → auto-generates LOE)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Template engine (140+ templates wired)</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: team UAT sign-off</div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 5 — W9–10 · CRM + Wiki</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Investor CRM (500+ contacts, KYC status)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Introduction register (tail fee protection)</span><span class="pts">3pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Wiki / SOP library (7 divisions)</span><span class="pts">5pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--purple)"></div><span>Conflict check + AML log</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: compliance review (Simon)</div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-title">Sprint 6 — W11–12 · LP Portal</div>
+      <div class="epic"><div class="epic-dot" style="background:var(--coral)"></div><span>Auth portal (Supabase + MFA + role-based)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--coral)"></div><span>Deal rooms per mandate (9 mandates)</span><span class="pts">8pts</span></div>
+      <div class="epic"><div class="epic-dot" style="background:var(--coral)"></div><span>DocuSign integration (NDA + term sheets)</span><span class="pts">5pts</span></div>
+      <div class="sprint-footer">Total: 21pts · Gate: security audit passed</div>
+    </div>
+  </div>
+</div>
+
+<!-- STACK -->
+<div id="stack" class="panel">
+  <p class="section-label">Technology Stack — Rationale-driven</p>
+  <div class="stack-grid">
+    <div class="stack-item"><div class="stack-cat">Framework</div><div class="stack-tech">Next.js 14 (App Router)</div><div class="stack-why">One codebase for all 4 platforms. SSR for LP Portal. RSC for dashboard performance.</div></div>
+    <div class="stack-item"><div class="stack-cat">Auth</div><div class="stack-tech">Supabase Auth + MFA</div><div class="stack-why">Row-level security. Built-in SSO. Per-mandate scoped permissions. Audit logs.</div></div>
+    <div class="stack-item"><div class="stack-cat">Database</div><div class="stack-tech">PostgreSQL + Prisma</div><div class="stack-why">Relational = correct for deal/fee/investor data. Prisma type-safety. Supabase hosted.</div></div>
+    <div class="stack-item"><div class="stack-cat">Payments</div><div class="stack-tech">Stripe (already built)</div><div class="stack-why">9 SKUs live in sandbox. Portal built. Just embed + go live. Zero rebuild.</div></div>
+    <div class="stack-item"><div class="stack-cat">Notion sync</div><div class="stack-tech">Notion API + webhooks</div><div class="stack-why">Notion stays SOR. Platform pulls/writes via API. No migration required.</div></div>
+    <div class="stack-item"><div class="stack-cat">Documents</div><div class="stack-tech">DocuSign + Gamma + Canva</div><div class="stack-why">DocuSign for binding signatures. Gamma for auto-deck generation. Canva for polish.</div></div>
+    <div class="stack-item"><div class="stack-cat">Hosting</div><div class="stack-tech">Vercel + Cloudflare</div><div class="stack-why">Edge functions for LP Portal. CDN + WAF for website. Auto SSL. Global low-latency.</div></div>
+    <div class="stack-item"><div class="stack-cat">Comms</div><div class="stack-tech">Resend + Google Workspace</div><div class="stack-why">Resend for transactional email. Gmail API for CRM sync.</div></div>
+    <div class="stack-item"><div class="stack-cat">Analytics</div><div class="stack-tech">PostHog + GA4</div><div class="stack-why">PostHog for product analytics (LP Portal). GA4 for website traffic.</div></div>
+    <div class="stack-item"><div class="stack-cat">Charts</div><div class="stack-tech">Recharts + D3</div><div class="stack-why">Recharts for standard dashboard charts. D3 for pipeline funnel + fee waterfall.</div></div>
+    <div class="stack-item"><div class="stack-cat">CMS</div><div class="stack-tech">Sanity.io</div><div class="stack-why">Public website content managed without deploys. Structured content + image pipeline.</div></div>
+    <div class="stack-item"><div class="stack-cat">Security</div><div class="stack-tech">OWASP + Snyk + Pentest</div><div class="stack-why">Required before LP Portal launch. Snyk for dependency scanning. External pentest W13.</div></div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-card">
+      <div class="decision-title">Build vs buy: key decisions</div>
+      <div class="criterion"><span class="c-label">CRM module</span><span class="c-val">Build (Notion-native data)</span></div>
+      <div class="criterion"><span class="c-label">Document signing</span><span class="c-val">Buy (DocuSign)</span></div>
+      <div class="criterion"><span class="c-label">Payment processing</span><span class="c-val">Built (Stripe portal done)</span></div>
+      <div class="criterion"><span class="c-label">Analytics</span><span class="c-val">Buy (PostHog + GA4)</span></div>
+      <div class="criterion"><span class="c-label">Email delivery</span><span class="c-val">Buy (Resend)</span></div>
+      <div class="criterion"><span class="c-label">Auth</span><span class="c-val">Buy (Supabase)</span></div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-title">Platform priority by ROI</div>
+      <div class="criterion"><span class="c-label">Exec Reporting</span><div style="flex:1;margin-left:12px"><div class="bar-mini" style="width:100%"></div></div></div>
+      <div class="criterion"><span class="c-label">WorkHub / CRM</span><div style="flex:1;margin-left:12px"><div class="bar-mini" style="width:88%"></div></div></div>
+      <div class="criterion"><span class="c-label">LP Portal</span><div style="flex:1;margin-left:12px"><div class="bar-mini" style="width:80%"></div></div></div>
+      <div class="criterion"><span class="c-label">Public Website</span><div style="flex:1;margin-left:12px"><div class="bar-mini" style="width:45%"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OWNERSHIP -->
+<div id="ownership" class="panel">
+  <p class="section-label">Team Ownership Matrix — 4 people · 4 platforms</p>
+  <table class="otable">
+    <thead><tr><th>Workstream / Epic</th><th>Owner</th><th>Role</th><th>Deadline</th><th>RAG</th></tr></thead>
+    <tbody>
+      <tr><td>Stage taxonomy + naming rules (all pipelines)</td><td><span class="obadge">JT</span></td><td>Executive decision-maker</td><td>Apr 11</td><td class="rag-g">Green</td></tr>
+      <tr><td>Epic/story/task template standardisation</td><td><span class="obadge">Jasmine</span></td><td>ELT delivery + templates</td><td>Apr 12</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Dashboard · blocker log · RAG reporting rules</td><td><span class="obadge">Samira</span></td><td>Operations / coordination</td><td>Apr 13</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Compliance gates per pipeline stage</td><td><span class="obadge">Simon</span></td><td>Head of Compliance / Legal</td><td>Apr 13</td><td class="rag-g">Green</td></tr>
+      <tr><td>Weekly review cadence + escalation rules</td><td><span class="obadge">Samira</span></td><td>Operations lead</td><td>Apr 12</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Foundation infra: auth, DB, API, design system</td><td><span class="obadge">JT</span></td><td>CTO (solo execution)</td><td>W4</td><td class="rag-g">Green</td></tr>
+      <tr><td>Exec Reporting Dashboard</td><td><span class="obadge">JT</span> <span class="obadge">Samira</span></td><td>Build + data ops</td><td>W6</td><td class="rag-g">Green</td></tr>
+      <tr><td>WorkHub + 7-pipeline kanban</td><td><span class="obadge">JT</span> <span class="obadge">Samira</span></td><td>Build + process owner</td><td>W8</td><td class="rag-g">Green</td></tr>
+      <tr><td>Investor CRM + Introduction Register</td><td><span class="obadge">JT</span></td><td>Relationship owner</td><td>W10</td><td class="rag-g">Green</td></tr>
+      <tr><td>Compliance wiki + KYC SOP library</td><td><span class="obadge">Simon</span> <span class="obadge">Jasmine</span></td><td>Compliance + templates</td><td>W10</td><td class="rag-a">Amber</td></tr>
+      <tr><td>LP Portal: auth + deal rooms</td><td><span class="obadge">JT</span></td><td>Product + build</td><td>W12</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Public website design + CMS</td><td><span class="obadge">Jasmine</span></td><td>Brand + content</td><td>W14</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Security audit + pentest</td><td><span class="obadge">Simon</span></td><td>Compliance sign-off</td><td>W13</td><td class="rag-a">Amber</td></tr>
+      <tr><td>Pilot: live mandate tracker (EdgeMode)</td><td><span class="obadge">Samira</span></td><td>Operations pilot</td><td>Apr 15</td><td class="rag-a">Amber</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- RISKS -->
+<div id="risks" class="panel">
+  <p class="section-label">Risk Register — Build Programme</p>
+  <table class="rtable">
+    <thead><tr><th>Risk</th><th>Severity</th><th>Likelihood</th><th>Mitigant</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr><td>LP Portal security breach before pentest complete</td><td><span class="pill pill-h">High</span></td><td><span class="pill pill-m">Med</span></td><td>Gate: LP Portal does NOT launch before W13 security audit. Supabase RLS + WAF as interim controls.</td><td>Simon</td></tr>
+      <tr><td>EdgeMode financial close (Jul 26) before portal live</td><td><span class="pill pill-h">High</span></td><td><span class="pill pill-m">Med</span></td><td>Stripe portal (already live) handles fee billing. Deal room via DocSend as stopgap until LP Portal W12.</td><td>JT</td></tr>
+      <tr><td>Notion API rate limits under high sync load</td><td><span class="pill pill-m">Med</span></td><td><span class="pill pill-m">Med</span></td><td>Queue-based sync (not real-time poll). Cache in Postgres. Notion as SOR, not live API per request.</td><td>JT</td></tr>
+      <tr><td>Solo execution bottleneck (JT as only developer)</td><td><span class="pill pill-h">High</span></td><td><span class="pill pill-h">High</span></td><td>Claude Code handles 70%+ of build. Jasmine owns content/templates. Samira owns data entry/testing. Simon owns compliance review.</td><td>JT</td></tr>
+      <tr><td>AFSL / regulatory exposure from LP Portal</td><td><span class="pill pill-h">High</span></td><td><span class="pill pill-l">Low</span></td><td>Simon reviews all LP-facing content pre-launch. No investment advice on platform. Disclaimers. AUSTRAC registration before launch.</td><td>Simon</td></tr>
+      <tr><td>Scope creep: 4 platforms becomes 6</td><td><span class="pill pill-m">Med</span></td><td><span class="pill pill-h">High</span></td><td>Hard scope freeze after Discovery gate. New features go to backlog for Phase 4+. No scope changes during active sprints.</td><td>JT</td></tr>
+      <tr><td>Notion data migration errors (KYC/deal records)</td><td><span class="pill pill-m">Med</span></td><td><span class="pill pill-l">Low</span></td><td>Notion stays SOR — no destructive migration. Platform syncs bidirectionally. 4-week dual-run period.</td><td>Samira</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+
+<footer>Ascension Capital Partners &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; ACN 674 649 417 &nbsp;|&nbsp; ACP-ARCH-PLATFORM-BUILD-v1.0-2026-04-11</footer>
+
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+var selPlat=-1;
+function togglePlat(i){
+  var pc=document.getElementById('pc'+i);
+  var dp=document.getElementById('dp'+i);
+  if(selPlat===i){pc.classList.remove('sel');dp.classList.remove('open');selPlat=-1;}
+  else{
+    if(selPlat>=0){document.getElementById('pc'+selPlat).classList.remove('sel');document.getElementById('dp'+selPlat).classList.remove('open');}
+    pc.classList.add('sel');dp.classList.add('open');selPlat=i;
+  }
+}
+</script>
+</body>
+</html>

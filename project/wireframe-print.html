@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ACP Website — Wireframes v1 · Print</title>
+<link rel="stylesheet" href="wireframe.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+/* ── PRINT SHELL ────────────────────────────────────────── */
+html,body{margin:0;padding:0;background:#0a0e1a;color:#fff;font-family:'Inter',system-ui,sans-serif;}
+*{box-sizing:border-box;}
+
+/* Cover page */
+.pr-cover{width:100vw;min-height:100vh;background:#0a0e1a;display:flex;flex-direction:column;justify-content:center;padding:80px 120px;break-after:page;position:relative;}
+.pr-cover-eye{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#c9a84c;margin-bottom:32px;}
+.pr-cover h1{font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:300;font-size:72px;line-height:1.05;color:#fff;margin:0 0 24px;letter-spacing:-0.015em;}
+.pr-cover h1 em{font-style:italic;color:#c9a84c;font-weight:400;}
+.pr-cover .pr-cover-sub{font-size:18px;color:#c7cbd6;max-width:680px;line-height:1.6;margin-bottom:56px;}
+.pr-cover-meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8b91a1;text-transform:uppercase;display:flex;gap:48px;padding-top:24px;border-top:1px solid rgba(201,168,76,0.2);flex-wrap:wrap;}
+.pr-cover-meta b{color:#e8e4d9;font-weight:500;display:block;margin-top:4px;}
+.pr-cover-ft{position:absolute;bottom:40px;left:120px;right:120px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#545a6b;display:flex;justify-content:space-between;}
+
+/* TOC */
+.pr-toc{width:100vw;min-height:100vh;padding:72px 120px;background:#0a0e1a;break-after:page;}
+.pr-toc h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:48px;color:#fff;margin:0 0 8px;}
+.pr-toc-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;color:#c9a84c;text-transform:uppercase;margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid rgba(201,168,76,0.15);}
+.pr-toc-sec{margin-bottom:36px;break-inside:avoid;}
+.pr-toc-sec-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:#c9a84c;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,0.1);}
+.pr-toc-row{display:grid;grid-template-columns:40px 1fr auto;gap:16px;align-items:baseline;padding:6px 0;font-size:14px;color:#c7cbd6;}
+.pr-toc-row .n{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b6d2e;letter-spacing:0.08em;}
+.pr-toc-row .t{color:#e8e4d9;}
+.pr-toc-row .p{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b91a1;letter-spacing:0.1em;}
+
+/* Each artboard page */
+.pr-page{background:#0a0e1a;page-break-before:always;break-before:page;padding:0;width:100vw;overflow:hidden;}
+.pr-page-hd{padding:16px 40px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(201,168,76,0.15);background:#060912;}
+.pr-page-hd-l{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#c9a84c;text-transform:uppercase;}
+.pr-page-hd-l b{color:#e8e4d9;font-weight:500;margin-right:12px;}
+.pr-page-hd-r{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:#8b91a1;text-transform:uppercase;}
+.pr-page-art{position:relative;background:#0a0e1a;}
+
+/* Scale down desktop 1440 to page width; mobile 390 centered */
+.pr-ab-desktop .pr-page-art{width:100%;}
+.pr-ab-desktop .pr-wrap{width:1440px;transform-origin:top left;}
+.pr-ab-mobile .pr-page-art{display:flex;justify-content:center;padding:32px 0;background:#060912;}
+.pr-ab-mobile .pr-wrap{width:390px;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+
+/* Footer on each page */
+.pr-page-ft{padding:10px 40px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#545a6b;text-transform:uppercase;border-top:1px solid rgba(201,168,76,0.08);background:#060912;}
+
+/* Hide ALL chrome that makes no sense in print */
+.wf-tweaks{display:none !important;}
+
+/* ── PRINT RULES ───────────────────────────────────────── */
+@page{size:A3 landscape;margin:0;}
+@media print{
+  html,body{background:#0a0e1a !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+
+  /* Every page forces a break */
+  .pr-cover, .pr-toc, .pr-page{
+    break-before:page;
+    page-break-before:always;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .pr-cover{break-before:auto;page-break-before:auto;}
+
+  /* Mobile pages use portrait */
+  .pr-ab-mobile{page:mobile;}
+  @page mobile{size:A4 portrait;margin:0;}
+
+  /* No hover/animations */
+  *{transition:none !important;animation:none !important;}
+
+  /* Avoid the design-canvas wrappers stealing overflow */
+  .dc-shell, .dc-canvas, .dc-pan, .dc-card, .dc-section, .dc-art{all:unset;display:block;}
+}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- Cache-bust the JSX so edits from the live file flow through -->
+<script type="text/babel" src="wf-shared.jsx?v=print1"></script>
+<script type="text/babel" src="wf-pages.jsx?v=print1"></script>
+<script type="text/babel">
+const { HomePage, AboutPage, VerticalPage, ContactPage,
+        HomePageMobile, AboutMobile, VerticalMobile, ContactMobile,
+        TransactionsPage, TransactionsMobile } = window;
+
+/* Force hi-fi, annotations on, hero=left — doctrine-accurate render for print */
+document.body.classList.add('wf-fidelity-hi');
+
+const ARTBOARDS = [
+  { n:'01', t:'Homepage',                         fmt:'desktop', C: ()=> <HomePage heroVariant="left"/>, section:'Marketing' },
+  { n:'01', t:'Homepage · Mobile',                fmt:'mobile',  C: HomePageMobile, section:'Marketing' },
+  { n:'02', t:'About',                            fmt:'desktop', C: AboutPage, section:'Marketing' },
+  { n:'02', t:'About · Mobile',                   fmt:'mobile',  C: AboutMobile, section:'Marketing' },
+  { n:'03', t:'Energy Transition',                fmt:'desktop', C: ()=> <VerticalPage slug="energy-transition"/>, section:'Capabilities' },
+  { n:'03', t:'Energy Transition · Mobile',       fmt:'mobile',  C: ()=> <VerticalMobile slug="energy-transition"/>, section:'Capabilities' },
+  { n:'04', t:'Digital Infrastructure',           fmt:'desktop', C: ()=> <VerticalPage slug="digital-infrastructure"/>, section:'Capabilities' },
+  { n:'04', t:'Digital Infrastructure · Mobile',  fmt:'mobile',  C: ()=> <VerticalMobile slug="digital-infrastructure"/>, section:'Capabilities' },
+  { n:'05', t:'Private Credit',                   fmt:'desktop', C: ()=> <VerticalPage slug="private-credit"/>, section:'Capabilities' },
+  { n:'05', t:'Private Credit · Mobile',          fmt:'mobile',  C: ()=> <VerticalMobile slug="private-credit"/>, section:'Capabilities' },
+  { n:'06', t:'Critical Minerals & Commodities',  fmt:'desktop', C: ()=> <VerticalPage slug="critical-minerals"/>, section:'Capabilities' },
+  { n:'06', t:'Critical Minerals · Mobile',       fmt:'mobile',  C: ()=> <VerticalMobile slug="critical-minerals"/>, section:'Capabilities' },
+  { n:'07', t:'Impact Real Assets',               fmt:'desktop', C: ()=> <VerticalPage slug="impact-real-assets"/>, section:'Capabilities' },
+  { n:'07', t:'Impact Real Assets · Mobile',      fmt:'mobile',  C: ()=> <VerticalMobile slug="impact-real-assets"/>, section:'Capabilities' },
+  { n:'08', t:'Contact',                          fmt:'desktop', C: ContactPage, section:'Marketing' },
+  { n:'08', t:'Contact · Mobile',                 fmt:'mobile',  C: ContactMobile, section:'Marketing' },
+  { n:'09', t:'Transactions',                     fmt:'desktop', C: TransactionsPage, section:'Track Record' },
+  { n:'09', t:'Transactions · Mobile',            fmt:'mobile',  C: TransactionsMobile, section:'Track Record' },
+];
+
+function Cover(){
+  return (
+    <div className="pr-cover">
+      <div className="pr-cover-eye">Wireframes · v1 · Partner-only</div>
+      <h1>Ascension Capital Partners<br/><em>Website wireframes.</em></h1>
+      <div className="pr-cover-sub">Eighteen artboards across nine pages — desktop and mobile — per the ACP webcopy doctrine v1.0. Hi-fi fidelity, annotations on, hero variant "left-editorial" as canonical.</div>
+      <div className="pr-cover-meta">
+        <div>Document<b>Wireframes · v1</b></div>
+        <div>Date<b>22 Apr 2026</b></div>
+        <div>Pages<b>{ARTBOARDS.length + 2}</b></div>
+        <div>Source<b>ACP-WEBCOPY-v1.0</b></div>
+        <div>Status<b>Draft · for partner review</b></div>
+      </div>
+      <div className="pr-cover-ft">
+        <div>Ascension Capital Partners · APEX Consulting Partners Pty Ltd · ACN 674 649 417</div>
+        <div>Confidential · do not distribute</div>
+      </div>
+    </div>
+  );
+}
+
+function TOC(){
+  const bySec = ARTBOARDS.reduce((a,x,i)=>{ (a[x.section]=a[x.section]||[]).push({...x,idx:i+3}); return a; },{});
+  return (
+    <div className="pr-toc">
+      <div className="pr-toc-kicker">Contents · 18 artboards</div>
+      <h2>Pages.</h2>
+      {Object.entries(bySec).map(([sec,rows])=>(
+        <div key={sec} className="pr-toc-sec">
+          <div className="pr-toc-sec-h">{sec} · {rows.length} artboards</div>
+          {rows.map(r=>(
+            <div key={r.idx+r.t} className="pr-toc-row">
+              <div className="n">{r.n}</div>
+              <div className="t">{r.t}</div>
+              <div className="p">p.{r.idx}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ArtboardPage({a, idx}){
+  const C = a.C;
+  return (
+    <div className={`pr-page pr-ab-${a.fmt}`}>
+      <div className="pr-page-hd">
+        <div className="pr-page-hd-l"><b>{a.n}</b>{a.t} <span style={{color:'#545a6b',marginLeft:12}}>· {a.section}</span></div>
+        <div className="pr-page-hd-r">{a.fmt === 'mobile' ? 'Mobile · 390' : 'Desktop · 1440'}</div>
+      </div>
+      <div className="pr-page-art">
+        <div className="pr-wrap"><C/></div>
+      </div>
+      <div className="pr-page-ft">
+        <div>ACP · Website Wireframes · v1</div>
+        <div>p.{idx + 3}</div>
+      </div>
+    </div>
+  );
+}
+
+function scaleDesktopArtboards(){
+  // Scale each 1440-wide desktop artboard down to the current page width
+  document.querySelectorAll('.pr-ab-desktop').forEach(page=>{
+    const art = page.querySelector('.pr-page-art');
+    const wrap = page.querySelector('.pr-wrap');
+    if(!art || !wrap) return;
+    const availW = art.clientWidth;
+    const scale = availW / 1440;
+    wrap.style.transform = `scale(${scale})`;
+    // Get content height, set art height to scaled height
+    const contentH = wrap.scrollHeight;
+    art.style.height = (contentH * scale) + 'px';
+  });
+}
+
+function App(){
+  React.useEffect(()=>{
+    // Scale once after mount and after fonts ready
+    const run = ()=>{ scaleDesktopArtboards(); };
+    run();
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+    // One more pass after images load
+    const imgs = [...document.images];
+    Promise.all(imgs.map(i=>i.complete?null:new Promise(r=>{i.onload=i.onerror=r;}))).then(run);
+    // Also re-run on window resize (desktop print preview)
+    window.addEventListener('resize', run);
+    return ()=> window.removeEventListener('resize', run);
+  },[]);
+
+  return (
+    <>
+      <Cover/>
+      <TOC/>
+      {ARTBOARDS.map((a,i)=> <ArtboardPage key={a.n+a.t} a={a} idx={i}/>)}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+/* Auto-print once fonts + images + scaling settle */
+window.__readyToPrint = false;
+window.addEventListener('load', async ()=>{
+  try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
+  // Wait for all images
+  await Promise.all([...document.images].map(i=>i.complete?null:new Promise(r=>{i.onload=i.onerror=r;})));
+  // Let React finish scaling pass
+  await new Promise(r=>setTimeout(r,1200));
+  window.__readyToPrint = true;
+  if(window.__AUTO_PRINT) window.print();
+});
+</script>
+
+</body>
+</html>

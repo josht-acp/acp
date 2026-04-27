@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ACP MVP Execution Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#C5A55A;--gdk:#A68B3C;--black:#000;--s:#111;--s2:#1a1a1a;--bd:#222;--t:#e8e6e0;--ts:#888;--tt:#444;--green:#1D9E75;--red:#A32D2D;--amber:#BA7517}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--t);min-height:100vh;padding:0}
+body::before{content:'';position:fixed;left:0;top:0;width:4px;height:100vh;background:var(--gold);z-index:99}
+
+header{background:#000;border-bottom:1px solid var(--bd);padding:20px 48px 20px 60px;display:flex;align-items:center;justify-content:space-between}
+.hbrand{font-family:'EB Garamond',serif;font-size:17px;color:var(--gold);font-weight:600}
+.hright{font-size:11px;color:var(--ts);text-align:right}
+.badge{display:inline-block;background:var(--red);color:#ffaaaa;font-size:9px;font-weight:600;padding:2px 8px;border-radius:2px;letter-spacing:.08em;margin-bottom:4px}
+
+main{padding:40px 48px 60px 60px;max-width:1100px;margin:0 auto}
+
+/* ALARM BOX */
+.alarm{background:var(--red);border-radius:3px;padding:20px 24px;margin-bottom:28px;display:flex;gap:16px;align-items:flex-start}
+.alarm-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.alarm h2{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
+.alarm p{font-size:12px;color:#ffcccc;line-height:1.6}
+
+/* NOW STRIP */
+.now-strip{background:var(--gold);border-radius:3px;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.now-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#000;flex-shrink:0}
+.now-text{font-size:13px;font-weight:600;color:#000}
+.now-time{font-size:11px;font-weight:500;color:#5a3d00;flex-shrink:0}
+
+/* PHASE SECTIONS */
+.phase{margin-bottom:32px}
+.phase-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;cursor:pointer;user-select:none}
+.phase-num{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:#1a0f00;border:1px solid #3a2a00;padding:3px 10px;border-radius:2px}
+.phase-title{font-family:'EB Garamond',serif;font-size:20px;font-weight:600;color:var(--t)}
+.phase-window{font-size:11px;color:var(--ts);margin-left:auto}
+.phase-chevron{font-size:12px;color:var(--ts);transition:transform .2s}
+.phase-body{display:block}
+.phase-body.collapsed{display:none}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{background:var(--s);border:1px solid var(--bd);border-radius:3px;padding:16px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:flex-start;transition:border-color .15s}
+.step:hover{border-color:#333}
+.step.done{border-color:#1a1a1a;opacity:.6}
+.step.urgent{border-left:3px solid var(--gold)}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--s2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--ts);flex-shrink:0;margin-top:1px}
+.step.urgent .step-num{background:#3a2a00;border-color:var(--gold);color:var(--gold)}
+.step-content{}
+.step-title{font-size:13px;font-weight:500;color:var(--t);margin-bottom:5px}
+.step-body{font-size:11px;color:var(--ts);line-height:1.6}
+.step-code{font-family:'Courier New',monospace;font-size:11px;background:#0a0a0a;border:1px solid var(--bd);border-radius:2px;padding:8px 12px;margin-top:8px;color:#a0e0a0;display:block;white-space:pre;overflow-x:auto}
+.step-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:9px;padding:2px 7px;border-radius:2px;border:1px solid var(--bd);color:var(--ts)}
+.tag.gold{border-color:#3a2a00;color:var(--gold);background:#1a0f00}
+.tag.green{border-color:#0a3020;color:var(--green);background:#041a10}
+.tag.red{border-color:#3a0a0a;color:#ff6b6b;background:#1a0505}
+.step-action{flex-shrink:0;text-align:right}
+.time-est{font-size:10px;color:var(--ts);white-space:nowrap}
+.check{width:20px;height:20px;border:1px solid var(--bd);border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:6px;margin-left:auto;transition:all .15s;flex-shrink:0}
+.check:hover{border-color:var(--green)}
+.check.checked{background:var(--green);border-color:var(--green);color:#fff;font-size:12px}
+
+/* INTEGRATION MAP */
+.int-map{background:var(--s);border:1px solid var(--bd);border-radius:3px;padding:24px;margin-bottom:28px}
+.int-title{font-size:11px;font-weight:600;color:var(--ts);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.int-item{background:var(--s2);border:1px solid var(--bd);border-radius:3px;padding:12px;text-align:center}
+.int-item.live{border-color:var(--green)}
+.int-icon{font-size:16px;margin-bottom:6px}
+.int-name{font-size:11px;color:var(--t);font-weight:500;margin-bottom:3px}
+.int-status{font-size:9px;letter-spacing:.06em}
+.s-live{color:var(--green)}.s-mvp{color:var(--gold)}.s-ph2{color:var(--ts)}.s-ph3{color:#555}
+.int-arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--bd)}
+
+/* SHADOW CLOUD SUMMARY */
+.shadow-box{background:#050505;border:1px solid var(--bd);border-left:3px solid var(--gold);border-radius:3px;padding:20px 24px;margin-bottom:28px}
+.shadow-title{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.agent-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:12px}
+.agent-row:last-child{border-bottom:none}
+.agent-id{font-size:9px;font-weight:700;color:var(--gold);width:60px;flex-shrink:0;letter-spacing:.06em}
+.agent-nm{color:var(--t);font-weight:500;width:120px;flex-shrink:0}
+.agent-fn{color:var(--ts);flex:1;font-size:11px}
+.agent-phase{font-size:9px;padding:2px 7px;border-radius:2px;flex-shrink:0}
+.ap-now{background:#3a2a00;color:var(--gold);border:1px solid #5a4a00}
+.ap-mvp{background:#0a2010;color:var(--green);border:1px solid #0a3020}
+.ap-ph2{background:var(--s2);color:var(--ts);border:1px solid var(--bd)}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+.sdot.active{background:var(--green)}
+.sdot.pending{background:var(--ts);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* COSTS */
+.cost-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:28px}
+.cost-card{background:var(--s);border:1px solid var(--bd);border-radius:3px;padding:16px}
+.cost-label{font-size:9px;color:var(--ts);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.cost-val{font-family:'EB Garamond',serif;font-size:24px;color:var(--gold)}
+.cost-desc{font-size:10px;color:var(--tt);margin-top:4px;line-height:1.5}
+
+footer{border-top:1px solid var(--bd);padding:16px 60px;font-size:10px;color:var(--tt);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbrand">ASCENSION CAPITAL PARTNERS — MVP EXECUTION</div>
+  <div class="hright">
+    <div class="badge">LIVE NOW</div><br/>
+    Strategic Build Sequence · April 2026
+  </div>
+</header>
+
+<main>
+
+<div class="alarm">
+  <div class="alarm-icon">⚡</div>
+  <div>
+    <h2>EdgeMode financial close: 15 July 2026 — 95 days from today</h2>
+    <p>MVP landing page must be live before any counterparty is sent a URL. Stripe portal is already live. Deal room stopgap via DocSend until LP Portal deploys Week 12. Clock is running.</p>
+  </div>
+</div>
+
+<div class="now-strip">
+  <div class="now-label">Do this now</div>
+  <div class="now-text">Register ascensionenergies.com → Deploy landing page → Connect domain → LIVE</div>
+  <div class="now-time">~45 minutes total</div>
+</div>
+
+<!-- PHASE 0: TODAY -->
+<div class="phase">
+  <div class="phase-header" onclick="togglePhase(this)">
+    <div class="phase-num">Phase 0</div>
+    <div class="phase-title">Live Domain — Today (45 min)</div>
+    <div class="phase-window">Right now</div>
+    <div class="phase-chevron">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="steps">
+      <div class="step urgent">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Check if ascensionenergies.com is already registered</div>
+          <div class="step-body">Your email is josh.t@ascensionenergies.com — the domain may already exist. Check in your Google Workspace admin or Cloudflare/GoDaddy account. If registered → skip to Step 3.</div>
+          <code class="step-code">whois ascensionenergies.com</code>
+          <div class="step-tags"><span class="tag gold">5 min</span><span class="tag">Cloudflare Registrar recommended</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">5 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step urgent">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">If not registered — buy it now at Cloudflare Registrar</div>
+          <div class="step-body">Cloudflare Registrar charges at-cost — ~$10 USD/yr for .com. Also grab ascensionenergies.com.au (~$20 AUD). Free WHOIS privacy. No upsells.</div>
+          <code class="step-code">cloudflare.com/products/registrar → search ascensionenergies.com → buy</code>
+          <div class="step-tags"><span class="tag gold">10 min</span><span class="tag">~$10 USD</span><span class="tag red">Do not use GoDaddy</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">10 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step urgent">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Deploy landing page to Vercel — free, 2 minutes</div>
+          <div class="step-body">The landing page HTML file (index.html) is already built and in your downloads. Upload it to Vercel via drag-and-drop — no code required.</div>
+          <code class="step-code">1. Go to vercel.com → New Project → Upload folder
+2. Drag the acp-mvp/ folder → Deploy
+3. Get yoursite.vercel.app URL immediately</code>
+          <div class="step-tags"><span class="tag gold">5 min</span><span class="tag green">Free tier</span><span class="tag">Auto SSL</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">5 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step urgent">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Connect custom domain in Vercel dashboard</div>
+          <div class="step-body">In Vercel: Settings → Domains → Add ascensionenergies.com. Vercel shows you 2 DNS records to add. In Cloudflare: add those records. Propagation takes 2–10 minutes.</div>
+          <code class="step-code">Vercel → Project → Settings → Domains
+→ Add "ascensionenergies.com"
+→ Copy CNAME / A record → paste into Cloudflare DNS
+→ Done. SSL auto-provisioned.</code>
+          <div class="step-tags"><span class="tag gold">10 min</span><span class="tag green">Auto SSL via Let's Encrypt</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">10 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step urgent">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Verify live — test on mobile, desktop, and incognito</div>
+          <div class="step-body">Hit ascensionenergies.com from incognito. Check mobile. Check that contact links (mailto) work. Screenshot and save as v1.0 launch.</div>
+          <div class="step-tags"><span class="tag gold">5 min</span><span class="tag green">LIVE ✓</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">5 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 1: WEEK 1-2 -->
+<div class="phase">
+  <div class="phase-header" onclick="togglePhase(this)">
+    <div class="phase-num">Phase 1</div>
+    <div class="phase-title">Internal Foundation — Week 1–2</div>
+    <div class="phase-window">Days 1–14</div>
+    <div class="phase-chevron">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Connect Stripe Portal to live domain</div>
+          <div class="step-body">Update BASE_URL in .env to ascensionenergies.com. Update Stripe webhook URL. Swap from localhost to live. The billing system is already built — just point it at the live domain.</div>
+          <code class="step-code">BASE_URL=https://pay.ascensionenergies.com
+# Stripe Dashboard → Webhooks → Update endpoint URL</code>
+          <div class="step-tags"><span class="tag green">Already built</span><span class="tag">30 min</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">30 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <div class="step-title">Supabase project — create and configure</div>
+          <div class="step-body">Free tier. Create project. Enable email auth. Copy connection string. This is the auth backbone for the LP Portal and Executive Dashboard that follow.</div>
+          <code class="step-code">supabase.com → New Project → "acp-platform"
+→ Enable Email Auth + Magic Link
+→ Copy: Project URL + anon key + service_role key</code>
+          <div class="step-tags"><span class="tag">1 hr</span><span class="tag green">Free tier</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">1 hr</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-content">
+          <div class="step-title">Create Next.js monorepo — scaffold all 4 platforms</div>
+          <div class="step-body">One codebase, four apps. Next.js 14 App Router. This is the codebase that will host the Executive Dashboard, WorkHub, LP Portal, and full public website rebuild.</div>
+          <code class="step-code">npx create-next-app@latest acp-platform --typescript --tailwind --app
+cd acp-platform
+npm install @supabase/supabase-js stripe @notionhq/client
+npm install recharts lucide-react</code>
+          <div class="step-tags"><span class="tag">2 hr</span><span class="tag">One-time setup</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">2 hr</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-content">
+          <div class="step-title">Deploy monorepo to Vercel — replace holding page</div>
+          <div class="step-body">Push to GitHub. Connect Vercel to repo. Set environment variables. Auto-deploy on every push. The holding page becomes the Next.js app.</div>
+          <code class="step-code">git init && git add . && git commit -m "ACP Platform v1.0"
+git push origin main
+# Vercel: Import from GitHub → set env vars → deploy</code>
+          <div class="step-tags"><span class="tag">30 min</span><span class="tag green">CI/CD from here</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">30 min</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-content">
+          <div class="step-title">Activate NemoClaw + Shadow Cloud agents — configure PRP prompts</div>
+          <div class="step-body">The Shadow Cloud architecture is fully documented in Notion. Wire each agent's PRP prompt to Claude via the API. NemoClaw fires the daily brief at 08:00 AEST via Zapier → Claude API → Gmail draft → JT review.</div>
+          <div class="step-tags"><span class="tag gold">High priority</span><span class="tag">Zapier trigger</span><span class="tag">Claude API</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">3 hr</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2: WEEK 3-6 -->
+<div class="phase">
+  <div class="phase-header" onclick="togglePhase(this)">
+    <div class="phase-num">Phase 2</div>
+    <div class="phase-title">Executive Dashboard + WorkHub — Week 3–6</div>
+    <div class="phase-window">Days 15–42</div>
+    <div class="phase-chevron">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">11</div>
+        <div class="step-content">
+          <div class="step-title">Build Executive Dashboard — Notion API + Stripe live pull</div>
+          <div class="step-body">Bloomberg-style dashboard. 9 mandates, $34B+ pipeline, $410M fee potential, RAG status, blocker register. Pulls live from Notion and Stripe. JT-only access via Supabase auth.</div>
+          <div class="step-tags"><span class="tag">Sprint 3 (W5–6)</span><span class="tag gold">Highest internal ROI</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">1 week</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">12</div>
+        <div class="step-content">
+          <div class="step-title">Build WorkHub — 7-pipeline kanban + Mandate Intake form</div>
+          <div class="step-body">The 7-tab Mandate Intake form (already built as artifact) becomes a proper database-backed app. Auto-generates LOE, KYC pack, Deal Terms on submission. 7-pipeline kanban matches the PMO workstreams.</div>
+          <div class="step-tags"><span class="tag">Sprint 4 (W7–8)</span><span class="tag green">Existing forms migrate here</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">1 week</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">13</div>
+        <div class="step-content">
+          <div class="step-title">CRM + Introduction Register + KYC tracker</div>
+          <div class="step-body">Investor CRM seeded from existing Notion data. Introduction Register (the P0 tail fee protection gap) built as a locked, timestamped database. KYC expiry alerts wired to NemoClaw daily brief.</div>
+          <div class="step-tags"><span class="tag">Sprint 5 (W9–10)</span><span class="tag red">P0 — tail fee gap</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">1 week</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3: WEEK 7-12 -->
+<div class="phase">
+  <div class="phase-header" onclick="togglePhase(this)">
+    <div class="phase-num">Phase 3</div>
+    <div class="phase-title">LP Portal + Full Website — Week 7–12</div>
+    <div class="phase-window">Days 43–84</div>
+    <div class="phase-chevron">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">14</div>
+        <div class="step-content">
+          <div class="step-title">LP Portal — authenticated deal rooms per mandate</div>
+          <div class="step-body">Supabase auth + MFA. Role-based access (LP/Co-investor/Advisor/Admin). Deal room per mandate. NDA-gated documents. Stripe portal embedded for fee billing. DocuSign for signatures. Must pass security audit before launch.</div>
+          <div class="step-tags"><span class="tag">Sprint 6 (W11–12)</span><span class="tag red">Security audit required first</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">2 weeks</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">15</div>
+        <div class="step-content">
+          <div class="step-title">Full public website rebuild — Next.js + Sanity CMS</div>
+          <div class="step-body">Replace the holding page with the full institutional website. Sanity CMS for non-dev content. Deck library gated downloads. SEO meta. Mobile-first. Cloudflare WAF protection.</div>
+          <div class="step-tags"><span class="tag">W13–14</span><span class="tag">Not revenue-blocking</span></div>
+        </div>
+        <div class="step-action"><div class="time-est">2 weeks</div><div class="check" onclick="toggleCheck(this)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHADOW CLOUD STATUS -->
+<div class="shadow-box">
+  <div class="shadow-title">Shadow Cloud — Agent Activation Sequence</div>
+  <div class="agent-row"><div class="sdot active"></div><div class="agent-id">NC-001</div><div class="agent-nm">NemoClaw</div><div class="agent-fn">Chief AI Officer. Daily brief 08:00 AEST. Activate via Zapier → Claude API → Gmail. PRP prompt in Notion.</div><div class="agent-phase ap-now">Activate W1</div></div>
+  <div class="agent-row"><div class="sdot active"></div><div class="agent-id">DC-001</div><div class="agent-nm">DealClaw</div><div class="agent-fn">Wire to Mandate Intake form. Triggers on new enquiry. Outputs: mandate scope, KYC flag, deal terms draft.</div><div class="agent-phase ap-now">Activate W1</div></div>
+  <div class="agent-row"><div class="sdot active"></div><div class="agent-id">COM-001</div><div class="agent-nm">CommsClaw</div><div class="agent-fn">Already running via existing outreach sequences. Wire to CRM for contact-triggered email drafts.</div><div class="agent-phase ap-now">Activate W1</div></div>
+  <div class="agent-row"><div class="sdot active"></div><div class="agent-id">DOC-001</div><div class="agent-nm">DocClaw</div><div class="agent-fn">Wire to WorkHub template engine. 140+ templates. Triggers on document request or mandate intake submission.</div><div class="agent-phase ap-mvp">Activate W4</div></div>
+  <div class="agent-row"><div class="sdot pending"></div><div class="agent-id">CC-001</div><div class="agent-nm">CompliClaw</div><div class="agent-fn">Wire to KYC tracker in WorkHub. Triggers on new counterparty. Outputs: KYC status, sanctions flag, risk score.</div><div class="agent-phase ap-mvp">Activate W5</div></div>
+  <div class="agent-row"><div class="sdot pending"></div><div class="agent-id">FC-001</div><div class="agent-nm">FinClaw</div><div class="agent-fn">Wire to Executive Dashboard. Triggers on deal update. Outputs: fee model, DSCR, waterfall analysis.</div><div class="agent-phase ap-ph2">Activate W6</div></div>
+  <div class="agent-row"><div class="sdot pending"></div><div class="agent-id">DAT-001</div><div class="agent-nm">DataClaw</div><div class="agent-fn">Market intel, lender profiling, sector research. Wire to outreach sequences and deal origination.</div><div class="agent-phase ap-ph2">Activate W6</div></div>
+</div>
+
+<!-- COST SUMMARY -->
+<div class="cost-row">
+  <div class="cost-card"><div class="cost-label">Domain (today)</div><div class="cost-val">$10</div><div class="cost-desc">USD/year. Cloudflare Registrar. ascensionenergies.com</div></div>
+  <div class="cost-card"><div class="cost-label">Vercel (hosting)</div><div class="cost-val">$0</div><div class="cost-desc">Free tier. Upgrade to Pro ($20/mo) when LP Portal launches</div></div>
+  <div class="cost-card"><div class="cost-label">Supabase (DB + auth)</div><div class="cost-val">$0</div><div class="cost-desc">Free tier. Upgrade to Pro ($25/mo) at scale</div></div>
+  <div class="cost-card"><div class="cost-label">Total to go live today</div><div class="cost-val">$10</div><div class="cost-desc">Everything else is free until LP Portal launches</div></div>
+</div>
+
+<!-- INTEGRATION MAP -->
+<div class="int-map">
+  <div class="int-title">Platform Integration State</div>
+  <div class="int-grid">
+    <div class="int-item live"><div class="int-icon">💳</div><div class="int-name">Stripe Portal</div><div class="int-status s-live">✓ LIVE (sandbox)</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item"><div class="int-icon">🌐</div><div class="int-name">Landing Page</div><div class="int-status s-mvp">MVP — build today</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item"><div class="int-icon">📊</div><div class="int-name">Exec Dashboard</div><div class="int-status s-ph2">Phase 2 — W5</div></div>
+    <div class="int-item live"><div class="int-icon">📋</div><div class="int-name">Notion OS</div><div class="int-status s-live">✓ LIVE</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item"><div class="int-icon">⚙️</div><div class="int-name">WorkHub</div><div class="int-status s-ph2">Phase 2 — W7</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item"><div class="int-icon">🔐</div><div class="int-name">LP Portal</div><div class="int-status s-ph3">Phase 3 — W11</div></div>
+    <div class="int-item live"><div class="int-icon">🤖</div><div class="int-name">Shadow Cloud</div><div class="int-status s-mvp">Activate W1</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item live"><div class="int-icon">📧</div><div class="int-name">Google Workspace</div><div class="int-status s-live">✓ LIVE</div></div>
+    <div class="int-arrow">→</div>
+    <div class="int-item"><div class="int-icon">📈</div><div class="int-name">CRM + Outreach</div><div class="int-status s-ph2">Phase 2 — W9</div></div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>Ascension Capital Partners &nbsp;|&nbsp; ACN 674 649 417 &nbsp;|&nbsp; ACP-MVP-EXECUTION-v1.0-2026-04-11</div>
+  <div style="color:var(--tt)">95 days to EdgeMode close · MVP live in &lt;45 minutes</div>
+</footer>
+
+<script>
+function togglePhase(header){
+  const body=header.nextElementSibling;
+  const chev=header.querySelector('.phase-chevron');
+  const collapsed=body.classList.contains('collapsed');
+  body.classList.toggle('collapsed',!collapsed);
+  chev.style.transform=collapsed?'':'rotate(-90deg)';
+}
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  if(el.classList.contains('checked'))el.textContent='✓';
+  else el.textContent='';
+  const step=el.closest('.step');
+  step.classList.toggle('done',el.classList.contains('checked'));
+}
+</script>
+</body>
+</html>

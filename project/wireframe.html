@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ACP Website — Wireframes v1</title>
+<link rel="stylesheet" href="wireframe.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Tweaks panel (rendered outside React so it sits above canvas) -->
+<div id="tweaks" class="wf-tweaks">
+  <div class="wf-tweaks-h">Tweaks</div>
+  <div class="wf-tweak-row">
+    <label>Fidelity</label>
+    <div class="wf-tweak-btns" data-group="fidelity">
+      <button class="wf-tweak-btn" data-val="lo">Lo</button>
+      <button class="wf-tweak-btn" data-val="mid">Mid</button>
+      <button class="wf-tweak-btn active" data-val="hi">Hi</button>
+    </div>
+  </div>
+  <div class="wf-tweak-row">
+    <label>Annotations</label>
+    <div class="wf-tweak-btns" data-group="annotations">
+      <button class="wf-tweak-btn active" data-val="on">On</button>
+      <button class="wf-tweak-btn" data-val="off">Off</button>
+    </div>
+  </div>
+  <div class="wf-tweak-row">
+    <label>Homepage Hero</label>
+    <div class="wf-tweak-btns" data-group="hero">
+      <button class="wf-tweak-btn active" data-val="left">Left</button>
+      <button class="wf-tweak-btn" data-val="centred">Centred</button>
+      <button class="wf-tweak-btn" data-val="asym">Asym</button>
+    </div>
+  </div>
+</div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="wf-shared.jsx?v=6"></script>
+<script type="text/babel" src="wf-pages.jsx?v=6"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+const { HomePage, AboutPage, VerticalPage, ContactPage,
+        HomePageMobile, AboutMobile, VerticalMobile, ContactMobile,
+        TransactionsPage, TransactionsMobile } = window;
+
+/* Tweak state — persisted */
+const TWEAK_DEFAULS = /*EDITMODE-BEGIN*/{
+  "fidelity": "hi",
+  "annotations": "on",
+  "hero": "left"
+}/*EDITMODE-END*/;
+
+const TWEAKS = { ...TWEAK_DEFAULS, ...(JSON.parse(localStorage.getItem('acp-wf-tweaks')||'{}')) };
+
+function applyTweaks(){
+  const b = document.body;
+  b.classList.remove('wf-fidelity-lo','wf-fidelity-mid','wf-fidelity-hi');
+  b.classList.add('wf-fidelity-'+TWEAKS.fidelity);
+  b.classList.toggle('wf-annotations-off', TWEAKS.annotations==='off');
+  // hero variant re-render
+  window.__heroVariant = TWEAKS.hero;
+  if(window.__rerender) window.__rerender();
+  // persist
+  localStorage.setItem('acp-wf-tweaks', JSON.stringify(TWEAKS));
+  // update button states
+  document.querySelectorAll('#tweaks .wf-tweak-btns').forEach(g=>{
+    const key = g.dataset.group;
+    g.querySelectorAll('.wf-tweak-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.val===TWEAKS[key]);
+    });
+  });
+}
+
+document.querySelectorAll('#tweaks .wf-tweak-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const key = btn.parentElement.dataset.group;
+    TWEAKS[key] = btn.dataset.val;
+    applyTweaks();
+    try{ window.parent.postMessage({type:'__edit_mode_set_keys',edits:{[key]:btn.dataset.val}},'*'); }catch(e){}
+  });
+});
+
+/* Edit-mode wiring: show/hide panel from host toolbar */
+window.addEventListener('message',(e)=>{
+  if(e.data?.type==='__activate_edit_mode') document.getElementById('tweaks').classList.add('open');
+  if(e.data?.type==='__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('open');
+});
+try{ window.parent.postMessage({type:'__edit_mode_available'},'*'); }catch(e){}
+
+/* App */
+function App(){
+  const [, force] = React.useState(0);
+  React.useEffect(()=>{ window.__rerender = ()=>force(x=>x+1); applyTweaks(); },[]);
+  const heroVariant = window.__heroVariant || TWEAKS.hero;
+
+  return (
+    <DesignCanvas
+      title="Ascension Capital Partners — Website"
+      subtitle="Hi-fi wireframes · v1 · Desktop 1440 + Mobile 390 · per ACP-WEBCOPY-v1.0-2026-04-19"
+    >
+      <DCSection id="marketing" title="Marketing · Top-level pages">
+        <DCArtboard id="home-d"     label="01 · Homepage · Desktop"       width={1440} height={4800}><HomePage heroVariant={heroVariant}/></DCArtboard>
+        <DCArtboard id="home-m"     label="01 · Homepage · Mobile"        width={390}  height={4200}><HomePageMobile/></DCArtboard>
+        <DCArtboard id="about-d"    label="02 · About · Desktop"          width={1440} height={3400}><AboutPage/></DCArtboard>
+        <DCArtboard id="about-m"    label="02 · About · Mobile"           width={390}  height={2800}><AboutMobile/></DCArtboard>
+        <DCArtboard id="contact-d"  label="08 · Contact · Desktop"        width={1440} height={2400}><ContactPage/></DCArtboard>
+        <DCArtboard id="contact-m"  label="08 · Contact · Mobile"         width={390}  height={2400}><ContactMobile/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="verticals" title="Capabilities · Vertical page template (×5)">
+        <DCArtboard id="energy-d"   label="03 · Energy Transition · Desktop"    width={1440} height={2600}><VerticalPage slug="energy-transition"/></DCArtboard>
+        <DCArtboard id="energy-m"   label="03 · Energy Transition · Mobile"     width={390}  height={2400}><VerticalMobile slug="energy-transition"/></DCArtboard>
+        <DCArtboard id="digital-d"  label="04 · Digital Infrastructure · Desktop" width={1440} height={2600}><VerticalPage slug="digital-infrastructure"/></DCArtboard>
+        <DCArtboard id="digital-m"  label="04 · Digital Infrastructure · Mobile"  width={390}  height={2400}><VerticalMobile slug="digital-infrastructure"/></DCArtboard>
+        <DCArtboard id="credit-d"   label="05 · Private Credit · Desktop"        width={1440} height={2600}><VerticalPage slug="private-credit"/></DCArtboard>
+        <DCArtboard id="credit-m"   label="05 · Private Credit · Mobile"         width={390}  height={2400}><VerticalMobile slug="private-credit"/></DCArtboard>
+        <DCArtboard id="minerals-d" label="06 · Critical Minerals & Commodities · Desktop"     width={1440} height={2600}><VerticalPage slug="critical-minerals"/></DCArtboard>
+        <DCArtboard id="minerals-m" label="06 · Critical Minerals & Commodities · Mobile"      width={390}  height={2400}><VerticalMobile slug="critical-minerals"/></DCArtboard>
+        <DCArtboard id="impact-d"   label="07 · Impact Real Assets · Desktop"    width={1440} height={2600}><VerticalPage slug="impact-real-assets"/></DCArtboard>
+        <DCArtboard id="impact-m"   label="07 · Impact Real Assets · Mobile"     width={390}  height={2400}><VerticalMobile slug="impact-real-assets"/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="trackrecord" title="Track Record · Transactions">
+        <DCArtboard id="txn-d"  label="09 · Transactions · Desktop"  width={1440} height={3400}><TransactionsPage/></DCArtboard>
+        <DCArtboard id="txn-m"  label="09 · Transactions · Mobile"   width={390}  height={3800}><TransactionsMobile/></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
