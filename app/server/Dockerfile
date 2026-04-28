@@ -13,5 +13,7 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY package*.json ./
+COPY start.sh ./
+RUN chmod +x start.sh
 EXPOSE 4000
-CMD ["node", "dist/index.js"]
+CMD ["./start.sh"]

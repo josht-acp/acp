@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export async function sendMagicLink(email: string, name: string, link: string) {
   await transporter.sendMail({
-    from: `"Ascension Capital Partners" <portal@ascensioncapitalpartner.com>`,
+    from: process.env.SMTP_FROM || '"Ascension Capital Partners" <portal@ascensioncapitalpartner.com>',
     to: email,
     subject: 'Your ACP Portal access link',
     text: `Hello ${name},\n\nYour secure one-time login link:\n${link}\n\nThis link expires in 15 minutes and can only be used once.\n\nAscension Capital Partners`,
@@ -34,8 +34,8 @@ export async function sendContactNotification(enquiry: {
   phone?: string; engagement: string; message: string;
 }) {
   await transporter.sendMail({
-    from: `"ACP Website" <noreply@ascensioncapitalpartner.com>`,
-    to: process.env.CONTACT_EMAIL || 'joshuating53@outlook.com',
+    from: process.env.SMTP_FROM || '"ACP Website" <noreply@ascensioncapitalpartner.com>',
+    to: process.env.NOTIFY_EMAIL || 'joshuating53@outlook.com',
     subject: `New enquiry — ${enquiry.firm} / ${enquiry.engagement}`,
     text: [
       `Name: ${enquiry.name}`,

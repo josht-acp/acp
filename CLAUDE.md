@@ -25,7 +25,7 @@ npm run db:seed      # seed demo LP (demo@macquarie.com / Macquarie Pension Trus
 ### Web app (`app/web`)
 ```bash
 npm run dev          # Next.js dev on :3000
-npm run build        # production build (output: standalone)
+npm run build        # static export → out/ (output: export)
 npm run lint         # next lint
 ```
 
@@ -58,8 +58,12 @@ docker compose up --build
 3. Every LP API request goes through `requireAuth` (`server/src/middleware/auth.ts`) — verifies JWT, checks `sessions.revoked_at IS NULL`, loads user
 4. `POST /api/v1/auth/logout` — sets `sessions.revoked_at`
 
-### Next.js → API proxy
-`next.config.js` rewrites `/api/v1/*` → `http://localhost:4000/api/v1/*` (or `API_URL` env). Frontend never calls the Fastify server directly by hostname.
+### Deployment (Netlify + Railway)
+The web app uses `output: 'export'` — Next.js rewrites are unavailable. API proxying in production is handled by `app/web/public/_redirects` (Netlify redirects `/api/v1/*` to the Railway backend URL). Update the Railway URL in `_redirects` when the backend is redeployed.
+
+**To deploy the web:** `npm run build` in `app/web` → drag the `out/` folder to Netlify.
+
+In local dev, Next.js rewrites in `next.config.js` proxy `/api/v1/*` → `API_URL` (default `http://localhost:4000`). Frontend never references the Fastify hostname directly.
 
 ### Portal vs marketing layout
 `app/web/src/app/layout.tsx` — root layout with marketing Nav + Footer  
@@ -91,6 +95,8 @@ All monetary values stored as **cents (BIGINT)**. All LP data queries filter by 
 
 All styling uses **CSS Modules**. No Tailwind. No inline styles except one-off layout values.
 
+**CSS Modules gotcha:** bare element selectors (e.g. `button:disabled`) cause a build error ("pure selector" violation). Always scope to a local class: `.myBtn:disabled`.
+
 ## Client identity
 
 **Ascension Capital Partners (ACP)** — legal entity: APEX Consulting Partners Pty Ltd, ACN 674 649 417. Principal: Joshua Ting (JT), Executive Managing Partner. Sydney-based, 3-person team.
@@ -113,3 +119,5 @@ All marketing copy lives in `app/web/src/lib/data.ts`: `VERTICALS` (5 items with
 **`app/web/.env.local`** — `API_URL` (defaults to `http://localhost:4000`)
 
 In development without SMTP, magic links are printed to the server console — this is intentional.
+
+**`dotenv/config` requirement:** `tsx` does not auto-load `.env`. All server entrypoints (`src/index.ts`, `src/db/migrate.ts`, `src/db/seed.ts`) must have `import 'dotenv/config'` as their first import.
