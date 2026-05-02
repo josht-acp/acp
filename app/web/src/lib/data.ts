@@ -86,6 +86,40 @@ export const VERTICALS = [
       ['Institutional sponsor', 'Track record delivering at institutional scale. No first-fund, no retail syndication.'],
     ],
   },
+  {
+    slug: 'capital-markets',
+    num: '06',
+    title: 'Capital Markets',
+    pageTitle: 'Capital Markets <em>· green bonds,</em> structured notes, institutional placement.',
+    desc: 'Green bonds, sustainability-linked notes and structured credit instruments. ICMA GBP 2025-aligned. USD 50m – 2bn+.',
+    body: 'Origination, structuring and placement of labelled and unlabelled capital markets instruments for transition infrastructure issuers. Green bonds, sustainability-linked bonds, structured notes and private placements placed with institutional investors across asset manager, insurance and sovereign-adjacent mandates. Full ICMA GBP 2025 compliance, independent second-party opinion coordination and ongoing reporting framework.',
+    ticket: 'USD 50m – USD 2bn+',
+    instruments: 'Green Bonds · SLBs · Structured Notes · Private Placements',
+    sectors: 'Energy transition · Digital infra · Real assets · Impact',
+    metrics: 'Spread-to-benchmark · ICMA alignment · SPO rating',
+    criteria: [
+      ['ICMA alignment', 'Full GBP 2025 / SBP compliance with eligible project taxonomy defined and independently verified at time of mandate award.'],
+      ['Investor-grade reporting', 'Annual allocation and impact reporting framework in place prior to first drawdown; issuer committed to third-party assurance.'],
+      ['Issuer credit posture', 'Investment-grade or sub-IG with credible ratings pathway; no speculative capital-raise without anchor commitment in hand.'],
+    ],
+  },
+  {
+    slug: 'strategic-capital',
+    num: '07',
+    title: 'Strategic Capital / Diversified',
+    pageTitle: 'Strategic Capital <em>· mandate-grade structures,</em> across the cycle.',
+    desc: 'Cross-sector mandates where capital structure complexity, multi-jurisdiction reach or sponsor dynamics require a principal-led approach. Bespoke. USD 5m – 5bn+.',
+    body: 'Reserved for mandates that do not fit neatly into a single vertical — cross-sector restructurings, platform-build capital raises, multi-jurisdiction concession transactions and strategic corporate advisory where the capital structure complexity or stakeholder dynamics require principal-grade engagement. We take these selectively, operate under NDA from day one and bring the same documentation standards as any verticalised mandate.',
+    ticket: 'USD 5m – USD 5bn+',
+    instruments: 'Bespoke — equity, debt, hybrid, structured',
+    sectors: 'Cross-sector · Platform · Restructuring · M&A',
+    metrics: 'Mandate-specific · Principal scorecard',
+    criteria: [
+      ['Principal alignment', 'GP-on-balance-sheet economics or equivalent; no pure intermediary mandates without principal co-invest or fee-only senior engagement.'],
+      ['Documentation grade', 'LMA / LSTA / ICMA as applicable; bespoke terms reviewed by independent counsel on both sides.'],
+      ['Selectivity gate', 'Mandate accepted only where ACP team can contribute differentiated structural insight or capital access not available to the client from a bulge-bracket.'],
+    ],
+  },
 ] as const;
 
 export const TRANSACTIONS = [

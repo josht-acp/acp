@@ -34,6 +34,14 @@
   background: var(--acp-gold-hair);
   border: 1px solid var(--acp-gold-hair);
 }
+.vertGridThree {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--acp-gold-hair);
+  border: 1px solid var(--acp-gold-hair);
+  border-top: none;
+}
 .vertCard {
   background: var(--acp-navy);
   padding: 32px 28px;
@@ -238,6 +246,7 @@
   .metric { padding: 22px 16px; border-bottom: 1px solid var(--acp-gold-hair); }
   .metricVal { font-size: 26px; }
   .vertGrid { grid-template-columns: 1fr; }
+  .vertGridThree { grid-template-columns: 1fr; }
   .vertCard { min-height: auto; padding: 24px 20px; }
   .pillars { grid-template-columns: 1fr; gap: 28px; }
   .pillarTitle { font-size: 30px; }

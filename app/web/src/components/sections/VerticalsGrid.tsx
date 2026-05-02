@@ -30,7 +30,7 @@ export default function VerticalsGrid() {
         ))}
       </div>
 
-      <div className={styles.vertGrid} style={{ marginTop: 1 }}>
+      <div className={styles.vertGridThree} style={{ marginTop: 1 }}>
         {VERTICALS.slice(4).map(v => (
           <Link key={v.slug} href={`/capabilities/${v.slug}`} className={styles.vertCard}>
             <div className={styles.spine}/>
@@ -40,12 +40,6 @@ export default function VerticalsGrid() {
             <div className={styles.vertArrow}>Explore →</div>
           </Link>
         ))}
-        <div className={`${styles.vertCard} ${styles.vertCardAlt}`}>
-          <div className={styles.vertNum}>—</div>
-          <div className={styles.vertTitle} style={{ fontSize: 20 }}>All capabilities</div>
-          <div className={styles.vertDesc}>Full index, filtered by region, ticket size and instrument.</div>
-          <Link href="/capabilities" className={styles.vertArrow}>View all →</Link>
-        </div>
       </div>
     </section>
   );
